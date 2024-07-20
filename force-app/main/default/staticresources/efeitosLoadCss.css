@@ -1,0 +1,31 @@
+
+.block-in-load{
+	background: none repeat scroll 0 0 #000000;
+	height: 96%;
+	opacity: 0.5;
+	filter:alpha(opacity=50);
+	position: absolute;
+	width: 1308px;
+	z-index: 1000;
+}
+
+.load-message{
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 2px solid;
+	left: 41%;
+	padding: 16px 60px;
+	position: fixed;
+	top: 50%;
+	z-index: 1001;
+}
+
+.load-message img, .load-message .msg{
+	float: left;
+}
+
+.load-message .msg{
+	font-size: 16px;
+	font-weight: bold;
+	margin-left: 10px;
+	margin-top: 6px;
+}

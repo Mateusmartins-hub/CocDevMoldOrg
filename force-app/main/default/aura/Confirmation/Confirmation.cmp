@@ -1,0 +1,23 @@
+<aura:component access="global">
+    <aura:registerEvent name="appEvent" type="c:ConfirmationEvent"/>
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    
+    <aura:attribute name="botaoCancelado" type="string" default="Cancelar"/>
+    <aura:attribute name="botaoConfirmacao" type="string" default="Ok"/>
+    <aura:attribute name="text" type="string" default=""/>
+
+    <div class="slds-modal__content slds-p-around--x-small slds-align_absolute-center slds-size_1-of-1 slds-is-relative" aura:id="modalbody" id="modalbody">
+        <div class="slds-grid slds-gutters">
+            <p>
+            {!v.text}
+            </p>
+        </div>
+    </div>
+    
+    <div class="slds-text-align_center modal-footer slds-modal__footer slds-size_1-of-1">
+        <div class="forceChangeRecordTypeFooter">
+            <lightning:button label="{!v.botaoCancelado}" onclick="{!c.cancelado}"/>
+            <lightning:button label="{!v.botaoConfirmacao}" onclick="{!c.confirmado}" variant="brand" />
+        </div>
+    </div>
+</aura:component>

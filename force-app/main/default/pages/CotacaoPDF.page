@@ -1,0 +1,101 @@
+<apex:page standardController="Quote" renderAs="pdf">
+    <html>
+
+    <body style="font-family: sans-serif;display: block;">
+        <div>
+            <img src="{!$Resource.PearsonLogoPreto}" alt="Pearson logo" height="50px" />
+        </div>
+        <br/>
+        <div>
+            <h1>Proposta comercial</h1>
+            <p>Em atendimento ao solicitado por esta instituição, cumpre-nos informar a proposta comercial através da tabela
+                abaixo.
+            </p>
+
+            <br/>
+
+            <div style="margin-bottom: 50px; font-family: Times;">
+                <apex:variable value="{!0}" var="index" />
+                <apex:pageBlock >
+                    <table border="1" cellpadding="5" cellspacing="5" style="text-align:center; border-collapse: collapse;">
+                        <tr>
+                            <th>ITEM</th>
+                            <th>DESCRIÇÃO</th>
+                            <th>QUANTIDADE</th>
+                            <th>VALOR UNITÁRIO</th>
+                            <th>VALOR TOTAL</th>
+                        </tr>
+                        <apex:repeat var="item" value="{!quote.QuoteLineItems}">
+                            <apex:variable value="{!index + 1}" var="index" />
+
+                            <tr>
+                                <td>{!index}</td>
+                                <td style="padding: 0 30px;">{!item.Product2.Name}</td>
+                                <td>
+                                    <apex:outputText value="{0,number, ##}">
+                                        <apex:param value="{!item.Quantity}" />
+                                    </apex:outputText>
+                                </td>
+                                <td>
+                                    R$
+                                    <apex:outputText value="{0,number, ##.##}">
+                                        <apex:param value="{!item.UnitPrice}" />
+                                    </apex:outputText>
+                                </td>
+
+                                <td>
+                                    R$
+                                    <apex:outputText value="{0,number, ##.##}">
+                                        <apex:param value="{!item.TotalPrice}" />
+                                    </apex:outputText>
+                                </td>
+
+                            </tr>
+
+                        </apex:repeat>
+                    </table>
+                </apex:pageBlock>
+            </div>
+
+            <p>Perfazendo um total de
+                <b> R$
+                    <apex:outputText value="{0,number, ##.##}">
+                        <apex:param value="{!Quote.TotalPrice}" />
+                    </apex:outputText>
+                </b>.
+            </p>
+            <p>
+                <b>Validade da proposta: 30 dias.</b>
+            </p>
+
+            <p>Certos da atenção, colocamo-nos ao seu inteiro dispor para expor e esclarecer eventuais dúvidas da presente proposta.</p>
+
+            <div style="margin-left: 10px;margin-top: 50px;position: absolute;width:50%; left: 0; text-align: left;">
+                <p sytle="line-height: 3px;"> Atenciosamente,
+                    <br/>
+                    <span style="color:#267cad; font-weight: bold;">{!Quote.Owner.Name}</span>
+                    <br/> Consultor(a) Comercial
+
+                </p>
+            </div>
+            <div style="margin-top: 50px;position: absolute; right: 0; width:30%;">
+                <img src="{!$Resource.CarimboCotacao}" alt="Carimbo Pearson" />
+            </div>
+        </div>
+
+        <div style="font-size: 13px;text-align: center; line-height: 1px; margin-top: 300px;">
+            <p>
+                <b>Pearson Brasil Ltda. - CNPJ 01.404.158/00001-90</b>
+                <p>Av. Comendador Aladino Selmi, 4630 Galpão 1 - Mezanimo - Sala 5</p>
+                <p>Vila São Martin - CEP: 13069-096 Campinas - SP Tel (19) 3743-2000</p>
+            </p>
+            <br/>
+            <p style="font-size: 16px;">
+                <b>Endereço para correspondências</b>
+            </p>
+            <p>Av. Francisco Matarazzo, 1400, 7º e 8º andares - Água Branca, São Paulo - SP CEP: 05001-903</p>
+        </div>
+    </body>
+
+    </html>
+</apex:page>

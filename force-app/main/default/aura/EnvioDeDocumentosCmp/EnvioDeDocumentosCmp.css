@@ -1,0 +1,65 @@
+.THIS {
+    padding: 50px 50px;        
+}
+
+.THIS .slds-spinner, .THIS .slds-spinner_container {
+    position: fixed;
+}
+
+.THIS.documentos {
+    text-align: center;
+    padding-top: 10px 0;
+    width: 100% !important;
+    padding-top: 20px;
+}
+
+.THIS.header {
+    text-align: center;
+    padding: 10px 0;
+    font-size: 20px;
+    font-weight: bold;
+    display: block;
+}
+
+.THIS.header > h1 {
+    display: inline-block;
+    width: 600px;
+    border-bottom: 1px solid black;
+}
+
+.THIS .slds-file-selector__button, .THIS .slds-file-selector__text {
+    cursor: pointer;
+}
+
+.THIS .slds-form-element__label {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.THIS .slds-form-element {
+    margin: 25px;
+}
+
+.THIS.botao-enviar {
+    text-align: center;
+    padding: 0;
+    padding-bottom: 20px;
+}
+
+.THIS .documentCheckbox {
+    display: inline-block;
+    float: left;    
+    padding: 0;
+}
+
+.THIS.checkbox-aceite {    
+    text-align: center;    
+    padding: 20px 0;
+    width: 200px;
+    display: block;
+    margin: 0 auto;
+}
+
+.THIS .slds-form-element {
+    margin-bottom: 10px;
+}

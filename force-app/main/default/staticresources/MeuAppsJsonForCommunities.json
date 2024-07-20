@@ -1,0 +1,87 @@
+[
+  {
+    "communityName": "wizard",
+    "meusApps": [
+      {
+        "id": 1,
+        "order": 1,
+        "name": "Solicitação de Arte",
+        "icon": "../resource/meusAppsIconesWizard/solicitacaodearte.png?1=2",
+        "url": "http://portal.wizard.com.br/pagina/artes-online"
+      },
+      {
+        "id": 2,
+        "order": 1,
+        "name": "Entretanto",
+        "icon": "../resource/meusAppsIconesWizard/entretanto.png?1=2",
+        "url": "https://entretantoeducacao.com.br/"
+      },
+      {
+        "id": 3,
+        "order": 1,
+        "name": "Portal Parcerias",
+        "icon": "../resource/meusAppsIconesWizard/portalparcerias.png?1=2",
+        "url": "http://sistemas.pearson.com.br/PortalParcerias/EscolheUnidade.aspx?Token=ILJZR61332ZL34D25C87O78RJDKJFRQBP869D3HR9O411IDH7R&Marca=Wizard"
+      },
+      {
+        "id": 4,
+        "order": 1,
+        "name": "Ecommerce",
+        "icon": "../resource/meusAppsIconesWizard/ecommerce.png?1=2",
+        "url": "https://www.pearson.com.br/ecommerce/"
+      },
+      {
+        "id": 5,
+        "order": 1,
+        "name": "wiz.me",
+        "icon": "../resource/meusAppsIconesWizard/wizme.png?1=2",
+        "url": "https://me.wizard.com.br/"
+      },
+      {
+        "id": 6,
+        "order": 1,
+        "name": "certisign",
+        "icon": "../resource/meusAppsIconesWizard/certisign.png?1=2",
+        "url": "http://parceriacertisign.com.br/rev/pearson"
+      },
+      {
+        "id": 7,
+        "order": 1,
+        "name": "pef 2020",
+        "icon": "../resource/meusAppsIconesWizard/pef.png?1=2",
+        "url": "http://2020.pefpearson.com.br/login/index.asp"
+      },
+      {
+        "id": 8,
+        "order": 1,
+        "name": "wiz.growth",
+        "icon": "../resource/meusAppsIconesWizard/wizgrowth.png?1=2",
+        "url": "https://growth.wizard.com.br/"
+      }
+    ]
+  },
+  {
+    "communityName": "skill",
+    "meusApps": [
+      {
+        "id": 4,
+        "order": 1,
+        "name": "ecommerce",
+        "icon": "../resource/meusAppsIconesWizard/ecommerce.png?1=2",
+        "url": "https://www.pearson.com.br/ecommerce/"
+      }
+    ]
+  },
+  {
+    "communityName": "yazigi",
+    "meusApps": [
+      {
+        "id": 4,
+        "order": 1,
+        "name": "ecommerce",
+        "icon": "../resource/meusAppsIconesWizard/ecommerce.png?1=2",
+        "url": "https://www.pearson.com.br/ecommerce/"
+      }
+    ]
+  }
+]

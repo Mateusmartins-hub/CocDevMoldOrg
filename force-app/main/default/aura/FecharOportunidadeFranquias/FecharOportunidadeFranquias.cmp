@@ -1,0 +1,72 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="FecharOportunidadeFranquiasController">
+    <aura:handler event="c:ConfirmationEvent" action="{!c.respostaConfirmacao}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="loading" type="Boolean" default="false"/>
+    
+    <aura:attribute name="motivoRecusa" type="String" default=""/>
+    <aura:attribute name="motivos" type="List" default="[]"/>
+    
+    <aura:attribute name="stage" type="String" default=""/>
+    <aura:attribute name="closedStages" type="List" default="[]"/>
+    
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-button__icon_left {
+        margin-right: 0px !important;
+        }
+        .slds-p-around–medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        width : 100% !important;
+        max-width : 100% !important;
+        overflow-y:hidden !important;
+        height:unset !important;
+        }
+        .modal-body{
+        padding: 0px !important;
+        }
+        .slds-th__action_form {
+        display:none;
+        }
+        .slds-modal__content{
+        overflow-y: hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        overflow: initial !important;
+        }
+    </aura:html>
+    
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">Fechar Oportunidade</h4>
+    </div>
+    <aura:renderIf isTrue="{!v.loading}">
+        <lightning:card>
+            <div class="slds-p-horizontal--small slds-size--1-of-1">
+                <div class="slds-p-horizontal--small slds-size--1-of-1" style="height: 150px">
+                    <lightning:spinner variant="brand"/>
+                </div>   
+            </div>
+        </lightning:card>
+        <aura:set attribute="else">
+            <div class="slds-p-around_small slds-size_1-of-1 slds-is-relative">
+                <lightning:combobox style="width:100%" name="stage" label="Fase" value="{!v.stage}" placeholder="Selecione a fase de fechamento" options="{!v.closedStages}"/>
+            </div>
+            <div class="slds-p-around_small slds-size_1-of-1 slds-is-relative">
+                <lightning:combobox style="width:100%" name="pricebook" required="true" label="Motivo da recusa" value="{!v.motivoRecusa}" placeholder="Selecione o motivo da recusa" options="{!v.motivos}" disabled="{!v.stage != 'Cancelada'}"/>
+            </div>
+        </aura:set>
+    </aura:renderIf>
+    <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+        <div class="forceChangeRecordTypeFooter">
+            <aura:renderIf isTrue="{!!v.loading}">
+                <ui:button class="slds-button slds-button_neutral" label="Cancelar" press="{!c.cancelar}" /> 
+                <ui:button class="slds-button slds-button--brand" label="Salvar" press="{!c.salvar}"/>
+            </aura:renderIf>
+        </div>
+    </div>
+</aura:component>

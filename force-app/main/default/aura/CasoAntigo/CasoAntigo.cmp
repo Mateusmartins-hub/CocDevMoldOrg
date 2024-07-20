@@ -1,0 +1,192 @@
+<aura:component extensible="true" implements="c:CasoInterface,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="CasoAntigoController">
+    <aura:method name="addObservadores" action="{!c.addObservadores}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:renderIf isTrue="{!v.loading}">
+        <lightning:spinner class="slds-is-fixed" alternativeText="Loading" size="large" />
+    </aura:renderIf>  
+    <lightning:recordEditForm aura:id="caseFormEdit" onsubmit="{!c.salvar}" onerror="{!c.errorInformation}" onsuccess="{!c.successInformation}" recordId="{!v.recordId}" objectApiName="Case">
+        <div class="slds-card">
+            <div class="slds-page-header">
+                <div class="slds-grid">
+                    <div class="slds-col slds-has-flexi-truncate">
+                        <div class="slds-media slds-no-space slds-grow">
+                            <div class="slds-media__figure">
+                                <lightning:icon iconName="action:new_case" alternativeText="Approved" />
+                            </div>
+                            <div class="slds-media__body">
+                                <h1 class="slds-page-header__title slds-truncate slds-align-middle">Caso</h1>
+                                <p class="slds-text-body_small slds-line-height_reset">Preencha os campos abaixo com as informações do caso</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-no-flex slds-m-around_x-small slds-float_right">
+                        <aura:renderIf isTrue="{!v.isClassic}">
+                            <aura:if isTrue="{!v.edit != true}">
+                                <lightning:buttonGroup>
+                                    <lightning:button label="Voltar" iconName="utility:back" onclick="{!c.inicio}"/>
+                                </lightning:buttonGroup>
+                            </aura:if>
+                        </aura:renderIf>
+                        
+                        <lightning:buttonGroup class="{!v.edit != true ? 'slds-hide' : ''}">
+                            <aura:if isTrue="{!v.recordId != ''}">
+                                <lightning:button label="Cancelar" onclick="{!c.cancelarForm}" />
+                            </aura:if>
+                            <lightning:button aura:id="submit" label="Salvar" type="submit" variant="brand" />
+                        </lightning:buttonGroup> 
+                        
+                        <lightning:buttonGroup class="{!v.edit == true ? 'slds-hide' : 'slds-button_first'}">
+                            <aura:if isTrue="{!!v.caso.IsClosed}">
+                                <lightning:button label="Cancelar caso" onclick="{!c.cancelarForm}"/>
+                                <lightning:button label="Fechar caso" onclick="{!c.fechar}"/>
+                                <lightning:button label="Editar" onclick="{!c.editarForm}" />
+                            </aura:if>
+                        </lightning:buttonGroup>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <lightning:tabset selectedTabId="two">
+            <lightning:tab label="Visualizar Feed" id="one">
+                <ui:message title="Atenção" severity="error" closable="false" class="slds-p-left_medium">
+                    O Feed está sendo utilizado somente para visualização de itens antigos, para os novos casos utilizar as opções de observadores e comentários do caso.
+                </ui:message>	
+                <div class="slds-card">
+                    <lightning:card class="slds-card">
+                        <div class="slds-card__body slds-card__body_inner">
+                            <forceChatter:fullFeed type="Record" subjectId="{!v.recordId}"/>
+                        </div>
+                    </lightning:card>
+                </div>
+            </lightning:tab>
+            <lightning:tab label="Caso" id="two">
+                <ui:message title="Atenção" severity="warning" closable="false" class="slds-p-left_medium">
+                    <b>Este caso deverá ser tratado no fluxo antigo do CRM.</b>
+                </ui:message>
+                <aura:if isTrue="{!v.edit}">
+                    <p style="margin-top: 20px; margin-bottom: 20px;">
+                        <lightning:messages />
+                    </p>
+                </aura:if>
+                <div class="slds-card">
+                    <lightning:card class="slds-card">
+                        <div class="slds-card__body slds-card__body_inner">
+                            <aura:if isTrue="{!v.view}">
+                                <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="Case">
+                                    <aura:iteration items="{!v.mapCamposCaso}" var="sessao" indexVar="key">
+                                        <div class="slds-section slds-is-open">
+                                            <h3 class="slds-section__title slds-theme_shade">
+                                                <span class="slds-truncate slds-p-horizontal_small" title="Section Title">{!sessao.key}</span>
+                                            </h3>
+                                            <div aria-hidden="false" class="slds-section__content">
+                                                <div class="slds-grid slds-wrap">
+                                                    <aura:iteration items="{!sessao.value}" var="campo">
+                                                        <div class="slds-col slds-size_1-of-2">
+                                                            <div class="slds-m-around_xx-small slds-form-element">
+                                                                <div class="slds-border_bottom" style="width: 97%; padding-bottom: 2px;">
+                                                                    <aura:if isTrue="{!campo.key == 'AccountId' || campo.key == 'ContactId'}">
+                                                                        <span class="slds-a" onclick="{!c.clickSpan}" data-value="{!campo.key}">
+                                                                            <lightning:outputField aura:id="{!campo.key + Output}" fieldName="{!campo.key}" label="{!campo.key}"/>
+                                                                        </span>
+                                                                        
+                                                                        <aura:set attribute="else">
+                                                                            <lightning:outputField aura:id="{!campo.key + Output}" fieldName="{!campo.key}" label="{!campo.key}"/>
+                                                                        </aura:set>
+                                                                    </aura:if>
+                                                                </div>
+                                                            </div>
+                                                        </div>  
+                                                    </aura:iteration>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </aura:iteration>
+                                </lightning:recordViewForm>
+                            </aura:if>
+                            <aura:if isTrue="{!v.edit}"> 
+                                <aura:if isTrue="{! (!v.processoDeAddObservadores) || v.recordId == ''}">
+                                    <aura:iteration items="{!v.mapCamposCaso}" var="sessao" indexVar="key">
+                                        <div class="slds-section slds-is-open">
+                                            <h3 class="slds-section__title slds-theme_shade">
+                                                <span class="slds-truncate slds-p-horizontal_small" title="Section Title">{!sessao.key}</span>
+                                            </h3>
+                                            <div class="slds-grid slds-wrap">
+                                                <aura:iteration items="{!sessao.value}" var="campo">
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="{!v.campoComErro ==  campo.key ? 'slds-m-around_xx-small slds-form-element slds-has-error' : 'slds-m-around_xx-small slds-form-element'}">
+                                                            <lightning:inputField aura:id="campoEdicao" id="{!'Input' + campo.key}" fieldName="{!campo.key}" disabled="{!campo.value}"/> 
+                                                            <div class="slds-has-error">
+                                                                <div class="{!v.campoComErro ==  campo.key ? 'slds-form-element__help' : 'slds-hide'}">
+                                                                    {!v.erroCampoMensagem} 
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>  
+                                                </aura:iteration>
+                                            </div>
+                                        </div>
+                                    </aura:iteration>
+                                </aura:if> 
+                                
+                                <aura:if isTrue="{!v.processoDeAddObservadores}">
+                                    <div class="slds-section slds-is-open">
+                                        <h3 class="slds-section__title slds-theme_shade">
+                                            <span class="slds-truncate slds-p-horizontal_small" title="Section Title">Adicionar observadores</span>
+                                        </h3>
+                                        <div class="slds-col slds-size_1-of-1">
+                                            <div class="slds-m-around_xx-small slds-form-element">
+                                                <lightning:inputField aura:id="usuarioCombo" fieldName="AddObservador__c" onchange="{!c.addUser}"/>
+                                            </div>
+                                        </div> 
+                                        <div class="slds-col slds-size_1-of-1">
+                                            <div class="slds-m-around_xx-small slds-form-element">
+                                                <label class="slds-form-element__label" for="text-input-id-1">Observadores</label>
+                                                <lightning:pillContainer items="{!v.items}" onitemremove="{!c.handleItemRemove}"/>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    
+                                    <aura:iteration items="{!v.items}" var="item">
+                                        <div class="slds-col slds-size_1-of-1">
+                                            <div class="slds-m-around_xx-small slds-form-element">
+                                                <lightning:textarea disabled="{!item.existente}" value="{!item.informacao}" aura:id="InputInformacoes" name="{!item.value}" label="{!'Informações para ' + item.label}"/>
+                                            </div>
+                                        </div>  
+                                    </aura:iteration>
+                                </aura:if>
+                            </aura:if> 
+                        </div>
+                    </lightning:card>
+                </div>
+            </lightning:tab>
+        </lightning:tabset>
+    </lightning:recordEditForm>
+    <p style="margin-top: 20px;"></p>
+    <aura:renderIf isTrue="{!v.isClassic}">
+        <aura:if isTrue="{!v.view}">
+            <c:CaseRelatedLists aura:id="relatedListsComp" 
+                                parent="{!this}"
+                                showRelatedLists="{!v.showRelatedLists}"
+                                caso="{!v.caso}"
+                                recordId="{!v.recordId}"
+                                baseURL="{!v.baseURL}"
+                                SLAs="{!v.SLAs}" 
+                                linkAllSLAs="{!v.linkAllSLAs}" 
+                                observadores="{!v.observadores}" 
+                                emails="{!v.emails}" 
+                                linkAllEmails="{!v.linkAllEmails}" 
+                                comments="{!v.comments}" 
+                                notasVinculadas="{!v.notasVinculadas}" 
+                                linkAllNotes="{!v.linkAllNotes}" 
+                                materiais="{!v.materiais}" 
+                                linkAllMaterials="{!v.linkAllMaterials}" 
+                                solutions="{!v.solutions}"  
+                                attachments="{!v.attachments}"  
+                                linkAllAttachments="{!v.linkAllAttachments}" 
+                                caseHistories="{!v.caseHistories}"  
+                                linkAllCaseHistories="{!v.linkAllCaseHistories}"  
+                                approveHistories="{!v.approveHistories}"  />
+        </aura:if>
+    </aura:renderIf>
+</aura:component>

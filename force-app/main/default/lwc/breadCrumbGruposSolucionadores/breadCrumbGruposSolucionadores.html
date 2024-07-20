@@ -1,0 +1,12 @@
+<template>
+    <template if:true={historicoGruposSolucionadores}>
+        <article class="slds-card slds-p-around_small">
+            <lightning-breadcrumbs>
+                <template for:each={historicoGruposSolucionadores} for:item="grupo" for:index="i">
+                    <lightning-breadcrumb key={grupo.index} label={grupo.nome}>
+                    </lightning-breadcrumb>
+                </template>
+            </lightning-breadcrumbs>
+        </article>
+    </template>
+</template>

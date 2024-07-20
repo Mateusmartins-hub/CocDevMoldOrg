@@ -1,0 +1,122 @@
+﻿.noselect {
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+       -khtml-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+  }
+
+.btnGroupText {
+    border: none; 
+    outline: none;
+    background: none;
+    max-width: 150px;
+    text-align: center;
+    display: inline-flex;
+    top: 1.6rem;
+}
+
+.btnGroupIconWhiteBG {
+    background-color: white;
+    outline: none !important;
+    box-shadow: #fff 0 0 0 4px !important;
+    margin: 0 auto;
+} 
+
+.btnGroupNoneOutline {
+    outline: none !important;
+    box-shadow: #fff 0 0 0 4px !important;
+    margin: 0 auto;
+} 
+
+.btnWarning {
+    border-color: #F2AC13 !important;
+}
+
+.buttonTextActive{
+    font-size: 13px;
+    color: #0170D2; 
+    text-align: center;
+}
+
+.buttonTextActiveWaiting{
+    font-size: 13px;
+    color: #F2AC13; 
+    text-align: center;
+}
+
+.buttonTextUnchecked{
+    font-size: 13px;
+    color: #DDDBDA; 
+    text-align: center;
+}
+
+.buttonTextActiveBrokenSla{
+    font-size: 13px;
+    color: #DB0020; 
+    text-align: center;
+}
+
+.btnBrokenSla{
+    border-color: #DB0020 !important;
+}
+
+.buttonTextChecked{
+    font-size: 13px;
+    color: #9BC6AD; 
+    text-align: center;
+}
+
+.buttonTextViolated{
+    font-size: 13px;
+    color: #DB0020; 
+    text-align: center;
+}
+
+.spinnerHolder{
+    position: relative;
+    height: 80px;
+}
+
+.slds-progress {
+    margin: 0 5px 0 5px !important;
+    max-width: 100% !important;
+}
+
+.innerDivScrollable {
+    width: 180%;
+    background-color: white;
+    height: 60px;
+    display: grid;
+}
+
+.innerDivNotScrollable {
+    width: 90%;
+    background-color: white;
+    height: 60px;
+}
+
+.slds-scrollable_x {
+    width: 100%;
+    -ms-overflow-style: none;
+}
+
+.slds-scrollable_x::-webkit-scrollbar {
+    display: none;
+}
+
+.slds-align_absolute-center {
+    align-items: baseline !important;
+}
+
+.slds-progress__item{
+    margin: 0 20px;
+    display: inline-grid;
+    max-width: 150px;
+	text-align: center;
+}
+
+.slds-progress .slds-progress-bar {
+    top: 20%;
+}

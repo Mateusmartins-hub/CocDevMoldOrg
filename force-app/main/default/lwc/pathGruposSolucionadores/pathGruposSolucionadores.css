@@ -1,0 +1,119 @@
+﻿.noselect {
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+       -khtml-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+  }
+
+.btnGroupText {
+    border: none; 
+    outline: none;
+    background: none;
+    max-width: 170px;
+	text-align: center;
+    display: inline-flex;
+    top: 1.6rem;
+}
+
+.btnGroupIconWhiteBG {
+    background-color: white;
+    outline: none !important;
+    box-shadow: #fff 0 0 0 4px !important;
+    margin: 0 auto;
+} 
+
+.btnGroupNoneOutline {
+    outline: none !important;
+    box-shadow: #fff 0 0 0 4px !important;
+    margin: 0 auto;
+} 
+
+.btnWarning {
+    border-color: #F2AC13 !important;
+}
+
+.buttonTextActive{
+    color: #0170D2; 
+    text-align: center;
+}
+
+.buttonTextActiveWaiting{
+    color: #F2AC13; 
+    text-align: center;
+}
+
+.buttonTextActiveBrokenSla{
+    color: #DB0020; 
+    text-align: center;
+}
+
+.btnBrokenSla{
+    border-color: #DB0020 !important;
+}
+
+.buttonTextUnchecked{
+    color: #DDDBDA; 
+    text-align: center;
+}
+
+.buttonTextChecked{
+    color: #9BC6AD; 
+    text-align: center;
+}
+
+.buttonTextViolated{
+    color: #DB0020; 
+    text-align: center;
+}
+
+.spinnerHolder{
+    position: relative;
+    height: 80px;
+}
+
+.slds-progress {
+    margin: 0 !important;
+    max-width: 100% !important;
+}
+
+.innerDivScrollable {
+    width: 180%;
+    background-color: white;
+    height: 60px;
+    display: grid;
+}
+
+.divScrollableClass {
+    width: 96%;
+}
+
+.innerDivNotScrollable {
+    background-color: white;
+    height: 60px;
+}
+
+.slds-scrollable_x {
+    width: 100%;
+    -ms-overflow-style: none;
+}
+
+.slds-scrollable_x::-webkit-scrollbar {
+    display: none;
+}
+
+.slds-align_absolute-center {
+    align-items: baseline !important;
+}
+
+.slds-progress__item{
+    margin: 0 20px;
+    display: inline-grid;
+	max-width: 170px;
+	text-align: center;
+}
+
+.slds-progress .slds-progress-bar {
+    top: 20%;
+}

@@ -1,0 +1,90 @@
+<aura:component implements="force:hasRecordId,force:lightningQuickActionWithoutHeader"
+  controller="EventCheckOutController">
+  <aura:attribute name="perguntaRespostas" type="List" />
+  <aura:attribute name="formulario" type="Object" />
+  <aura:attribute name="enviarChecklist" type="Boolean" default="false" />
+  <aura:attribute name="titulo" type="string" />
+  <aura:attribute name="loading" type="Boolean" default="true" />
+  <aura:attribute name="eventId" type="String" />
+
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <aura:html tag="style">
+    .cuf-content {
+    padding: 0 0rem !important;
+    }
+    .slds-p-around--medium {
+    padding: 0rem !important;
+    }
+    .slds-modal__content{
+    height:unset !important;
+    max-height:unset !important;
+    }
+    .slds-card__body {
+    margin-bottom: 0px !important;
+    }
+  </aura:html>
+
+  <div class="slds-is-relative">
+    <aura:renderIf isTrue="{!v.loading}">
+      <div class="loading">
+        <lightning:spinner alternativeText="Loading" variant="brand" />
+      </div>
+    </aura:renderIf>
+    <aura:renderIf isTrue="{!v.enviarChecklist}">
+      <lightning:card>
+        <div class="slds-form-element">
+
+          <p style="text-align: center;font-weight: bold;">Checkout realizado!<br />Deseja enviar o cheklist para o
+            cliente?</p>
+          <div class="modal-footer slds-modal__footer slds-size_1-of-1 button">
+            <lightning:button name='Nao' label='Não' onclick='{!c.handleConfirmDialogNo}' />
+            <lightning:button variant="brand" name='Sim' label='Sim' onclick='{!c.handleConfirmDialogYes}' />
+          </div>
+        </div>
+      </lightning:card>
+    </aura:renderIf>
+    <aura:renderIf isTrue="{!!v.enviarChecklist}">
+      <lightning:card>
+        <div class="slds-form-element">
+          <div class="slds-section slds-is-open slds-p-horizontal_medium">
+            <p style="text-align: center;font-weight: bold;">{!v.titulo}</p>
+            <aura:iteration items="{!v.formulario.Perguntas}" var="pr" indexVar="key">
+              <div class="slds-form-element__control">
+                <aura:renderIf isTrue="{!pr.Tip != null}">
+                </aura:renderIf>
+                <aura:renderIf isTrue="{!pr.TipoResposta == 'Texto livre'}">
+                  <lightning:textarea value="{!pr.Resposta}" label="{!pr.Pergunta}" required="{!pr.Obrigatorio}"
+                    fieldLevelHelp="{!pr.Tip}" class="field" />
+                </aura:renderIf>
+                <aura:renderIf isTrue="{!pr.TipoResposta == 'Numérico'}">
+                  <lightning:input type="number" value="{!pr.Resposta}" label="{!pr.Pergunta}"
+                    required="{!pr.Obrigatorio}" fieldLevelHelp="{!pr.Tip}" class="field" />
+                </aura:renderIf>
+                <aura:renderIf isTrue="{!pr.TipoResposta == 'Lista de opções única'}">
+                  <lightning:combobox label="{!pr.Pergunta}" value="{!pr.Resposta}" options="{!pr.OpcoesResposta}"
+                    required="{!pr.Obrigatorio}" fieldLevelHelp="{!pr.Tip}" class="field" />
+                </aura:renderIf>
+                <aura:renderIf isTrue="{!pr.TipoResposta == 'Lista de opções múltipla'}">
+                  <lightning:dualListbox label="{!pr.Pergunta}" sourceLabel="Disponíveis" selectedLabel="Selecionados"
+                    options="{!pr.OpcoesResposta}" value="{!pr.Respostas}" required="{!pr.Obrigatorio}"
+                    fieldLevelHelp="{!pr.Tip}" size="4" class="field" />
+                </aura:renderIf>
+                <aura:renderIf isTrue="{!pr.TipoResposta == 'Caixa de seleção'}">
+                  <lightning:input type="checkbox" label="{!pr.Pergunta}" checked="{!pr.Resposta}"
+                    fieldLevelHelp="{!pr.Tip}" class="field" />
+                </aura:renderIf>
+                <div class="row">
+                  <p style="color: red;">{!pr.Erro}</p>
+                </div>
+              </div>
+            </aura:iteration>
+          </div>
+          <div class="modal-footer slds-modal__footer slds-size_1-of-1 button">
+            <lightning:button variant="brand" label="Salvar" onclick="{!c.salvar}" />
+          </div>
+        </div>
+      </lightning:card>
+    </aura:renderIf>
+  </div>
+</aura:component>

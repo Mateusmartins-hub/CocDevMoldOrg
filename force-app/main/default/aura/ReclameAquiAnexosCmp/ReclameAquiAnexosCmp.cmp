@@ -1,0 +1,12 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="ReclameAquiAnexosController">
+    <aura:attribute name="recordId" type="Id" />
+    
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
+    <div class="slds-p-horizontal--small slds-size--1-of-1">
+        <div class="slds-p-horizontal--small slds-size--1-of-1 isActivityLoading">
+            <lightning:spinner variant="brand" size="medium"/>
+            <h3>Carregando links</h3>
+        </div>   
+    </div>
+</aura:component>

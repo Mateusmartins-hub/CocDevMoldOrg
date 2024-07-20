@@ -1,0 +1,71 @@
+<template>
+
+    <lightning-card if:true={isExecuting} title="Status da anonimização">
+        <div class="slds-m-around_small slds-p-around_small">
+            <P>{jobProgress}</P>
+            <p>{jobStatus}%</p>
+            <lightning-progress-bar value={jobStatus} size="large" variant="circular"></lightning-progress-bar>
+            <p if:true={hasJobItemsProcessed}>Total de Itens Processados: {jobItemsProcessed}</p>
+            <p if:true={hasErrors}>Total de Erros: {numberOfErrors}</p>
+        </div>
+    </lightning-card>
+
+    <lightning-card if:false={isExecuting} title="Anonimização de dados">
+        <div class="slds-m-around_small slds-p-around_small info-output">
+            <p class="slds-truncate">
+                <b>CPF: </b>
+                <span>{cpf}</span>
+            </p>
+            <p class="slds-truncate">
+                <b>E-mail: </b>
+                <span>{email}</span>
+            </p>
+        </div>
+        <div class="slds-p-horizontal_small slds-m-vertical_small">
+            <div class="slds-text-heading_medium">{nomeCompleto}</div>
+            <lightning-checkbox-group name="Email Group" options={emailsToSelect} value={selectedEmails}
+                onchange={handleSelectEmail}></lightning-checkbox-group>
+        </div>
+        <div slot="footer">
+            <lightning-button variant="brand" label="Anonimizar dados" onclick={handleClick}
+                class="slds-m-left_x-small"></lightning-button>
+        </div>
+
+    </lightning-card>
+
+    <c-base-modal if:true={showModal} onclose={closeModal} onconfirm={confirmModal} show-header title="Confirmação"
+        show-footer button-confirm="Confirmar a anonimização">
+        <span slot="body">
+
+            <div class="slds-notify slds-notify_alert slds-alert_warning" role="alert">
+                <span class="slds-assistive-text">warning</span>
+                <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small">
+                    <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#warning"></use>
+                    </svg>
+                </span>
+                <h2><b>Atenção!</b> Ao clicar no botão <b>Confirmar a anonimização</b> todos os registros abaixo serão
+                    anonimizados
+                </h2>
+            </div>
+
+            <div slot="body" class="slds-p-horizontal_small slds-m-vertical_small">
+                <div if:true={isLoading} class="slds-is-relative" style="height:100px">
+                    <lightning-spinner variant="brand" alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+
+                <template if:false={isLoading}>
+                    <lightning-accordion allow-multiple-sections-open>
+                        <template for:each={recordsFound} for:item="record" for:index="index">
+                            <lightning-accordion-section label={record.sobject} key={recordsFound.index}>
+                                <template for:each={record.childs} for:item="child">
+                                    <p key={child.id}>{child.name} - {child.date}</p>
+                                </template>
+                            </lightning-accordion-section>
+                        </template>
+                    </lightning-accordion>
+                </template>
+            </div>
+        </span>
+    </c-base-modal>
+</template>

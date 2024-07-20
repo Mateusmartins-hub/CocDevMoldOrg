@@ -1,0 +1,22 @@
+html,
+body {
+    height: 100%;
+    margin: 0px;
+}
+
+div.coc {
+    background: #008638;
+    color: #fff;
+}
+
+h1.coc {
+    color: #000;
+}
+
+div.defaultClass {
+    background: #0080a3;
+}
+
+h1.defaultClass {
+    color: #16325c;
+}

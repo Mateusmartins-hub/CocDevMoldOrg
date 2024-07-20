@@ -1,0 +1,37 @@
+<aura:component implements="force:appHostable" controller="CheckinCheckoutController">
+    <aura:handler name="init" value="this" action="{!c.doInit}" />
+
+    <aura:attribute name="userEvents" type="Event[]" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="columnEvents" type="List" default="[]" />
+    <aura:attribute name="isLoading" type="Boolean" default="false" />
+
+    <aura:renderIf isTrue="{!v.isLoading}">
+        <lightning:spinner alternativeText="Loading" size="large" />
+    </aura:renderIf>
+
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                        <img class="slds-icon slds-icon_medium" title="compromissos" alt="compromissos"
+                            src="/img/icon/t4v32/custom/custom78_120.png" />
+                        <span class="slds-assistive-text">compromissos</span>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <a class="slds-card__header-link slds-truncate" title="Compromissos">
+                            <span>Compromissos</span>
+                        </a>
+                    </h2>
+                </div>
+            </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">Compromissos da semana</div>
+    </article>
+    
+    <lightning:datatable columns="{!v.columnEvents}" onrowaction="{!c.handleAction}" data="{!v.userEvents}"
+        hideCheckboxColumn="true" keyField="Id" />
+</aura:component>

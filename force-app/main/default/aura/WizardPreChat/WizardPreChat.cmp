@@ -1,0 +1,21 @@
+<aura:component implements="lightningsnapin:prechatUI" controller="WizardPreChatController">
+
+    <aura:attribute name="prechatFieldComponents" type="List" description="An array of objects representing the pre-chat fields specified in pre-chat setup." />
+    <aura:attribute name="userInfo" type="User" />
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <aura:locator target="startButton" description="Pre-chat form submit button." />
+
+    <lightningsnapin:prechatAPI aura:id="prechatAPI" />
+
+    <div class="prechatUI">
+        <div class="prechatContent formContent">
+            <ul class="fieldsList">
+                {!v.prechatFieldComponents}
+            </ul>
+        </div>
+        <div class="startButtonWrapper buttonWrapper">
+            <ui:button aura:id="startButton" class="slds-button slds-button--neutral startButton" label="{!$Label.LiveAgentPrechat.StartChat}" press="{!c.handleStartButtonClick}" />
+        </div>
+    </div>
+
+</aura:component>

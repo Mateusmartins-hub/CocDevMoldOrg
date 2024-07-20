@@ -1,0 +1,301 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" controller="AgendamentoVisitaController" docType="html-5.0"
+           action="{!confirmarData}" language="pt_BR">
+    
+    <head>
+        <title>Agende sua visita - Pearson</title>
+        <link rel="SHORTCUT ICON" href="https://br.pearson.com/etc/designs/region-growth/brazil/pearson-brazil/favicon.ico" />
+        <apex:slds />
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" />
+        <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" />
+        <apex:stylesheet value="{! $Resource.agendamentoVisitaCSS }" />
+    </head>
+    
+    <body>
+        <apex:form id="formulario" style="height: 100%">
+    
+
+            <apex:actionFunction name="enviarDatasC" action="{!enviarDatas}" rerender="formulario">     
+                <apex:param id="horario" name="horarioSetado" value="" />
+            </apex:actionFunction>
+            
+            <div style="margin:0;padding:0;font-family:SalesforceSans-Regular,Helvetica,Arial,sans-serif;padding:0px auto;margin:0px auto;font-size:13px;color:#2b2826;letter-spacing:0;line-height:24px;height:100%!important;width:100%!important;margin:0px;padding:0px">
+                <table border="0" cellpadding="0" cellspacing="0" height="100%" style="border-collapse:collapse" width="100%">
+                    <tbody>
+                        <tr>
+                            <td align="left" style="border-collapse:collapse;background-color:#f4f6f9" valign="top">
+                                <table bgcolor="transparent" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="center" class="m_-3096073424454715395wrapper" style="border-collapse:collapse;padding:0">
+                                                <table border="0" cellpadding="0" cellspacing="0" class="m_-3096073424454715395main slds-align_absolute-center" style="border-collapse:collapse;max-width:530px;width:530px"
+                                                       width="530">
+                                                    <tbody>
+                                                        <tr height="57">
+                                                            <td style="border-collapse:collapse">&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center" style="border-collapse:collapse">
+                                                                <table border="0" cellpadding="0" cellspacing="0" class="m_-3096073424454715395wrapper" style="border-collapse:collapse;padding:0"
+                                                                       width="100%">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td align="center" class="m_-3096073424454715395container__logo" style="border-collapse:collapse" valign="top">
+                                                                                <center>
+                                                                                    <img alt="Pearson" border="0" class="m_-3096073424454715395logo__top CToWUd" src="{!$Resource[currentStyleObj.logoUrl]}" 
+                                                                                         style="border:0;outline:none;text-decoration:none;display:block;width:210px"/>
+                                                                                </center>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="45">
+                                                            <td style="border-collapse:collapse">&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="center" style="border-collapse:collapse">
+                                                                <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="m_-3096073424454715395wrapper m_-3096073424454715395panel m_-3096073424454715395panel_primary"
+                                                                       style="border-collapse:collapse;padding:0;border-bottom-left-radius:4px;border-bottom-right-radius:4px"
+                                                                       width="100%">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td style="border-collapse:collapse">
+                                                                                <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="m_-3096073424454715395wrapper" style="border-collapse:collapse;padding:0"
+                                                                                       width="100%">
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td align="center" style="border-collapse:collapse">
+                                                                                                <apex:image width="530" value="{!$Resource[currentStyleObj.imageUrl]}" style="border:0;outline:none;text-decoration:none;border-width:0;width:100%;max-width:900px;height:auto;display:block"></apex:image>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="m_-3096073424454715395container__main" style="border-collapse:collapse;padding:34px 45px">
+                                                                                <apex:outputPanel rendered="{!dataConfirmada}">
+                                                                                    <table border="0" cellpadding="0" cellspacing="0" class="m_-3096073424454715395wrapper" style="border-collapse:collapse;padding:0"
+                                                                                           width="100%">
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td align="center" height="auto" class="slds-align_absolute-center" style="border-collapse:collapse" valign="top" width="100%">
+                                                                                                    <h1 class="m_-3096073424454715395h1" style="padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;color:#16325c;font-family:SalesforceSans-Regular,Helvetica,Arial,sans-serif;font-weight:normal;margin:0;font-size:28px;line-height:48px;text-align:center">Data confirmada</h1>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr height="25">
+                                                                                                <td style="border-collapse:collapse">&nbsp;</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td style="border-collapse:collapse">
+                                                                                                    <p>
+                                                                                                        A visita foi confirmada para: {!dataConf}.
+                                                                                                    </p>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr class="m_-3096073424454715395divider" height="24" style="border-bottom:1px solid #e0e5ee">
+                                                                                                <td style="border-collapse:collapse">&nbsp;</td>
+                                                                                            </tr>
+                                                                                            <tr height="24">
+                                                                                                <td style="border-collapse:collapse">Pearson Education</td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </apex:outputPanel>
+                                                                                <apex:outputPanel rendered="{!!dataConfirmada}">
+                                                                                    <apex:outputPanel rendered="{!datasEnviadas}">
+                                                                                        <table border="0" cellpadding="0" cellspacing="0" class="m_-3096073424454715395wrapper" style="border-collapse:collapse;padding:0"
+                                                                                               width="100%">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td align="center" height="auto" class="slds-align_absolute-center" style="border-collapse:collapse" valign="top" width="100%">
+                                                                                                        <h1 class="m_-3096073424454715395h1" style="padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;color:#16325c;font-family:SalesforceSans-Regular,Helvetica,Arial,sans-serif;font-weight:normal;margin:0;font-size:28px;line-height:48px;text-align:center">Datas enviadas</h1>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr height="25">
+                                                                                                    <td style="border-collapse:collapse">&nbsp;</td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td style="border-collapse:collapse">
+                                                                                                        <p>
+                                                                                                            Novas datas enviadas. Aguarde a confirmação.
+                                                                                                        </p>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr class="m_-3096073424454715395divider" height="24" style="border-bottom:1px solid #e0e5ee">
+                                                                                                    <td style="border-collapse:collapse">&nbsp;</td>
+                                                                                                </tr>
+                                                                                                <tr height="24">
+                                                                                                    <td style="border-collapse:collapse">Pearson Education</td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </apex:outputPanel>
+                                                                                    <apex:outputPanel rendered="{!!datasEnviadas}">
+                                                                                        <table border="0" cellpadding="0" cellspacing="0" class="m_-3096073424454715395wrapper" style="border-collapse:collapse;padding:0"
+                                                                                               width="100%">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td align="center" height="auto" class="slds-align_absolute-center" style="border-collapse:collapse" valign="top" width="100%">
+                                                                                                        <h1 class="m_-3096073424454715395h1 {!currentStyleObj.currentClass}" style="padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;font-family:SalesforceSans-Regular,Helvetica,Arial,sans-serif;font-weight:normal;margin:0;font-size:28px;line-height:48px;text-align:center">Novas Datas Sugeridas</h1>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr height="25">
+                                                                                                    <td style="border-collapse:collapse">&nbsp;</td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td style="border-collapse:collapse">
+                                                                                                        <p>
+                                                                                                            Seguem abaixo as novas datas sugeridas:
+                                                                                                        </p>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr height="24">
+                                                                                                    <td style="border-collapse:collapse">&nbsp;</td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td align="center" style="border-collapse:collapse">
+                                                                                                        <table border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;border-collapse:collapse">
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td align="center" style="border-collapse:collapse; padding: 0px 15px;">
+                                                                                                                        Primeira data:
+                                                                                                                    </td>
+                                                                                                                    <td align="center" style="border-collapse:collapse; padding: 0px 15px;">
+                                                                                                                        Segunda data:
+                                                                                                                    </td>
+                                                                                                                    <td align="center" style="border-collapse:collapse; padding: 0px 15px;">
+                                                                                                                        Terceira data:
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                                <tr>
+                                                                                                                    <td align="center" style="border-collapse:collapse; padding: 0px 15px;">
+                                                                                                                        <div class="slds-form-element">
+                                                                                                                            <div class="slds-form-element__control">
+                                                                                                                                <div class="slds-input-has-icon">
+                                                                                                                                    <apex:input styleClass="slds-input date-mask" value="{!sugData1}" />
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </td>
+                                                                                                                    <td align="center" style="border-collapse:collapse; padding: 0px 15px;">
+                                                                                                                        <div class="slds-form-element">
+                                                                                                                            <div class="slds-form-element__control">
+                                                                                                                                <div class="slds-input-has-icon">
+                                                                                                                                    <apex:input styleClass="slds-input date-mask" value="{!sugData2}" />
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </td>
+                                                                                                                    <td align="center" style="border-collapse:collapse; padding: 0px 15px;">
+                                                                                                                        <div class="slds-form-element">
+                                                                                                                            <div class="slds-form-element__control">
+                                                                                                                                <div class="slds-input-has-icon">
+                                                                                                                                    <apex:input styleClass="slds-input date-mask" value="{!sugData3}" />
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                                <tr height="24">
+                                                                                                                    <td style="border-collapse:collapse">&nbsp;</td>
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                        <table>
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td align="center" class="slds-align_absolute-center" style="border-collapse:collapse; padding: 0px 15px; ">
+                                                                                                                        <fieldset class="slds-form-element">
+                                                                                                                            <legend class="slds-form-element__legend slds-form-element__label">Horário:</legend>
+                                                                                                                            <div class="slds-form-element__control">
+                                                                                                                                <div class="slds-radio_button-group">
+                                                                                                                                    <apex:repeat value="{!horarios}" var="hora" id="horariosRepeat">
+                                                                                                                                        <span class="slds-button slds-radio_button">
+                                                                                                                                            <input type="radio" name="radios" id="{!hora}" value="{!hora}"/>
+                                                                                                                                            <label class="slds-radio_button__label" for="{!hora}">
+                                                                                                                                                <span class="slds-radio_faux">{!hora}</span>
+                                                                                                                                            </label>
+                                                                                                                                        </span>
+                                                                                                                                    </apex:repeat>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </fieldset>
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                                <tr height="24">
+                                                                                                                    <td style="border-collapse:collapse">&nbsp;</td>
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                        <apex:outputPanel rendered="{!LEN(msgErro) > 0}">
+                                                                                                            <div class="slds-align_absolute-center">
+                                                                                                                <div class="demo-only" style="height:2rem; margin-bottom: 47.55px">
+                                                                                                                    <div class="slds-notify_container slds-is-relative">
+                                                                                                                        <div class="slds-notify slds-notify_toast slds-theme_error" role="status">
+                                                                                                                            <div class="slds-notify__content">
+                                                                                                                                <h2 class="slds-text-heading_small">{!msgErro}</h2>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </apex:outputPanel>
+                                                                                                        <div class="slds-align_absolute-center">
+                                                                                                            <div class="m_-3096073424454715395button_cta slds-align_absolute-center {!currentStyleObj.currentClass}" style="border-collapse:collapse;border-radius:3px;padding:9px 40px;text-align:center">
+                                                                                                                <font color="#FFFFFF" style="font-weight: inherit; line-height: inherit; font-family: SalesforceSans-Bold, Helvetica, Arial, sans-serif; font-size: 15px; color: rgb(255, 255, 255); text-decoration: none;">
+                                                                                                                    <apex:commandButton onclick="enviarNovasDatas(); return false;" style="background-color: Transparent; border: none;" value="ENVIAR NOVAS DATAS"/>
+                                                                                                                </font>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr class="m_-3096073424454715395divider" height="24" style="border-bottom:1px solid #e0e5ee">
+                                                                                                    <td style="border-collapse:collapse">&nbsp;</td>
+                                                                                                </tr>
+                                                                                                <tr height="24">
+                                                                                                    <td style="border-collapse:collapse">Pearson Education</td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </apex:outputPanel>
+                                                                                </apex:outputPanel>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr height="95">
+                                                            <td style="border-collapse:collapse">&nbsp;</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </apex:form>
+    </body>
+    
+    <script>
+    function enviarNovasDatas() {
+        var radios = document.getElementsByName('radios');
+        for (var i = 0, length = radios.length; i < length; i++){
+            if (radios[i].checked){
+                enviarDatasC(radios[i].value);
+                break;
+            }
+        }
+    }
+    $(document).ready(function () {
+        $(".date-mask").mask("99/99/9999");
+    });    
+    </script>
+</apex:page>

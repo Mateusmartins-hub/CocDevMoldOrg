@@ -1,0 +1,97 @@
+<apex:page controller="FormularioParaExemplaresController" lightningStylesheets="true" showHeader="false" sidebar="false">
+    <apex:slds />
+    <apex:outputPanel id="pagina">
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0px;
+            }
+        </style>  
+        <apex:form id="formulario">
+            <div style="height: 75%">
+                <apex:outputPanel rendered="{!ExibePerguntas}">
+                    <apex:outputPanel rendered="{!len(Erro) > 0}"> 
+                        <div class="demo-only" style="height:4rem">
+                            <div class="slds-notify_container slds-is-relative">
+                                <div class="slds-notify slds-notify_toast slds-theme_error" role="status">
+                                    <span class="slds-assistive-text">Erro</span>
+                                    <span class="slds-icon_container slds-icon-utility-error slds-m-right_small slds-no-flex slds-align-top">
+                                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                                            <use xmlns:xlink="http://www.w3.org/1999/xlink" ></use>
+                                        </svg>
+                                    </span>
+                                    <div class="slds-notify__content">
+                                        <h2 class="slds-text-heading_small">Falha</h2>
+                                        <p>{!Erro}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                    <div class="slds-m-top_large slds-m-bottom_large" style="height:100%;">
+                        <div class="slds-grid slds-grid_vertical slds-align_absolute-center">
+                            <div class="slds-section slds-is-open" style="box-shadow: 0 6px 30px rgba(0,0,0,.12); padding: 60px; width: 60%;">
+                                <div class="slds-col slds-align_absolute-center">
+                                    <apex:outputText style="font-weight: bold;" value="{!Formulario.Titulo__c}" escape="false"/>
+                                </div>
+                                <div class="slds-col slds-m-top_small slds-form-element" style="margin: 50px;">
+                                    <apex:repeat var="pr" value="{!PerguntaRespostas}">
+                                        <div class="slds-form-element__label" for="textarea-id-01">
+                                            <apex:outputText value="*" rendered="{!pr.Obrigatorio && pr.TipoResposta != 'Caixa de seleção'}" style="color: red;" />
+                                            <apex:outputText value="{!pr.Pergunta}" />
+                                            <apex:outputPanel rendered="{!pr.Tip != null}">
+                                                <div class="slds-form-element__icon" style="padding-top: 0px !important">
+                                                    <span class="slds-icon_container slds-icon-action-info slds-icon_container--circle" style="padding: 1px;" onmouseover="document.getElementById('{!'help-' + pr.IdPergunta}').style.display = 'block';" onmouseout="document.getElementById('{!'help-' + pr.IdPergunta}').style.display = 'none';">
+                                                        <img src="/apexpages/slds/latest/assets/icons/action/info_60.png" style="width: 13px; height: 13px;"/>
+                                                    </span>
+                                                    <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="{!'help-' + pr.IdPergunta}" style="{!'display:none;position:absolute;top:-45px;left:-15px;min-width: 120px; max-width: 320px; width:' + text(len(pr.Tip) * 7) + 'px;'}">
+                                                        <div class="slds-popover__body">{!pr.Tip}</div>
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </div>
+                                        <div class="slds-form-element__control">
+                                            <apex:inputTextarea styleClass="slds-textarea" rendered="{!pr.TipoResposta == 'Texto livre'}" value="{!pr.Resposta}"/>
+                                            
+                                            <apex:inputText styleClass="slds-input" rendered="{!pr.TipoResposta == 'Numérico'}" value="{!pr.Resposta}"/>
+                                            <apex:selectList styleClass="slds-textarea" rendered="{!pr.TipoResposta == 'Lista de opções única'}" size="1" value="{!pr.Resposta}">
+                                                <apex:selectOptions value="{!pr.OpcoesResposta}" />
+                                            </apex:selectList>
+                                            <apex:selectList styleClass="slds-textarea" rendered="{!pr.TipoResposta == 'Lista de opções múltipla'}" multiselect="true" size="5" value="{!pr.Respostas}" >
+                                                <apex:selectOptions value="{!pr.OpcoesResposta}" />
+                                            </apex:selectList>
+                                            <apex:inputCheckbox rendered="{!pr.TipoResposta == 'Caixa de seleção'}" value="{!pr.Resposta}"/>
+                                            <div class="row">
+                                                <apex:outputText value="{!pr.Erro}" style="color: red;"/>
+                                            </div> 
+                                        </div>
+                                        <br/>
+                                    </apex:repeat>
+                                    <div class="slds-col slds-m-top_large">
+                                        <div class="slds-align_absolute-center">
+                                            <apex:commandButton styleClass="slds-button slds-button_success" style="color: white; padding-left: 20px; padding-right: 20px;" value="Salvar" action="{!Salvar}" reRender="formulario"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!!ExibePerguntas}">
+                    <div class="slds-m-top_large slds-m-bottom_large" style="height:100%;">
+                        <div class="slds-grid slds-grid_vertical slds-align_absolute-center">
+                            <div class="slds-section slds-is-open" style="box-shadow: 0 6px 30px rgba(0,0,0,.12); padding: 60px; width: 60%;">
+                                <div class="slds-col slds-align_absolute-center">
+                                    <apex:outputText style="font-weight: bold;" value="{!TextoAgradecimento}" escape="false"/>
+                                </div>
+                                <div class="slds-col slds-m-top_small" style="margin: 50px;">
+                                    <apex:outputLink value="{!UrlAmostra}" target="_blank" rendered="{!LEN(UrlAmostra) > 0}">{!UrlAmostra}</apex:outputLink>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </apex:form>
+    </apex:outputPanel>
+</apex:page>

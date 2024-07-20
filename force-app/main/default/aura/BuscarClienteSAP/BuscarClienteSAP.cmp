@@ -1,0 +1,48 @@
+<aura:component
+    implements="flexipage:availableForRecordHome,force:hasRecordId,flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,lightning:actionOverride" controller="ClienteSAPController" >
+    
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="loading" type="Boolean" default="true" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .slds-card__body {
+        margin-bottom: 0px !important;
+        }
+    </aura:html>
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">Consultar Cliente SAP </h4>
+    </div>
+
+    <div class="slds-modal__content slds-p-around--x-small slds-align_absolute-center slds-size_1-of-1 slds-wrap"
+        aura:id="modalbody" id="modalbody">
+        <aura:renderIf isTrue="{!v.loading}">
+            <lightning:card>
+                <div class="slds-p-horizontal--small slds-size--1-of-1">
+                    <div class="slds-p-horizontal--small slds-size--1-of-1" style="height: 200px">
+                        <lightning:spinner variant="brand" />
+                    </div>
+                </div>
+            </lightning:card>
+        </aura:renderIf>
+        
+    </div>
+    <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+        <div class="forceChangeRecordTypeFooter">
+            <aura:renderIf isTrue="{!!v.loading}">
+                <ui:button class="slds-button slds-button_neutral" label="Cancelar" press="{!c.cancelar}" />
+                <ui:button class="slds-button slds-button--brand" label="Enviar" press="{!c.enviar}" />
+            </aura:renderIf>
+        </div>
+    </div>
+
+</aura:component>

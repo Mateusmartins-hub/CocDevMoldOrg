@@ -1,0 +1,150 @@
+.THIS {
+    padding: 50px 50px;
+}
+
+.THIS .slds-spinner, .THIS .slds-spinner_container {
+    position: fixed;
+}
+
+.THIS.pesquisa {
+    width: 100%;
+    text-align:center;
+}
+
+.THIS .pesquisa-header {
+    background-color: #23dc84;
+    height: 70px;
+    margin-bottom: 20px;
+}
+
+.THIS .pesquisa-header > h1{
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    vertical-align: middle;
+    line-height: 70px;
+}
+
+.THIS .pesquisa-escolha *{
+    margin: 15px;
+    vertical-align: middle;
+    line-height: 18px;
+    display: inline-block;
+}
+
+.THIS .number{
+    width: 30px;
+    height: 30px;
+    background-color: blue;
+    text-align: center;
+}
+
+.THIS .pesquisa-escolha > button {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+    text-align: center;
+    padding: 0;
+    border-radius: 10px;
+    border: none;    
+}
+
+.THIS .pesquisa-escolha > p {
+    width: 60px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.THIS .rate-zero {
+    background-color: #ff383b;
+}
+
+.THIS .rate-zero:hover {
+    background-color: #c92c2f;
+}
+
+.THIS .rate-one {
+    background-color: #ff4f51;
+}
+
+.THIS .rate-one:hover {
+    background-color: #c73c3d;
+}
+
+.THIS .rate-two {
+    background-color: #ff684e;
+}
+
+.THIS .rate-two:hover {
+    background-color: #c9533e;
+}
+
+.THIS .rate-three {
+    background-color: #ff8a49;
+}
+
+.THIS .rate-three:hover {
+    background-color: #c76d3c;
+}
+
+.THIS .rate-four {
+    background-color: #ffa944;
+}
+
+.THIS .rate-four:hover {
+    background-color: #bd7e35;
+}
+
+.THIS .rate-five {
+    background-color: #ffc529;
+}
+
+.THIS .rate-five:hover {
+    background-color: #bf941f;
+}
+
+.THIS .rate-six {
+    background-color: #ebc721;
+}
+
+.THIS .rate-six:hover {
+    background-color: #bfa21b;
+}
+
+.THIS .rate-seven {
+    background-color: #bdcc17;
+}
+
+.THIS .rate-seven:hover {
+    background-color: #909c11;
+}
+
+.THIS .rate-eight {
+    background-color: #89ce10;
+}
+
+.THIS .rate-eight:hover {
+    background-color: #679c0b;
+}
+
+.THIS .rate-nine {
+    background-color: #44cd05;
+}
+
+.THIS .rate-nine:hover {
+    background-color: #2c8504;
+}
+
+.THIS .rate-ten {
+    background-color: #00b100;
+}
+
+.THIS .rate-ten:hover {
+    background-color: #008500;
+}
+
+.THIS.botao-enviar {
+    text-align: center;
+    padding: 0;
+    padding-bottom: 20px;
+}

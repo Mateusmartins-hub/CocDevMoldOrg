@@ -1,0 +1,98 @@
+<apex:page docType="html-5.0" title="Bulk Uploader" sidebar="false">
+    <style>
+        div.content {
+            min-width:100px;
+            float:left;
+        }
+        @media screen and (max-width: 767px){
+            div.content { 
+                width:100% 
+            }
+        }
+        div.right {
+            margin-left: 10px;
+        }
+    </style>
+    <div class="content">
+        <label>CNPJ: </label>
+        <input type="text" id="cnpj" />
+        <br />
+        <label>NÚMERO OVE: </label>
+        <input type="text" id="ove" />
+        
+        <button id="query" >
+            enviar
+        </button>
+    </div>
+    
+    <apex:includeScript value="{!$Resource.jQuery}" />
+    <apex:includeScript value="{!$Resource.angularjs}" />
+    <apex:includeScript value="{!$Resource.jxon}" />
+    <apex:includeScript value="{!$Resource.forcetk}" />
+    <apex:includeScript value="{!$Resource.bulktk}" />
+    <script>
+       var client = new forcetk.Client();
+        client.setSessionToken('{!$Api.Session_ID}');
+    	
+    	var cnpj = 0;
+
+	function doAction(r) {
+                cnpj = r.CNPJ_CPF.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2}).*/, '$1.$2.$3/$4-$5');
+                client.query("SELECT Id FROM Account WHERE BR_cnpj__c = '" + cnpj + "'", function(v) {
+                    console.log(v);
+                    if(v.totalSize > 0) {
+                        var u = {
+                            BR_FI_Codigo_SAP__c : r.KUNNR,
+                            BR_FI_Conta_credito__c : r.KNKLI,
+                            BR_FI_Limite_de_credito_do_cliente__c : r.KLIMK.replace(',','.'),
+                            BR_FI_Limite_consumido__c : r.SKFOR.replace(',','.'),
+                            BR_FI_Saldo_disponivel__c : r.SALDO.replace(',','.'),
+                            BR_FI_Ultima_verificacao_do_credito__c : r.DTREV == "0000-00-00" ? null : r.DTREV,
+                            BR_FI_Valor_vencido_0_a_15__c : r.VALOR1.replace(',','.'),
+                            BR_FI_Valor_vencido_16_a_30__c : r.VALOR2.replace(',','.'),
+                            BR_FI_Valor_vencido_31_a_45__c : r.VALOR3.replace(',','.'),
+                            BR_FI_Valor_vencido_maior_que_45__c : r.VALOR4.replace(',','.'),
+                            BR_FI_Verificacoes_credito__c : r.CMGST,
+                            BR_FI_Total_em_atraso__c : r.TOTAL_AT.replace(',','.'),
+                            BR_FI_Valor_a_vencer_0_a_15__c : r.VALOR_NV_1.replace(',','.'),
+                            BR_FI_Valor_a_vencer_16_a_30__c : r.VALOR_NV_2.replace(',','.'),
+                            BR_FI_Valor_a_vencer_31_a_45__c : r.VALOR_NV_3.replace(',','.'),
+                            BR_FI_Valor_a_vencer_maior_que_45__c : r.VALOR_NV_4.replace(',','.'),
+                            BR_FI_Total_a_vencer__c : r.TOTAL_NV.replace(',','.'),
+                            BR_Indicador_assiduidade_pagamento__c : r.DBPAY,
+                            BR_FI_Classificacao__c : r.DBRTG,
+                            BR_FI_Percentual_esgotamento__c : r.PERC_ESG.replace(',','.'),
+                            BR_FI_Dividas_a_receber__c : r.DIV_REC.replace(',','.'),
+                            BR_FI_Valor_vendas__c : r.VLR_VENDAS.replace(',','.') 
+                        };
+                        
+                        client.update("Account", v.records[0].Id, u, null);
+                    }
+                });
+           }
+	
+    	$('#query').on('click', function() {
+           
+            var ove = $('#ove').val();
+            ove = ove == "" ? "" : "OVE" + ove;
+            
+            $.ajax({
+               url: 'https://integration.pearson.com.br/rfc',
+               method: 'POST',
+               data: { Key:'59796.65995109826', User:'umiosfe', ConnectionName:'SAP_PRD', Application:'SAP', EndPoint:'ZBRFFI_FICHA_CREDITO_CRM', DataRequest: "{ I_STCD: '" +$('#cnpj').val()+ "', I_VKORG:'{VKORG:\""+ove+"\"}'}" }
+            }).done(function(data) {
+    
+                var structures = data.Data.Tables[0].Structures;
+                
+                for(var i = 0; i < structures.length; i++) {
+                    doAction(structures[i]);    
+                }
+                
+            }).error(function(data){
+                console.log(data);
+            });
+            
+        	return false;
+        });
+    </script>
+</apex:page>

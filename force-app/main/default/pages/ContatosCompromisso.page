@@ -1,0 +1,85 @@
+<apex:page tabStyle="Event" controller="ContatosCompromissoController" action="{!execute}">
+
+    <apex:includeScript value="{!$Resource.jQuery}" />
+    <apex:includeScript value="{!$Resource.efeitosLoadJs}" />
+    <apex:stylesheet value="{!$Resource.efeitosLoadCss}" />
+
+    <apex:form id="form_">
+        <apex:sectionHeader title="Contatos do compromisso" subtitle="Compromisso"/>
+        
+        <apex:actionStatus id="acsEfeitoLoad" 
+                           onstart="EfeitosLoad.iniciar();"
+                           onstop="EfeitosLoad.finalizar();"/>
+        
+        <apex:pageBlock id="pb" Title="Contatos">
+            <apex:pagemessages id="msg"/>
+                    <apex:pageBlockButtons location="bottom">
+                        <div style="float: right">
+                            <apex:commandButton value="Salvar" title="Salvar" action="{!salvar}" status="acsEfeitoLoad"/>
+                            <apex:commandLink value="Cancelar" title="Cancelar" action="{!voltar}" status="acsEfeitoLoad"/>
+                        </div>
+                    </apex:pageBlockButtons>
+            
+            <apex:inputText value="{!compromissos.nameQuery}" />
+            <apex:commandLink action="{!pesquisar}" reRender="pb" status="acsEfeitoLoad"
+                                style="display: inline-block;
+                                        background: url(/img/func_icons/util/lookup20.gif) no-repeat;
+                                        width: 19px;
+                                        height: 17px;"/>
+            
+            <br/>   
+
+            <apex:outputLabel value="Nº contatos adicionados/selecionados: {!compromissos.totalContatos}" style="font-size:12px;font-weight:bold;"/>        
+           
+            <apex:pageBlockTable value="{!compromissos.accountContactListTO}" var="contato">
+                <apex:column >                                          
+                    <apex:inputCheckbox value="{!contato.check}" onchange="doCheckboxChange(this,'{!contato.Id}')"/>                                                                        
+                </apex:column>   
+                <apex:column headerValue="Contato">
+                    <apex:outputText value="{!contato.Nome}"/>
+                </apex:column>
+                <apex:column headerValue="CPF">
+                    <apex:outputText value="{!contato.cpf}"/>
+                </apex:column>
+            </apex:pageBlockTable>
+            <apex:panelGrid columns="7">
+                <apex:selectList title="Número de registros por página" size="1" value="{!compromissos.registrosPorPagina}">
+                    <apex:selectOption itemValue="10" ItemLabel="10" />
+                    <apex:selectOption itemValue="25" ItemLabel="25" />
+                    <apex:selectOption itemValue="50" ItemLabel="50" />
+                    <apex:selectOption itemValue="75" ItemLabel="75" />
+                    <apex:selectOption itemValue="100" ItemLabel="100" />
+                    <apex:actionSupport event="onchange" reRender="pb" action="{!compromissos.getContatosCompromisso}" status="acsEfeitoLoad"/>
+                </apex:selectList>
+                
+                <apex:commandButton status="fetchStatus" reRender="pb" value="|<" action="{!compromissos.first}" disabled="{!!compromissos.hasPrevious}" title="Primeira página"/>
+                <apex:commandButton status="fetchStatus" reRender="pb" value="<" action="{!compromissos.previous}" disabled="{!!compromissos.hasPrevious}" title="Página anterior"/>
+                <apex:commandButton status="fetchStatus" reRender="pb" value=">" action="{!compromissos.next}" disabled="{!!compromissos.hasNext}" title="Próxima página"/>
+                <apex:commandButton status="fetchStatus" reRender="pb" value=">|" action="{!compromissos.last}" disabled="{!!compromissos.hasNext}" title="Ultima página"/>
+                
+                <apex:outputText >{!(compromissos.setCon.pageNumber * compromissos.registrosPorPagina)+1-compromissos.registrosPorPagina}-{!IF((compromissos.setCon.pageNumber * compromissos.registrosPorPagina)>compromissos.noOfRecords, compromissos.noOfRecords,(compromissos.setCon.pageNumber * compromissos.registrosPorPagina))} de {!compromissos.noOfRecords}</apex:outputText>
+                <apex:outputPanel style="color:#4AA02C;font-weight:bold">
+                    <apex:actionStatus id="fetchStatus" startText="Processando..." stopText=""/>
+                </apex:outputPanel>
+            </apex:panelGrid>
+        </apex:pageBlock>
+
+        <!-- Chamada de manipulação de seleção ou deseleção de iten da grid -->
+        <apex:actionFunction name="aSelectOrDeselectItem" action="{!compromissos.doSelectOrDeselectItem}" reRender="pb" status="acsEfeitoLoad">
+            <apex:param name="checkValue" value="" assignTo="{!compromissos.checkValue}"/>
+            <apex:param name="contatoId" value="" assignTo="{!compromissos.contatoId}"/>
+        </apex:actionFunction>
+   
+    </apex:form>
+    
+    <script type="text/javascript">
+ 
+        /*
+        *    função de validação de seleção de item
+        */
+        function doCheckboxChange( cb, itemId ) {
+            aSelectOrDeselectItem( cb.checked, itemId ); 
+        }
+ 
+    </script>    
+</apex:page>

@@ -1,0 +1,105 @@
+<template>
+    
+    <lightning-card title="Gerenciamento de Grupo" >
+
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+
+        <template if:true={userHasPermission}>
+            <div class="slds-p-horizontal_small">
+
+                <lightning-progress-indicator current-step={currentStep} type="path" variant="shaded">
+                    <template for:each={steps} for:item="step">
+                        <lightning-progress-step 
+                            label={step.label} 
+                            value={step.value} 
+                            key={step.value} 
+                            onstepfocus={handleStepChange}>
+                        </lightning-progress-step>
+                    </template>
+                </lightning-progress-indicator>
+
+                <div class="step" data-step="1">
+                    <lightning-input 
+                            name="user-search" 
+                            label="Procurar usuários" 
+                            placeholder="Digite o nome do usuário"
+                            type="search"
+                            value={userSearchTerm}
+                            onchange={handleSearchUser}>
+                    </lightning-input>
+
+                    <br/>
+
+                    <lightning-datatable
+                        key-field="id"
+                        data={users}
+                        columns={userColumns}
+                        onrowselection={handleSelectUser}>
+                    </lightning-datatable>
+
+                </div>
+                <div class="step" data-step="2">
+                    <lightning-input 
+                        name="group-search" 
+                        label="Procurar grupos públicos" 
+                        placeholder="Digite o nome do grupo público"
+                        type="search"
+                        onchange={handleSearchGroup}>
+                    </lightning-input>
+
+                    <br/>
+
+                    <lightning-datatable
+                        key-field="id"
+                        data={groups}
+                        columns={groupColumns}
+                        onrowselection={handleSelectGroup}>
+                    </lightning-datatable>
+                        
+                </div>
+                <div class="step" data-step="3">
+
+                    <div class="slds-text-heading_small slds-m-vertical_small">Os seguintes usuários serão associados aos grupos públicos:</div>
+
+                    <div>
+                        <div for:each={usersToGroups} for:item="item" key={item.userId} class="tile">
+
+                            <div class="tile__user">{item.userName} - ({item.userAlias}) - {item.userEmail}</div>
+
+                            <template for:each={item.groups} for:item="group" >
+                                <div data-id={group.groupId} class={group.actionClass} key={group.elemId}>
+                                    <lightning-combobox
+                                        variant="label-hidden"
+                                        value={group.action}
+                                        options={availableActions}
+                                        onchange={handleChangeAction}
+                                        class="tile__dropbox"
+                                        data-groupid={group.groupId}
+                                        data-userid={item.userId}
+                                    >
+                                    </lightning-combobox>
+        
+                                    <div class="slds-truncate">{group.groupName}</div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <div slot="footer" class="card__footer">
+                    <lightning-button if:true={showBackButton} label="Voltar" variant="neutral" onclick={previousStep}></lightning-button>
+                    <lightning-button if:true={showNextButton} label="Avançar" variant="neutral" onclick={nextStep}></lightning-button>
+                    <lightning-button if:false={showNextButton} label="Associar" variant="brand" onclick={associateUsers} disabled={associateButtonDisabled}></lightning-button>
+                </div>
+
+            </div>
+        </template>
+
+        <template if:false={userHasPermission}>
+            <c-base-ilustration-no-access message="Você não tem acesso nesta página. Solicite acesso para algum administrador."></c-base-ilustration-no-access>
+        </template>
+        
+    </lightning-card>
+</template>

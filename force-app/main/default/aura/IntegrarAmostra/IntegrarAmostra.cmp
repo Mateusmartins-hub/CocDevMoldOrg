@@ -1,0 +1,10 @@
+<aura:component implements="force:hasRecordId,force:lightningQuickAction" access="global" controller="IntegrarAmostraController">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:card>
+        <div class="slds-p-horizontal--small slds-size--1-of-1">
+            <div class="slds-p-horizontal--small slds-size--1-of-1" style="height: 200px">
+                <lightning:spinner variant="brand"/>
+            </div>   
+        </div>
+    </lightning:card>
+</aura:component>

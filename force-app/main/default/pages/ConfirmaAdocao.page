@@ -1,0 +1,100 @@
+<apex:page sidebar="false" showHeader="false" contentType="text/html" applyBodyTag="false"  controller="ConfirmaAdocaoController" id="idConfirmaAdocaoController">
+
+<style type="text/css">
+.imgLoad{
+    padding-left: 6px;
+    height: 6px;
+    width: 6px;
+    vertical-align: middle;
+    visibility: hidden;
+}
+
+.imgUnload{
+    padding-left: 6px;
+    height: 6px;
+    width: 6px;
+    vertical-align: middle;
+}
+
+.centerHeader{
+	text-align: center;
+	vertical-align: bottom;
+}
+.color-label{
+	font: 15px Arial;
+    color: #4a4a56; 
+    font-size:15px;
+}
+
+</style>
+<script type="text/javascript">
+  function atualizarTudo(){
+            window.location.reload();
+  }
+</script>
+    <apex:form >
+		<table>
+            <colgroup>
+				<col width="70%"/>
+				<col width="25%"/>
+				
+				<col width="5%"/>
+			</colgroup>
+			<tr>
+                <th style="font-size:15px"><apex:sectionHeader title="Adoção"/></th>
+                <th> </th>
+                <th style="text-align: right;"><apex:image url="https://www.pearson.com/content/dam/one-dot-com/one-dot-com/corporate-selector/Pearson_logo.png/_jcr_content/renditions/cq5dam.web.1600.9600.png" width="100px" height="30px"/></th>
+			</tr>
+		</table>
+		    <apex:pageMessages />
+ 
+    <apex:outputPanel id="Perguntas" >
+		<apex:pageBlock id="pb" >
+		
+	<apex:pageBlockSection id="pgBlSecRecType" columns="2">
+ 		<apex:outputText label="Professor" value="{!professor}" id="nomeProfessor"/> 
+        <apex:outputText label="Oportunidade" value="{!oportunidade}" id="nomeOpp"/>
+        <apex:outputText label="Instituição" value="{!instituicao}" id="nomeInst"/>
+	</apex:pageBlockSection>
+
+	<apex:pageBlockSection id="pgTxt" columns="1">
+	<br></br>
+     <apex:outputLabel value="Selecione abaixo os itens que serão adotados na ementa do curso (básica ou complementar):" styleClass="color-label"/>
+	<br></br>
+	</apex:pageBlockSection>
+	 
+	<!-- apex:pageBlockSection columns="1" showHeader="true" collapsible="false"> -->
+	<apex:pageBlockSection columns="1">
+			<apex:pageBlockTable style="width: 100%;" value="{!lprodAdocao}" var="prdDistGratAmFisica" >
+	            <apex:column style="padding: 4px;" value="{!prdDistGratAmFisica.numeroProdutoERP}" headerValue="Produto ERP"/>
+	            <apex:column style="padding: 4px;" value="{!prdDistGratAmFisica.Livro}" headerValue="Livro"/>
+	            <apex:column style="padding: 4px;" value="{!prdDistGratAmFisica.Curso}" headerValue="Curso"/>
+	            <apex:column style="padding: 4px;" value="{!prdDistGratAmFisica.disciplina}" headerValue="Disciplina"/>
+	            <apex:column style="padding: 4px;" value="{!prdDistGratAmFisica.numeroAluno}" headerValue="Nº Alunos"/>
+
+	            <apex:column style="text-align: center">
+
+	                <apex:facet name="header">Adota ?</apex:facet>
+	                <apex:inputCheckbox value="{!prdDistGratAmFisica.Adota}" id="inputProdFisItemRetiradoId" />
+                    <!-- <apex:inputField value="{!prdDistGratAmFisica.BR_StatusProduto__c}" id="inputProdFisItemRetiradoId" />-->
+				</apex:column>
+			</apex:pageBlockTable>
+	</apex:pageBlockSection>
+
+		<table>
+            <colgroup>
+				<col width="95%"/>
+				<col width="5%"/>
+			</colgroup>
+			<tr>
+                <th> </th>
+                <th style="text-align: right;"><apex:commandButton action="{!confirmarSalvar}" onComplete="atualizarTudo();" rendered="{!habilitaBotao}" value="Confirmar Selecionados" id="ConfirmaResetButton" styleClass="submit"/></th>
+			</tr>
+		</table>
+    </apex:pageBlock>
+
+	</apex:outputPanel>			
+	
+
+    </apex:form>
+</apex:page>

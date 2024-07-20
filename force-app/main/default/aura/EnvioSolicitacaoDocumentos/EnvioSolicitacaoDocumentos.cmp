@@ -1,0 +1,130 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="SolicitacaoDocumentosController">
+    <aura:attribute name="loading" type="Boolean" default="false"/>
+    <aura:attribute name="name" type="String"/>    
+    <aura:attribute name="email" type="String"/>
+    <aura:attribute name="selectAllPF" type="Boolean" default="false"/>
+    <aura:attribute name="selectAllPJ" type="Boolean" default="false"/>
+    <aura:attribute name="pessoaJuridica" type="Boolean" default="true"/>
+    <aura:attribute name="documentsToRequest" type="String[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        overflow-y: hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        }
+    </aura:html>
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">Enviar e-mail de solicitação de documentos </h4>
+    </div>
+    <aura:renderIf isTrue="{!v.loading}">
+        <div class="slds-p-horizontal--small slds-size--1-of-1">
+            <div class="slds-p-horizontal--small slds-size--1-of-1" style="height: 200px">
+                <lightning:spinner variant="brand"/>
+            </div>
+        </div>
+        <aura:set attribute="else">
+            <div style="padding: 10px 10px;" class="slds-modal__content slds-p-around--x-small slds-text-heading_medium slds-size_1-of-1 slds-wrap recipientInfo">
+                <p style="padding-bottom: 7px;"><b>Nome:  </b> <lightning:formattedText value="{!v.name}" /></p>
+                <p><b>Email:  </b> <lightning:formattedText value="{!v.email}" /></p>
+            </div>
+            <aura:renderIf isTrue="{!v.pessoaJuridica}">
+                <div class="slds-grid slds-wrap documentCheckboxesHeader">
+                    <div class="slds-col slds-size_1-of-2">
+                        <h1 style="margin-left: 20px; font-size: 15px;"><b>Documentos pessoa física:</b></h1>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckboxHeader" aura:id="select-all-PF" change="{!c.handleSelectAll}" label="Selecionar todos"/>
+                    </div>
+                </div>    
+                
+                <div class="slds-grid slds-wrap documentCheckboxes" aura:id="documentsPF">
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="RGCPFOuCNH__c" change="{!c.handleDocumentCheckbox}" label="RG e CPF ou CNH"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CertidaoNascimentoCasamento__c" change="{!c.handleDocumentCheckbox}" label="Certidão de Nascimento ou casamento"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="ComprovanteEndereco__c" change="{!c.handleDocumentCheckbox}" label="Comprovante de endereço"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="DeclaracaoIR__c" change="{!c.handleDocumentCheckbox}" label="Declaração imposto de renda"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="ComprovanteDisponibilidadeFinanceira__c" change="{!c.handleDocumentCheckbox}" label="Comprovante disponibilidade Financeira"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="ValidacaoCPF__c" change="{!c.handleDocumentCheckbox}" label="Validação de CPF"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CertidaoSecretariaEstado__c" change="{!c.handleDocumentCheckbox}" label="Certidão secretaria do Estado"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CertidaoMinisterioFazendaPF__c" change="{!c.handleDocumentCheckbox}" label="
+                                                                                                                                                        Certidão Ministério Fazenda/Receita PF"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CertidaoDistribuidorJusticaPF__c" change="{!c.handleDocumentCheckbox}" label="Certidão Distribuidor Justiça Federal PF"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CertidaoTST__c" change="{!c.handleDocumentCheckbox}" label="Certidão TST"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CertidaoCivelJusticaPF__c" change="{!c.handleDocumentCheckbox}" label="Certidão Cível da Justiça PF"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="AntecedentesCriminaisFederal__c" change="{!c.handleDocumentCheckbox}" label="Antecedentes Criminais Federal"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="AntecedentesCriminaisEstadual__c" change="{!c.handleDocumentCheckbox}" label="Antecedentes Criminais Estadual"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CertidaoDistribuidorCriminal__c" change="{!c.handleDocumentCheckbox}" label="Certidão do Distribuidor Criminal"/>
+                    </div>
+                </div>
+                
+                <div class="slds-grid slds-wrap documentCheckboxesHeader">
+                    <div class="slds-col slds-size_1-of-2">
+                        <h1 style="padding-bottom: 10px;margin-left: 20px; font-size: 15px;"><b>Documentos pessoa jurídica:</b></h1>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckboxHeader" aura:id="select-all-PJ" change="{!c.handleSelectAll}" label="Selecionar todos"/>
+                    </div>
+                </div>                
+                
+                <div class="slds-grid slds-wrap documentCheckboxes" aura:id="documentsPJ">
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CartaoCNPJ__c" change="{!c.handleDocumentCheckbox}" label="Cartão CNPJ"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CertidaoCivelJustica__c" change="{!c.handleDocumentCheckbox}" label="Certidão Cível da Justiça Comum Estadual"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="ContratoSocial__c" change="{!c.handleDocumentCheckbox}" label="Contrato Social"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CertidaoMinisterioFazenda__c" change="{!c.handleDocumentCheckbox}" label="Certidão do Ministério da Fazenda/Receita"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CertidaoDistribuidorJustica__c" change="{!c.handleDocumentCheckbox}" label="Certidão Distribuidor da Justiça Federal"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <ui:inputCheckbox class="documentCheckbox" aura:id="CertidaoTRT__c" change="{!c.checkCheckboxes}" label="Certidão da Justiça do Trabalho(TRT)"/>
+                    </div>
+                </div>
+            </aura:renderIf>
+            <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+                <div class="forceChangeRecordTypeFooter">
+                    <ui:button class="slds-button slds-button--brand" label="Enviar e-mail" press="{!c.sendEmail}"/>
+                </div>
+            </div>
+        </aura:set>
+    </aura:renderIf>    
+</aura:component>

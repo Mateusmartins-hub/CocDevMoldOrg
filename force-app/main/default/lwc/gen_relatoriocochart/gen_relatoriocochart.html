@@ -1,0 +1,37 @@
+<template>
+    <lightning-card  title="Relatório de visitas" icon-name="utility:chart">
+
+        <div id="nodata" style="display: none; text-align: center; width: 100%; height: 100%; position: absolute; left: 0; top: 100px; z-index: 20;">
+            <b>No data for you today!</b>
+        </div>
+
+            <div class="container-data">
+                <div class="Data">
+                    <lightning-input type="date" name="startdata" label="Data inical" value="" onchange={handleStartData}></lightning-input>
+                    <lightning-input type="date" name="finaldata" label="Data final" value="" onchange={handleFinalData}></lightning-input>
+                   </div>
+                <div class="">
+                    <lightning-button variant="brand" class="slds-m-left_x-small" label="Atualizar" onclick={handleNext}></lightning-button>
+                </div>
+            </div>
+            
+            <b><span style="margin-left: 2rem; margin-right: 3rem;"> Líder</span><span style="margin-right: 3rem;">Consultor</span><span style="margin-right: 3rem;">Escola</span></b> 
+        <div class="corpo">
+            <div class="chartCard">
+                <div class="chartbox">
+                    <div class="scrollBox">
+                        <div class="scrollBoxBody">
+                            <canvas data-id='myChart' lwc:dom="manual"  style="width: 100%;"></canvas> 
+                        </div>
+                    </div>
+                    <div class="box">
+                        <canvas data-id='myChart2' lwc:dom="manual"  style="width: 100%;"></canvas>
+                    </div>
+                </div>
+            </div> 
+            <div class = "button">
+                <a href='https://p2deducacao--qa.sandbox.lightning.force.com/lightning/r/Report/00O7c000000uqEPEAY/view?queryScope=userFolders'>Exibir relatório (Relatório de visitas)</a>
+            </div>
+        </div>
+</lightning-card>
+</template>

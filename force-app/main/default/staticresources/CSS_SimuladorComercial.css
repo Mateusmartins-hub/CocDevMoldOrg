@@ -1,0 +1,56 @@
+}.CCSTableMsg{
+	align:center;
+	font-size:14px;
+	font-family:Helvetica;
+	font-weight:normal;
+	text-align:left;
+}.CSSPage{
+	font-size:16px;
+	font-family:Helvetica;
+	font-weight:normal;
+}.CSSTable{
+	border:1px solid #000000;
+}.CSSTable td{
+	vertical-align:middle;
+	background-color:#FFFFFF;
+	border:1px solid #000000;
+	border-width:0px 1px 1px 0px;
+	text-align:center;
+	padding:7px;
+	font-size:14px;
+	font-family:Helvetica;
+	font-weight:normal;
+	color:#000000;
+}.CSSTableChild {
+	border:1px solid #000000;
+}.CSSTableChild table{
+    border-collapse: collapse;
+    border-spacing: 0;
+	width:100%;
+	height:100%;
+	margin:0px;padding:0px;
+}
+.CSSTableChild tr:hover td{
+	background-color:#ffffff;
+}
+.CSSTableChild td{
+	vertical-align:middle;
+	background-color:#FFFFFF;
+	border:1px solid #000000;
+	border-width:0px 1px 1px 0px;
+	text-align:center;
+	padding:7px;
+	font-size:14px;
+	font-family:Helvetica;
+	font-weight:normal;
+	color:#000000;
+}.CSSTableChild tr:first-child td{
+	background-color:#CCCCCC;
+	border:0px solid #000000;
+	text-align:center;
+	border-width:0px 0px 1px 1px;
+	font-size:14px;
+	font-family:Helvetica;
+	font-weight:bold;
+	color:#000000;
+}

@@ -1,0 +1,58 @@
+.center{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slds-modal__container{
+    max-width: fit-content !important;
+}
+
+.slds-form-element__label {
+    display: none !important;
+}
+
+.tile__user{
+    padding: 5px;
+    background: #efefef;
+    border-radius: 4px;
+    font-weight: 600;
+    color: #444;
+}
+
+.tile__item{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    border-bottom: 1px solid #eee;
+    padding: 5px 0;
+}
+
+.card__footer{
+    padding: 10px 0;
+}
+
+.card__footer lightning-button {
+    margin: 0 5px;
+}
+
+.step{
+    display: none;
+}
+
+.step[data-step="1"]{
+    display: block;
+}
+
+.add {
+    color: #00ad07;
+}
+
+.keep{
+    color: #dca500;
+}
+
+.remove{
+    color: #e91e63
+}

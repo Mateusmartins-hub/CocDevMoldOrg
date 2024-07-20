@@ -1,0 +1,96 @@
+<apex:page controller="ReabrirCasoController" showHeader="false">
+    <html> 
+        <head>
+            <body>
+                <style>
+                    #header {
+                    position: absolute;
+                    background-color: #D4EAE4;
+                    height: 30%;
+                    width: 100%;
+                    }
+                    
+                    #body {
+                    margin: 0;
+                    position: absolute;
+                    top: 30%;
+                    width: 100%;
+                    text-align: center;
+                    }
+                    
+                    #footer {
+                    position:absolute;
+                    height: 50px;
+                    width: 100%;
+                    bottom: 0;
+                    }
+                    
+                    .txt-conteudo {
+                    font-family:arial;
+                    font-size:30px;
+                    color:#007FA3;
+                    font-weight:bold;
+                    }
+                    
+                    .txt-reaberto{
+                    color:#000000;
+                    font-family:Open Sans;
+                    font-size:16px;
+                    text-align: center;
+                    line-height: 5;
+                    }
+                    
+                    .txt-footer {
+                    font-family:Open Sans;
+                    font-size:13px;
+                    color:#003057;
+                    font-weight:bold;
+                    text-align: center;
+                    }
+                    
+                    .img-header {
+                    line-height: 30%;
+                    height: 30%;
+                    text-align: center;
+                    vertical-align: middle;
+                    display: block;
+                    }
+                </style>
+                <div>
+                    <div id="header" class="img-header">
+                        <img src="https://pearsonlatam--prjpower--c.documentforce.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&versionId=0682D000000dkC4&operationContext=DELIVERY&contentId=05T2D000002mb1U&page=0&d=/a/2D0000008RuN/bDgCh6oSW0U6uUa2kHGdrJhmudryuHpV_wqORffSFew&oid=00D2D000000D8Kq&dpt=null&viewId=" style="width:102px;height:100%;"/>
+                    </div>
+                    
+                    <div id="body">
+                        <apex:form styleClass="slds-form" id="confirmacao">
+                            <apex:actionFunction action="{!reabrirCaso}" id="reabrirCaso" name="reabrirCaso"/>
+                            <apex:actionRegion renderRegionOnly="true">
+                                
+                                <apex:outputPanel rendered="{!caso.Status == 'Closed'}">
+                                    <p class="txt-conteudo">Deseja reabrir o caso:</p> 
+                                    <p class="txt-conteudo">{!caso.CaseNumber} - {!caso.Subject}? </p>
+                                    
+                                    <div text-align = "center" >
+                                        <button type="button" rerender="confirmacao" onclick="reabrirCaso()">Sim, quero reabrir o caso</button>
+                                    </div>
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel rendered="{!caso.Status != 'Closed'}">
+                                    <div class="slds-form-element">
+                                        <p class="txt-conteudo">Deseja reabrir o caso:</p> 
+                                        <p class="txt-conteudo">{!caso.CaseNumber} - {!caso.Subject}? </p>
+                                        <div class="txt-reaberto">
+                                            Caso reaberto.
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                            </apex:actionRegion>
+                        </apex:form>
+                    </div>
+                    
+                    <div id="footer" class="txt-footer">Ilustration by Ben Wiseman</div>
+                </div>
+            </body>
+        </head>
+    </html>
+</apex:page>

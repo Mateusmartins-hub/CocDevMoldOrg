@@ -1,0 +1,3 @@
+public interface IntegracaoDistribOrdemVendaInterface {
+	IntegracaoDistribOrdemVendaRetornoTO criar(IntegracaoDistribuicaoOrdemVendaTO integracaoDistribuicaoOrdemVendaTO);
+}

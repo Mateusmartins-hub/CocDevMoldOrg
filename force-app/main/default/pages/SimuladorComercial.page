@@ -1,0 +1,157 @@
+<apex:page controller="SimuladorComercialController">
+	<style type="text/css">
+		.tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
+		.tg td{font-family:Arial, sans-serif;font-size:12px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#E0E0E0;color:#669;background-color:#e8edff;}
+		.tg th{font-family:Arial, sans-serif;font-size:12px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#f0f0f0;color:#039;background-color:#f0f0f0;}
+		.tg .tg-h8rl{font-weight:bold;color:#000000;text-align:center;}
+		.tg .tg-j3cy{background-color:#ffffff;color:#000000;text-align:center;}
+		.tg .tg-h4jo{background-color:#ffffff;color:#000000;text-align:center;}}
+	</style>
+	<apex:form >
+		<apex:pageBlock title="Informações Iniciais">
+			<table class="tg">
+        		<tr>
+        			<td class="tg-h8rl">Produto</td>
+        			<td class="tg-h8rl">Segmento</td>
+        			<td class="tg-h8rl">Série</td>
+        			<td class="tg-h8rl">Alunos</td>
+        			<td class="tg-h8rl">Custo Material Atual</td>
+        			<td class="tg-h8rl">Preço de Venda</td>
+        			<td class="tg-h8rl">Margem</td>
+        			<td class="tg-h8rl">Custo Total</td>
+        			<td class="tg-h8rl">Receita Total</td>
+        			<td class="tg-h8rl">Lucro</td>
+        		</tr>
+				<apex:repeat value="{!itemSimulador}" var="sc">
+        			<tr>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Produto__r.Name}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Segmento__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Serie__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Alunos__c}"/></td>
+        				<td class="tg-h4jo"><apex:inputField value="{!sc.Custo__c}"/></td>
+        				<td class="tg-h4jo"><apex:inputField value="{!sc.PV_Pais__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Margem__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Custo_Total__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Receita_Total__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Lucro__c}"/></td>
+        			</tr>
+				</apex:repeat>
+				<tr>
+					<td class="tg-h4jo" colspan="7"></td>
+					<td class="tg-h4jo"><apex:outputLabel value="{!sumCT}"/></td>
+					<td class="tg-h4jo"><apex:outputLabel value="{!sumRT}"/></td>
+					<td class="tg-h4jo"><apex:outputLabel value="{!sumLucro}"/></td>
+				</tr>
+			</table>
+			<apex:pageBlockButtons >
+                <apex:commandButton disabled="{!BloqueiaBotao}" action="{!salvar}" value="Calcular"/>
+                <apex:commandButton disabled="{!BloqueiaBotao}" action="{!addProdutos}" value="Adicionar Produtos"/>
+                <apex:commandButton disabled="{!BloqueiaBotao}" action="{!carregarProdutos}" value="Carregar Produtos"/>
+                <apex:commandButton action="{!fechar}" value="Voltar para Oportunidade"/>
+            </apex:pageBlockButtons>
+		</apex:pageBlock>
+		<apex:pageBlock title="Comparativo Pearson">
+			<table class="tg">
+        		<tr>
+        			<td class="tg-h8rl">Produto</td>
+        			<td class="tg-h8rl">Segmento</td>
+        			<td class="tg-h8rl">Série</td>
+        			<td class="tg-h8rl">Alunos</td>
+        			<td class="tg-h8rl">Tabela Desconto</td>
+        			<td class="tg-h8rl">Tabela Atual</td>
+        			<td class="tg-h8rl">PV Pearson<br/>Mantendo a margem</td>
+        			<td class="tg-h8rl">Pearson x Atual</td>
+        			<td class="tg-h8rl">PV Atual</td>
+        			<td class="tg-h8rl">Saldo Financ / Aluno <br/>Pearson x Atual</td>
+        			<td class="tg-h8rl">Saldo Financ total<br/>Pearson x Atual</td>
+        		</tr>
+				<apex:repeat value="{!itemSimulador}" var="sc">
+        			<tr>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Produto__r.Name}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Segmento__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Serie__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Alunos__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.TKT_MED_Desconto__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Custo__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.PV_Pearson__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Pearson_x_Atual__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.PV_Pais__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Saldo_Aluno__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Saldo_Total__c}"/></td>
+        			</tr>
+				</apex:repeat>
+					<tr>
+						<td class="tg-h4jo" colspan="10"></td>
+						<td class="tg-h4jo"><apex:outputLabel value="{!sumSaldoFinal}"/></td>
+					</tr>
+				</table>
+		</apex:pageBlock>
+		<apex:pageBlock title="Proposta Comercial">
+			<table class="tg">
+        		<tr>
+        			<td class="tg-h8rl">Produto</td>
+        			<td class="tg-h8rl">Segmento</td>
+        			<td class="tg-h8rl">Série</td>
+        			<td class="tg-h8rl">Alunos</td>
+        			<td class="tg-h8rl">Tabela Pearson</td>
+        			<td class="tg-h8rl">Tabela Desconto</td>
+        			<td class="tg-h8rl">Faturamento Padrão</td>
+        			<td class="tg-h8rl">Faturamento Desconto</td>
+        		</tr>
+				<apex:repeat value="{!itemSimulador}" var="sc">
+        			<tr>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Produto__r.Name}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Segmento__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Serie__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Alunos__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Tabela_Pearson__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.TKT_MED_Desconto__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Faturamento_Padrao__c}"/></td>
+        				<td class="tg-h4jo"><apex:outputField value="{!sc.Faturamento_Desconto__c}"/></td>
+        			</tr>
+				</apex:repeat>
+				<tr>
+					<td class="tg-h4jo" colspan="6"></td>
+					<td class="tg-h4jo"><apex:outputLabel value="{!sumFatPadrao}"/></td>
+					<td class="tg-h4jo"><apex:outputLabel value="{!sumFatDesconto}"/></td>
+				</tr>
+			</table>			
+		</apex:pageBlock>
+		<apex:pageBlock rendered="{!ExibeAjusteNEG}" title="Ajuste a proposta">
+			<table class="tg">
+	  		<tr>
+			    <th class="tg-h8rl" colspan="2">NOS CASOS EM QUE NOSSA PROPOSTA COMERCIAL ENCONTRA-SE COM VALORES SUPERIORES OU MENOR MARGEM PARA A ESCOLA SUGERIMOS:</th>
+			  </tr>
+			  <tr>
+			    <td class="tg-j3cy" rowspan="3">1º MOSTRAR BENEFÍCIOS</td>
+			    <td class="tg-h4jo">EXPRESSE O QUANTO ESCOLA SE DIFERENCIARÁ ATRAVÉS DA PARCERIA, ADOTANDO NOSSOS PRODUTOS E SOLUÇÕES</td>
+			  </tr>
+			  <tr>
+			    <td class="tg-h4jo">RELEMBRE QUE A PARCERIA COM OS SISTEMAS DA PEARSON GERARÁ BENEFÍCIOS COMO: DESCONTO NA AQUISIÇÃO DE MATERIAIS DE IDIOMAS PEARSON (30%), PROJETOS EXCLUSIVOS COMO: LEITURA E CIA., VIRTUAL LABS, PELE E ACESSO AS MAIS MODERNAS TECNOLOGIAS EDUCACIONAIS</td>
+			  </tr>
+			  <tr>
+			    <td class="tg-h4jo">CLIENTES DE SISTEMA DE ENSINO PEARSON POSSUEM DESCONTOS ESPECIAIS E EXCLUSIVOS PARA TORNAR-SE FRANQUEADO DAS MARCAS WIZARD, YAZIGI, SKILL, MICROLINS, SOS, ETC..."</td>
+			  </tr>
+			  <tr>
+			    <td class="tg-j3cy">2º PROPONHA AJUSTE NA FORMA E NA COMERCIALIZAÇÃO DO MATERIAL PARA O ALUNO/PAI</td>
+			    <td class="tg-h4jo">EX.: PROSPECT COBRA R$ 600,00 EM 6 PARCELAS DE R$ 100,00. CASO NOSSO VALOR FIQUE 20% MAIS CARO, NO CASO R$ 720,00, (MANTENDO A MARGEM PARA A ESCOLA) PROPONHA 7 PARCELAS DE R$ 102,85, OU 6 PARCELAS DE R$ 120,00. NOTE QUE EM AMBOS OS CASOS O IMPACTO É BAIXO</td>
+			  </tr>
+			  <tr>
+			    <td class="tg-j3cy">3º REDUÇÃO DE MARGEM DA ESCOLA</td>
+			    <td class="tg-h4jo">UMA DAS VIAS POSSÍVEIS NESTE CASO É A SUGESTÃO DE REDUÇÃO DE MARGEM DA ESCOLA, ATRAVÉS DOS CONVENCIMENTOS QUE A ADOÇÃO DE UM DOS SISTEMAS PEARSON TRARÁ PARA A INSTITUIÇÃO</td>
+			  </tr>
+			  <tr>
+			    <td class="tg-j3cy">4º DESCONTO</td>
+			    <td class="tg-h4jo">EXAUSTANDO AS POSSIBILIDADES ACIMA, NEGOCIE O DESCONTO DIRETAMENTE COM SEU GERENTE.</td>
+			  </tr>
+			</table>			
+		</apex:pageBlock>
+		<apex:pageBlock rendered="{!ExibeAjustePOS}" title="Rentabilize a proposta">
+			<table class="tg">
+	  			<tr>
+			    	<td class="tg-h4jo">RENTABILIZE A PROPOSTA</td>
+			  	</tr>
+			</table>			
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

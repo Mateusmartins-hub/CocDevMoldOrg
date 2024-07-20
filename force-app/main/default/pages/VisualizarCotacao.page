@@ -1,0 +1,13 @@
+<apex:page standardController="Quote" extensions="QuotePDF">
+    <head>
+        <script type='text/javascript' src='/canvas/sdk/js/publisher.js'></script>
+        <script>        
+            window.onload = function() {
+            //window.open("data:application/pdf;base64,{!getQuotePDF}");
+            let pdfWindow = window.open("");
+            pdfWindow.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, {!getQuotePDF}'></iframe>");
+            Sfdc.canvas.publisher.publish({ name: "publisher.close", payload:{ refresh: "true" }});
+        };
+        </script>
+    </head>   
+</apex:page>

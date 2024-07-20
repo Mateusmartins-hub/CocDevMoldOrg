@@ -1,0 +1,124 @@
+<aura:component  implements="force:lightningQuickActionWithoutHeader,flexipage:availableForAllPageTypes,lightning:actionOverride,force:hasRecordId" access="global" controller="AdicionarProdutosAmostraController">
+
+    <aura:attribute name="amostraId" type="String"/>
+    <aura:attribute name="selectedRows" type="List"/>
+    
+    <aura:attribute name="dataProdsToAdd" type="List"/>
+    <aura:attribute name="dataProdsToAddFiltered" type="List"/>
+    <aura:attribute name="columnsProdsToAdd" type="List"/>
+    
+    <aura:attribute name="dataProdsAdded" type="List" default="[]"/>
+    <aura:attribute name="columnsProdsAdded" type="List"/>
+    <aura:attribute name="dataProdsAddedDraft" type="Object" default="[]"/>
+    
+    <aura:attribute name="selectedPricebook2Id" type="String"/>
+    <aura:attribute name="selectingPriceBook" type="Boolean" default="true"/>
+    <aura:attribute name="isLoading" type="Boolean" default="true"/>
+    
+    <aura:attribute name="search" type="String"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="pricebooks" type="List" default="[]"/>
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-button__icon_left {
+        margin-right: 0px !important;
+        }
+        .slds-p-around–medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        width : 100% !important;
+        max-width : 100% !important;
+        overflow-y:hidden !important;
+        height:unset !important;
+        }
+        .modal-body{
+        padding: 0px !important;
+        }
+        .slds-modal__container {
+        width : 85% !important;
+        max-width : 85% !important;
+        }
+        .slds-th__action_form {
+        display:none;
+        }
+        .slds-modal__content{
+        overflow-y: hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        overflow: initial !important;
+        }
+    </aura:html>
+    <aura:renderIf isTrue="{!v.isLoading}">
+        <div style="height: 400px">
+            <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+        <aura:set attribute="else">
+            <aura:renderIf isTrue="{!v.selectingPriceBook}">
+                <div class="modal-header slds-modal__header">
+                    <h4 class="title slds-text-heading--medium">Selecionar catálogo de preços</h4>
+                </div>
+                <div class="slds-p-around_small slds-size_1-of-1 slds-is-relative">
+                    <div class="slds-grid slds-gutters slds-align_absolute-center" style="width:50%">
+                        <p>
+                            Selecione um catálogo de preços para esta amostra. Só é possível adicionar produtos de um único catálogo de preços. Alterar um catálogo de preços selecionado excluirá todos os produtos existentes nesta amostra.
+                        </p>
+                    </div>
+                </div>
+                <div class="slds-p-around_small slds-size_1-of-1 slds-is-relative">
+                    <div class="slds-grid slds-gutters" style="width:50%; height: 150px; margin-left: auto; margin-right: auto;">
+                        <lightning:combobox style="width:100%" name="pricebook" label="Catálogo de preços" value="{!v.selectedPricebook2Id}" placeholder="Selecione o catálogo de preços" options="{!v.pricebooks}"/>
+                    </div>
+                </div>
+                <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+                    <ui:button class="slds-button slds-button_neutral" label="Cancelar" press="{!c.cancelar}" /> 
+                    <ui:button class="slds-button slds-button--brand" label="Salvar" press="{!c.setData}"/>
+                </div>
+                <aura:set attribute="else">
+                    <div class="modal-header slds-modal__header">
+                        <h4 class="title slds-text-heading--medium">Adicionar Produtos</h4>
+                    </div>
+                    <div style="background-color: white">
+                        <div class="slds-size_1-of-1 slds-is-relative slds-align_absolute-center">
+                            <div class="slds-p-horizontal_small slds-grid slds-gutters" style="min-height: 150px; max-height: 250px;">
+                                <lightning:datatable columns="{!v.columnsProdsAdded}" 
+                                                     data="{!v.dataProdsAdded}" 
+                                                     hideCheckboxColumn="true" 
+                                                     keyField="Id"  
+                                                     onrowaction="{!c.removeProd}"
+                                                     draftValues="{!v.dataProdsAddedDraft}" 
+                                                     oncellchange="{!c.handleEditCellChange}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-modal__footer slds-size_1-of-1">
+                        <lightning:input value="{!v.search}" variant="label-hidden" name="search" type="search" onkeyup="{!c.filter}"/>
+                    </div>
+                    <div style="background-color: white">
+                        <div class="slds-size_1-of-1 slds-is-relative slds-align_absolute-center">
+                            <div class="slds-p-horizontal_small slds-grid slds-gutters" style="height: 200px;">
+                                <lightning:datatable columns="{!v.columnsProdsToAdd}" 
+                                                     data="{!v.dataProdsToAddFiltered}" 
+                                                     keyField="Id" 
+                                                     hideCheckboxColumn="true" 
+                                                     onrowaction="{!c.updateProdsAdded}"
+                                                     selectedRows="{!v.selectedRows}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+                        <ui:button class="slds-button slds-button_neutral" label="Cancelar" press="{!c.cancelar}" /> 
+                        <ui:button class="slds-button slds-button--brand" label="Salvar" press="{!c.handleSaveEdition}"/>
+                    </div>
+                </aura:set>
+            </aura:renderIf>
+        </aura:set>
+    </aura:renderIf>
+</aura:component>

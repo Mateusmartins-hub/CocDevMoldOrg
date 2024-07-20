@@ -1,0 +1,14 @@
+<aura:component controller="ConfirmaAdocaoLightningController" implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:handler event="c:ConfirmationEvent" action="{!c.respostaConfirmacao}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    
+    <aura:attribute name="loading" type="Boolean" default="true"/>
+
+    <lightning:card>
+        <aura:renderIf isTrue="{!v.loading}">
+            <lightning:spinner alternativeText="Loading" size="large" variant="brand" class="loading" />
+        </aura:renderIf>   
+    </lightning:card>
+</aura:component>

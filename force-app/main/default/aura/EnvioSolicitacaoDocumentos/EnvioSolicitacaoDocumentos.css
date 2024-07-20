@@ -1,0 +1,43 @@
+.THIS {    
+}
+
+.THIS .documentCheckbox {
+    display: inline-block;
+    float: left;    
+    margin-bottom: 20px;
+}
+
+.THIS .documentCheckboxHeader {
+    display: inline-block;
+    float: left;
+    margin-top: 2px;
+    margin-right: 7px;
+    margin-left: 20px;
+    margin-bottom: 15px;        
+}
+
+.THIS .documentCheckbox {
+    display: inline-block;
+    float: left;
+    margin-right: 7px;
+    margin-left: 20px;
+    margin-bottom: 7px;
+    vertical-align: middle;
+}
+
+.THIS.documentCheckboxes {
+    margin-bottom: 15px;
+}
+
+.THIS.documentCheckboxesHeader {
+    vertical-align: middle;
+    margin-top: 20px;
+}
+
+.THIS.documentCheckboxesHeader > .slds-col{
+    vertical-align: middle;
+}
+
+.THIS.recipientInfo {
+    margin-left: 10px;    
+}

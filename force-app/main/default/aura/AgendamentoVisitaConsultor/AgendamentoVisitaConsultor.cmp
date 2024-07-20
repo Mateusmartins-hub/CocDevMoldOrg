@@ -1,0 +1,92 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="AgendamentoVisitaConsultorController">
+    <aura:handler event="c:ConfirmationEvent" action="{!c.respostaConfirmacao}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="loading" type="Boolean" default="false"/>
+    
+    <aura:attribute name="objeto" type="Map"/>
+    <aura:attribute name="tempoApresentacao" type="String"/>
+    <aura:attribute name="opcoesTempoApresentacao" type="List" default="[ {'label': '1:00', 'value': '1.0'}, {'label': '1:30', 'value': '1.5'},
+                                                                        {'label': '2:00', 'value': '2.0'}, {'label': '2:30', 'value': '2.5'},
+                                                                        {'label': '3:00', 'value': '3.0'}, {'label': '3:30', 'value': '3.5'},
+                                                                        {'label': '4:00', 'value': '4.0'} ]"/>
+    
+    <aura:attribute name="horarioApresentacao" type="String"/>
+    <aura:attribute name="opcoesHorarioApresentacao" type="List" default="[]"/>
+    
+    <aura:attribute name="TipoVisita" type="String" default="VisitaExpansao"/>
+
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+
+    <aura:html tag="style">
+        .cuf-content {
+            padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+            padding: 0rem !important;
+        }       
+        .slds-modal__content{
+        	overflow-y: hidden !important;
+            height:unset !important;
+            max-height:unset !important;
+        }
+    </aura:html>
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">Agendar Visita {!v.TipoVisita == 'VisitaExpansao' ? 'de Expansão' : 'Pedagógica'} </h4>
+    </div>
+    <aura:renderIf isTrue="{!v.loading}">
+        <lightning:card>
+            <div class="slds-p-horizontal--small slds-size--1-of-1">
+                <div class="slds-p-horizontal--small slds-size--1-of-1" style="height: 200px">
+                    <lightning:spinner variant="brand"/>
+                </div>   
+            </div>
+        </lightning:card>
+        <aura:set attribute="else">
+            <div class="slds-p-around--small slds-align_absolute-center">
+                <p>
+                    Favor selecionar as datas disponíveis em sua agenda para a realização da visita, e informar qual o tempo necessário para a apresentação.
+                </p>
+            </div>
+            <div class="slds-modal__content slds-p-around--x-small slds-align_absolute-center slds-size_1-of-1 slds-wrap" aura:id="modalbody" id="modalbody">
+                <div class="slds-grid slds-gutters" style="margin-bottom: 10px">
+                    <div class="slds-col slds-size_1-of-3">
+                        <ui:inputDate aura:id="primeiraData" label="Primeira data:" value="{!v.objeto.dataSug1}" displayDatePicker="true" format="dd/MM/yyyy"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <ui:inputDate aura:id="segundaData" label="Segunda data:" value="{!v.objeto.dataSug2}" displayDatePicker="true" format="dd/MM/yyyy"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <ui:inputDate aura:id="terceiraData" label="Terceira data:" value="{!v.objeto.dataSug3}" displayDatePicker="true" format="dd/MM/yyyy"/>
+                    </div>
+                </div>
+                <div class="slds-grid slds-gutters" style="margin-bottom: 10px">
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning:radioGroup label="Tempo de apresentação" 
+                                              options="{!v.opcoesTempoApresentacao}" 
+                                              value="{!v.tempoApresentacao}" 
+                                              type="button"
+                                              onchange="{!c.setHorarios}"/>
+                    </div>
+                </div>
+                <aura:renderIf isTrue="{!v.tempoApresentacao != null}">
+                    <div class="slds-grid slds-wrap" style="margin-bottom: 10px">
+                        <div class="slds-col slds-size_1-of-1 slds-align_absolute-center slds-p-bottom--small">
+                            <lightning:radioGroup label="Horário" options="{!v.opcoesHorarioApresentacao}" value="{!v.horarioApresentacao}" type="button" onchange="{!c.setHorarioApresentacao}"/>
+                        </div>
+                        <aura:renderIf isTrue="{!v.horarioApresentacao != null}">
+                            <div class="slds-col slds-size_1-of-1 slds-align_absolute-center">
+                                <strong>Horário da visita:&nbsp;</strong>{!v.objeto.horaInicial} às {!v.objeto.horaFinal} 
+                            </div>
+                    </aura:renderIf>
+                    </div>
+                </aura:renderIf>
+            </div>
+        </aura:set>
+    </aura:renderIf>
+    <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+        <div class="forceChangeRecordTypeFooter">
+            <ui:button class="slds-button slds-button_neutral" label="Cancelar" press="{!c.cancelar}" /> 
+            <ui:button class="slds-button slds-button--brand" label="Enviar" press="{!c.enviar}"/>
+        </div>
+    </div>
+</aura:component>

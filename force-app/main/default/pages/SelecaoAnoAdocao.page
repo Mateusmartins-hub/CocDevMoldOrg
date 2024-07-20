@@ -1,0 +1,68 @@
+<apex:page controller="SelecaoAnoAdocaoController" showHeader="true" sidebar="true" tabStyle="Contact">
+
+	<style type="text/css">
+		.apexp .bPageBlock .detailList {
+		    width: 8%;
+		}
+
+		body .bPageBlock .pbBody .dataCol {
+		    white-space: nowrap;
+		}
+
+		.list-prof {
+		    margin-left: 106px;
+		}
+
+		.color-label{
+			color: #4a4a56; 
+			font-weight: bold;
+		}
+	</style>
+
+	<apex:form >
+		<apex:pageBlock id="pb" title="Selecionar o Professor e o Ano da Adoção">
+			<apex:pageMessages />
+		
+			<apex:pageBlockButtons >
+                <apex:commandButton action="{!salvar}" value="Gerar Ficha" />
+                <apex:commandButton action="{!cancelar}" value="Cancelar" />
+            </apex:pageBlockButtons>
+
+            <apex:pageBlockSection columns="2">                            
+				<apex:outputLabel value="Ano da adoção" styleClass="color-label"/>
+				<apex:selectList value="{!anoSelecionado}" size="1" style="margin-left: 5px;">
+		            <apex:selectOptions value="{!lstAno}"/>
+		        </apex:selectList>
+	        </apex:pageBlockSection>
+
+	        <apex:pageBlockSection columns="2">
+	        	<apex:outputLabel value="Início intervalo" styleClass="color-label"/>
+	        	<apex:selectList value="{!letraRangeInicio}" size="1" style="margin-left: 6px;">
+		            <apex:selectOptions value="{!lstLetras}"/>
+		        </apex:selectList>
+	        </apex:pageBlockSection>
+
+	       	<apex:pageBlockSection columns="2">
+	        	<apex:outputLabel value="Fim intervalo" styleClass="color-label"/>
+	        	<apex:selectList value="{!letraRangeFim}" size="1" style="margin-left: 16px;">
+		            <apex:selectOptions value="{!lstLetras}"/>
+		        </apex:selectList>
+	        </apex:pageBlockSection>
+
+	        <apex:pageBlockSection columns="3">
+            	<apex:outputLabel value="Professor" styleClass="color-label"/>
+            	<apex:inputText value="{!nameQuery}" style="margin-left: 32px;"/>
+            	<apex:commandLink action="{!pesquisar}" reRender="pb"
+                                style="display: inline-block;
+                                        background: url(/img/func_icons/util/lookup20.gif) no-repeat;
+                                        width: 19px;
+                                        height: 17px;"/>
+            </apex:pageBlockSection> 
+
+	        <apex:selectRadio value="{!professorSelecionado}" layout="pageDirection" styleClass="list-prof">
+            	<apex:selectOptions value="{!lstProfessor}"/>
+            </apex:selectRadio>
+
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

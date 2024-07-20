@@ -1,0 +1,6 @@
+<aura:component extensible="true" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="NovaConsultoriaController">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>     
+    <lightning:card class="slds-align_absolute-center">
+        <lightning:spinner alternativeText="Loading" size="large" variant="brand" class="loading" />
+    </lightning:card>
+</aura:component>

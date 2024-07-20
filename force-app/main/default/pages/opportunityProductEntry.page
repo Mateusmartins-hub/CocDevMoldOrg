@@ -1,0 +1,262 @@
+<apex:page standardController="Opportunity" extensions="opportunityProductEntryExtension" action="{!priceBookCheck}" docType="html-5.0">
+
+    <apex:sectionHeader Title="Gestão de {!$ObjectType.Product2.LabelPlural}" subtitle="{!opportunity.Name}"/>
+
+    <apex:includeScript value="{!$Resource.jQuery}" />
+
+    <style type="text/css">
+        .search{
+            font-size:14pt;
+            margin-right: 20px;    
+        }
+        .fyi{
+            color:red;
+            font-style:italic;
+        }
+        .label{
+            margin-right:10px;
+            font-weight:bold;
+        }
+
+        .poupup{
+            background-color: white;
+            text-align:center;
+            border-width: 2px;
+            border-style: solid;
+            z-index: 9999;
+            left: 50%;
+            padding:10px;
+            position: absolute;
+            width: 500px;
+            margin-left: -250px;
+            top:100px;
+        }
+
+        .fundoPopup{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+
+    </style>
+    
+    <script type='text/javascript'>
+    
+        // This script assists the search bar functionality
+        // It will execute a search only after the user has stopped typing for more than 1 second
+        // To raise the time between when the user stops typing and the search, edit the following variable:
+        
+        var waitTime = 1;
+    
+        var countDown = waitTime+1;
+        var started = false;
+        
+        function resetTimer(){
+        
+            countDown=waitTime+1;
+            
+            if(started==false){
+                started=true;
+                runCountDown();
+            }
+        }
+        
+        function runCountDown(){
+        
+            countDown--;
+            
+            if(countDown<=0){
+                fetchResults();
+                started=false;
+            }
+            else{
+                window.setTimeout(runCountDown,1000);
+            }
+        }
+
+        $(document).ready(function() {
+            $(".formatNum").mask("99999");
+        });
+
+    </script>
+   
+ 
+    <apex:form >
+
+        <apex:outputPanel id="mainBody">
+            <apex:pageMessages escape="false"/>
+            <apex:outputLabel styleClass="label">Lista de preço: </apex:outputLabel>
+            <apex:outputText value="{!theBook.Name}"/>&nbsp;
+            <apex:commandLink action="{!changePricebook}" value="Alterar" immediate="true"/>
+            <br/>
+            <!-- not everyone is using multi-currency, so this section may or may not show
+            <apex:outputPanel rendered="{!multipleCurrencies}">
+                <apex:outputLabel styleClass="label">Currency: </apex:outputLabel>
+                <apex:outputText value="{!chosenCurrency}"/>
+                <br/>
+            </apex:outputPanel>
+            -->
+            <br/>
+            
+        <!-- this is the upper table... a.k.a. the "Shopping Cart"&ndash;&gt;
+
+             <!-- notice we use a lot of $ObjectType merge fields... I did that because if you have changed the labels of fields or objects it will reflect your own lingo -->
+ 		 
+            <apex:pageBlock title="Seleção de {!$ObjectType.Product2.LabelPlural}" id="selected">
+            
+	            	<apex:outputLabel styleClass="label" rendered="{!RecTypeSelected}" >Compras através de </apex:outputLabel>
+	            	<apex:inputField rendered="{!RecTypeSelected}" value="{!theOpp.BR_Compras_atraves_de__c}"/>&nbsp;
+				
+	    	        <apex:outputLabel styleClass="label" rendered="{!RecTypeSelected}">Previsão de compra </apex:outputLabel>
+	        	    <apex:inputField rendered="{!RecTypeSelected}" value="{!theOpp.BR_PrevisaoCompra__c}"/>&nbsp;
+					
+	            	<apex:outputLabel styleClass="label" rendered="{!RecTypeSelected}">Distribuidor </apex:outputLabel>
+	            	<apex:inputField rendered="{!RecTypeSelected}" value="{!theOpp.BR_Distribuidor__c}"/>&nbsp;
+	            	<br/> <br/>
+
+                <apex:variable var="rowNum" value="{!0}"/>
+                <apex:pageblockTable value="{!shoppingCart}" var="s" >
+                    <apex:column >
+                        <apex:commandLink value="Remover" action="{!removeFromShoppingCart}" reRender="selected,searchResults,mainBody" immediate="true">
+                            <!-- this param is how we send an argument to the controller, so it knows which row we clicked 'remove' on -->
+                            <apex:param value="{!rowNum}" assignTo="{!toUnselect}" name="toUnselect"/>
+                        </apex:commandLink>
+                        <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                    </apex:column>
+                    <apex:column rendered="{!Renderiza}" headerValue="{!$ObjectType.Product2.Fields.BR_Product_Code__c.Label}" value="{!s.PriceBookEntry.Product2.BR_Product_Code__c}" />
+                    <apex:column headerValue="{!$ObjectType.Product2.LabelPlural}" value="{!s.PriceBookEntry.Product2.Name}"/>
+                    <!--<apex:column rendered="{!Renderiza}" headerValue="{!$ObjectType.Product2.Fields.BR_Nivel__c.Label}" value="{!s.PriceBookEntry.Product2.BR_Nivel__c}" />-->
+                    <!--<apex:column rendered="{!Renderiza}" headerValue="{!$ObjectType.Product2.Fields.BR_Complemento__c.Label}" value="{!s.PriceBookEntry.Product2.BR_Complemento__c}"/>-->
+                    <apex:column rendered="{!Renderiza}" headerValue="{!$ObjectType.Product2.Fields.BR_Edicao__c.Label}" value="{!s.PriceBookEntry.Product2.BR_Edicao__c}"/>
+                    <apex:column headerValue="{!$ObjectType.OpportunityLineItem.Fields.Quantity.Label}">
+                        <apex:inputField value="{!s.Quantity}" style="width:70px; text-align: right;" required="false" onkeyup="refreshTotals();"/>
+                    </apex:column>
+
+                    <apex:column rendered="{!RecTypeInListGroup}" headerValue="{!$ObjectType.OpportunityLineItem.Fields.BR_PrecoNegociado__c.Label}">
+                        <apex:inputField value="{!s.BR_PrecoNegociado__c}" style="width:70px; text-align: right;"/>
+                    </apex:column>
+
+                    <apex:column rendered="{!RecTypeInListGroup}" headerValue="{!$ObjectType.OpportunityLineItem.Fields.N_Alunos__c.Label}">
+                        <apex:inputField type="number" html-maxlength="5" styleClass="formatNum" value="{!s.N_Alunos__c}" style="width:70px; text-align: center;"/>
+                    </apex:column>
+
+                    <apex:column rendered="{!IsOpSOUniversity}" headerValue="{!$ObjectType.OpportunityLineItem.Fields.BR_StatusProduto__c.Label}">
+                        <apex:inputField value="{!s.BR_StatusProduto__c}" style="width:70px; text-align: right;"/>
+                    </apex:column>
+
+                    <apex:column rendered="{!visualizaCampos}" headerValue="{!$ObjectType.OpportunityLineItem.Fields.BR_Ano__c.Label}">
+                        <apex:inputField value="{!s.BR_Ano__c}" style="width:100px; text-align: center;"/>
+                    </apex:column>
+                    <apex:column rendered="{!visualizaCampos}" headerValue="{!$ObjectType.OpportunityLineItem.Fields.BR_Semestre__c.Label}">
+                        <apex:inputField value="{!s.BR_Semestre__c}" style="width:105px"/>
+                    </apex:column>
+                    <apex:column rendered="{!visualizaCampos}" headerValue="{!$ObjectType.OpportunityLineItem.Fields.BR_Curso__c.Label}">
+                        <apex:inputField value="{!s.BR_Curso__c}" style="width:70px"/>
+                    </apex:column>
+                    <apex:column rendered="{!visualizaCampos}" headerValue="{!$ObjectType.OpportunityLineItem.Fields.BR_Disciplina__c.Label}">
+                        <apex:inputField value="{!s.BR_Disciplina__c}" style="width:70px"/>
+                    </apex:column>
+                    <apex:column rendered="{!visualizaCampos}" headerValue="{!$ObjectType.OpportunityLineItem.Fields.N_Alunos__c.Label}">
+                        <apex:inputField type="number" html-maxlength="5" styleClass="formatNum" value="{!s.N_Alunos__c}" style="width:70px; text-align: center;"/>
+                    </apex:column>
+
+                    <apex:column rendered="{!Renderiza}" headerValue="{!$ObjectType.OpportunityLineItem.Fields.QtdDisp__c.Label}">
+                        <apex:outputField value="{!s.QtdDisp__c}" style="width:70px; text-align: right;"/>
+                    </apex:column>
+                    <apex:column rendered="{!Renderiza}" headerValue="{!$ObjectType.OpportunityLineItem.Fields.Observacoes_produto_restrito__c.Label}">
+                        <apex:inputField value="{!s.Observacoes_produto_restrito__c}" style="width:70px"/>
+                    </apex:column>
+                   <!-- <apex:column headerValue="{!$ObjectType.OpportunityLineItem.Fields.Discount.Label}">
+                        <apex:inputField value="{!s.Discount}" required="false" style="width:70px; text-align: right;"/>
+                    </apex:column>-->
+                    <apex:column headerValue="{!$ObjectType.OpportunityLineItem.Fields.UnitPrice.Label}" >
+                        <apex:outputText value="{!s.UnitPrice}" style="width:70px; text-align: right;"/>
+                    </apex:column>
+                    <!--<apex:column headerValue="{!$ObjectType.OpportunityLineItem.Fields.Description.Label}">
+                        <apex:outputText value="{!s.Description}" style="width:70px"/>
+                    </apex:column>-->
+                </apex:pageblockTable> 
+
+                <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton action="{!onSave}" value="Salvar"/>
+                    <apex:commandButton action="{!onCancel}" value="Cancelar" immediate="true"/>
+                    <apex:commandButton value="Confirmar Adoção" action="{!showPopup}" rendered="{!visualizaBtnAdocao}" />
+                </apex:pageBlockButtons>
+
+            </apex:pageBlock> 
+         
+
+
+            <apex:outputPanel id="tstpopup">
+                <apex:outputPanel style="background-color:black; opacity:0.20; position: absolute; height: 100%; top: 0; left: 0; z-index: 9998; width:100%;" layout="block" rendered="{!displayPopup}"/>
+                <!--<apex:outputPanel styleClass="fundoPopup" layout="block" rendered="{!displayPopUp}"/>-->
+                <apex:outputPanel style="background-color:white; text-align:center; border-width:2px; border-style:solid; z-index:9999; left:50%; padding:10px; position:absolute;width: 500px; margin-left:-250px; top:100px;" layout="block" rendered="{!displayPopup}">Tem certeza que deseja confirmar a adoção?<br/><br/>
+                    <apex:commandButton style="width:50px; text-align: center;" action="{!closePopup}" value="Não" rerender="mainBody"/>
+                    <apex:commandButton style="width:50px; text-align: center;" action="{!sim}" value="Sim" />
+                </apex:outputPanel>
+            </apex:outputPanel>
+
+        <!--this is the lower table: search bar and search results-->
+            <apex:pageBlock >
+            
+                <apex:outputPanel styleClass="search">
+                    Buscar pelos {!$ObjectType.Product2.LabelPlural}:
+                </apex:outputPanel>
+
+                <apex:actionRegion renderRegionOnly="false" immediate="true">
+                    <apex:actionFunction name="fetchResults" action="{!updateAvailableList}" reRender="searchResults" status="searchStatus"/>
+                    
+                    <!--here we invoke the scripting to get out fancy 'no button' search bar to work-->
+                    <apex:inputText value="{!searchString}" onkeydown="if(event.keyCode==13){this.blur();}else{resetTimer();}" style="width:300px"/>
+
+                    <i>
+                        <!--actionStatus component makes it easy to let the user know when a search is underway-->
+                        <apex:actionStatus id="searchStatus" startText="searching..." stopText=" "/>
+                    </i>
+                    
+                </apex:actionRegion>
+                <br/><br/>
+            
+                <apex:outputPanel id="searchResults">
+                    <apex:pageBlockTable value="{!AvailableProducts}" var="a">
+                        <apex:column >
+                            <!-- command button in a column... neato -->
+                            <apex:commandButton value="Selecionar" action="{!addToShoppingCart}" reRender="selected, searchResults" >
+                                <!-- again we use apex:param to be able to tell the controller which row we are working with -->
+                                <apex:param value="{!a.Id}" assignTo="{!toSelect}" name="toSelect"/>
+                            </apex:commandButton>
+                        </apex:column>
+  						<apex:column headerValue="{!$ObjectType.Product2.Fields.BR_Product_Code__c.Label}" value="{!a.Product2.BR_Product_Code__c}"/>
+                        <apex:column headerValue="{!$ObjectType.Product2.Fields.Name.Label}" value="{!a.Product2.Name}" />
+                        <apex:column rendered="{!Renderiza}" headerValue="{!$ObjectType.Product2.Fields.BR_Nivel__c.Label}" value="{!a.Product2.BR_Nivel__c}"/>
+                        <apex:column rendered="{!Renderiza}" headerValue="{!$ObjectType.Product2.Fields.BR_Complemento__c.Label}" value="{!a.Product2.BR_Complemento__c}"/>
+                        <apex:column rendered="{!Renderiza}" headerValue="{!$ObjectType.Product2.Fields.BR_Edicao__c.Label}" value="{!a.Product2.BR_Edicao__c}"/>
+                        <apex:column headerValue="{!$ObjectType.PricebookEntry.Fields.UnitPrice.Label}" value="{!a.UnitPrice}"/>
+                        <apex:column headerValue="{!$ObjectType.Product2.Fields.BR_Author_name__c.Label}" value="{!a.Product2.BR_Author_name__c}"/>
+                        <apex:column headerValue="{!$ObjectType.Product2.Fields.BR_Produto_com_restricao__c.Label}" value="{!a.Product2.BR_Produto_com_restricao__c}"/>
+                        <apex:column rendered="{!tiraColunaEDU}" headerValue="{!$ObjectType.Product2.Fields.Sample_use_exclusive__c.Label}" value="{!a.Product2.Sample_use_exclusive__c}"/>
+                        
+                    </apex:pageBlockTable>
+                    
+                    <!--We put up a warning if results exceed 100 rows-->
+                    <apex:outputPanel styleClass="fyi" rendered="{!overLimit}">
+                        <br/>
+                        Sua busca retornou mais de 100 registros, por favor utilize critérios de busca mais específicos.
+                        <br/>
+                    </apex:outputPanel>
+                    
+                </apex:outputPanel>
+            
+            </apex:pageBlock>
+            
+        </apex:outputPanel>
+
+    </apex:form>
+ 
+</apex:page>

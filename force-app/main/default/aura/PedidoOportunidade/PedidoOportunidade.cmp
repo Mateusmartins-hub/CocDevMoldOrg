@@ -1,0 +1,13 @@
+<aura:component extensible="true" implements="force:lightningQuickAction,force:hasRecordId" access="global" controller="PedidoOportunidadeController">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="mapRecsTypesIds" type="Map" default="{}"/>
+    
+    <lightning:select name="marcaSelect" label="Marca:" required="true" onchange="{!c.openCriacao}">
+        <option value="">Escolha...</option>
+        <option value="Novo_Pedido_Solucoes">Soluções</option>
+        <option value="Novo_Pedido_Pueri_Domus">Pueri Domus</option> 
+        <option value="Novo_Pedido_NAME">NAME</option>
+        <option value="Novo_Pedido_ELT">ELT</option>
+    </lightning:select>
+     
+</aura:component>

@@ -1,0 +1,43 @@
+<apex:page showHeader="false" standardStylesheets="false" sidebar="false" title="GoBank Customer Care" cache="false">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></link>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+        (function() { 
+            function handlePageLoad() {
+                var endpointMatcher = new RegExp("[\\?\\&]endpoint=([^&#]*)");
+                document.getElementById('prechatForm').setAttribute('action', decodeURIComponent(endpointMatcher.exec(document.location.search)[1]));
+            }
+            
+            if (window.addEventListener)
+                window.addEventListener('load', handlePageLoad, false);
+            else 
+                window.attachEvent('onload', handlePageLoad, false);
+        })();
+            
+        </script>
+    </head>
+    <body>
+        <img style="width: 200px; display: block; margin-left: auto; margin-top: 20px; margin-right: auto;" src="https://upload.wikimedia.org/wikipedia/en/thumb/3/35/Pearson_logo.svg/1200px-Pearson_logo.svg.png" />
+        <form method="post" id="prechatForm" style="padding: 20px;">
+            <h5 class="card-title">Fale conosco</h5>
+            <div class="form-group">
+                <label>Nome</label>
+                <input type="text" class="form-control" name="liveagent.prechat: Nome" id="Name" maxlength="35"  placeholder="Nome" required="true"/>
+            </div>
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="email" class="form-control" name="liveagent.prechat: E-mail" id="Email" maxlength="100" placeholder="Email" required="true"/>
+            </div>
+            <div class="form-group">
+                <label>Telefone</label>
+                <input type="phone" class="form-control" name="liveagent.prechat:Telefone" id="Phone" maxlength="12" placeholder="Telefone" required="true"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-block" style="background-color: #0080A4" value="Iniciar o chat"/>
+            </div>
+        </form>
+    </body>
+</apex:page>

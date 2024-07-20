@@ -1,0 +1,129 @@
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:actionOverride,force:hasRecordId" access="global" controller="LayoutTelaCasoController">
+	 
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="baseURL" type="String"/>
+    <aura:attribute name="sessaoNome" type="String"/>
+    <aura:attribute name="camposPorSessao" type="Map"/>
+    <aura:attribute name="activeSections" type="List" default="['A']"/>
+    <aura:attribute name="activeSectionsMessage" type="String" default="" />
+    <aura:attribute name="inserindoSessao" type="Boolean" default="false"/>
+    
+    <aura:attribute name="labelButtonCasosAntigos" type="String" default=""/>
+    <aura:attribute name="casosAntigos" type="Boolean" default="false"/>
+        
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="layoutCaso" type="LayoutCaso__c" />
+    <aura:attribute name="camposCaso" type="List" />
+    <aura:attribute name="camposCasoSelecionados" type="List" />
+    <aura:attribute name="grupos" type="List" />
+    <aura:attribute name="gruposSelecionados" type="List"/>
+    <aura:handler name="change" value="{!v.camposCasoSelecionados}" action="{!c.alterouCamposSelecionados}"/>
+
+    <aura:attribute name="loading" type="Boolean" default="true"/>
+    
+    <aura:renderIf isTrue="{!v.loading}">
+        <lightning:spinner alternativeText="Loading" size="large" variant="brand" />
+    </aura:renderIf>
+    
+    <div id="teste" class="slds-page-header branding-setup onesetupSetupHeader">
+        <div class="slds-grid">
+            <div class="slds-col slds-has-flexi-truncate">
+                <div class="slds-media slds-no-space slds-grow">
+                    <div class="slds-media__figure">
+                        <lightning:icon iconName="action:edit" />
+                    </div>
+                    <div class="slds-media__body">
+                        <h1 class="slds-page-header__title slds-truncate slds-align-middle">Layout da tela de caso</h1>
+                        <p class="slds-text-body_small slds-line-height_reset">Crie o layout para a tela do caso</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-no-flex slds-button-group slds-m-around_x-small slds-float_right">
+                <lightning:buttonGroup>
+                    <lightning:button label="{!v.labelButtonCasosAntigos}" onclick="{!c.toggleCasosAntigos}" />
+                </lightning:buttonGroup>
+                
+                <lightning:buttonGroup>
+                    <aura:renderIf isTrue="{!v.inserindoSessao}">
+                        <lightning:input variant="label-hidden" placeholder="Nome da sessão" value="{!v.sessaoNome}" maxlength="30"/>
+                    </aura:renderIf>
+                </lightning:buttonGroup>
+                    
+                <lightning:buttonGroup>
+                    <lightning:button label="Clonar" onclick="{!c.clonar}" />
+                </lightning:buttonGroup>
+                
+                <lightning:buttonGroup>
+                    <aura:renderIf isTrue="{!!v.inserindoSessao}">
+                        <lightning:button label="Cancelar" onclick="{!c.cancelar}" />
+                    </aura:renderIf>
+                    <lightning:button label="Salvar" onclick="{!c.salvar}" variant="brand"/>
+                </lightning:buttonGroup>
+            </div> 
+        </div>
+    </div>
+    <p style="margin: 10px 0 0 0;"></p>
+    <ui:message title="Atenção" severity="warning" closable="false">
+        Mesmo no layout, alguns campos podem não aparecer por falta de permissão de acessos.
+    </ui:message>
+    <lightning:card title="Layout do caso" class="">
+            <lightning:buttonGroup>
+                    <aura:renderIf isTrue="{!v.inserindoSessao}">
+                        <lightning:button label="Inserir" onclick="{!c.inserirSessao}" />  
+                        <aura:set attribute="else">
+                            <lightning:button label="Nova sessão" onclick="{!c.novaSessao}" />   
+                        </aura:set>
+                    </aura:renderIf>
+                </lightning:buttonGroup>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-2">
+                <div class="slds-m-around_xx-small slds-form-element">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <lightning:dualListbox name="dlCamposCaso"
+                                            label= "Selecione os campos de caso"
+                                            sourceLabel="Disponiveis"
+                                            selectedLabel="Selecionados"
+                                            options="{!v.camposCaso}"
+                                            value="{!v.camposCasoSelecionados}"
+                                            class="dualListBox"/>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <div class="slds-m-around_xx-small slds-form-element">
+                    <div class="slds-card__body slds-card__body_inner">
+                        <aura:if isTrue="{!!v.casosAntigos}">
+                            <lightning:dualListbox name="dlGruposSolucionadores"
+                                                label= "Selecione os grupos solucionadores"
+                                                sourceLabel="Disponiveis"
+                                                selectedLabel="Selecionados"
+                                                options="{!v.grupos}"
+                                                value="{!v.gruposSelecionados}"
+                                                class="dualListBox"
+                                                style="display: block;"/>
+                        </aura:if>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </lightning:card>
+    <p style="margin: 10px 0 0 0;"></p>
+    <lightning:card title="Exemplo do layout">
+        <aura:iteration items="{!v.camposPorSessao}" var="sessao" indexVar="key">
+            <lightning:accordion allowMultipleSectionsOpen="true" onsectiontoggle="{!c.handleSectionToggle}" activeSectionName="{!v.activeSections}">
+                <lightning:accordionSection label="{!sessao.key}" name="A">
+                    <div class="slds-grid slds-wrap exemploLayout">
+                        <aura:iteration items="{!sessao.value}" var="campo">
+                            <div class="slds-col slds-size_1-of-2">
+                                <div class="slds-m-around_xx-small slds-form-element">
+                                    <lightning:input label="{!campo}" styleClass="slds-input" disabled="true" />
+                                </div>
+                            </div>
+                        </aura:iteration>
+                    </div>
+                </lightning:accordionSection>
+            </lightning:accordion>
+        </aura:iteration>
+        <p style="margin: 50px 0 0 0;"></p>
+    </lightning:card>
+</aura:component>

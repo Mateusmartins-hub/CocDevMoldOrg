@@ -1,0 +1,46 @@
+<apex:page standardController="Account" extensions="AdocoesClonarLoteController" >
+    <apex:form >
+    	<style type="text/css">
+			.tg  {border-collapse:collapse;border-spacing:0;border-color:#F8F8F8;}
+			.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#F8F8F8;}
+			.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
+		</style>
+        <apex:pageBlock title="Clonagem de adoções em lote.">
+			<font color="Red"><strong>ATENÇÃO:</strong> Somente serão clonadas as adoções cujo produto, curso e disciplina estejam ativos.
+        	Em caso de dúvidas, por favor consultar o cadastro dos mesmos.</font>
+        </apex:pageBlock>
+        <apex:pageBlock title="Indique campos para clonagem.">
+        		<table class="tg">
+	  				<tr>
+	    				<td class="tg-031e">
+	    					<apex:outputLabel >Ano Base:</apex:outputLabel>
+	    					<apex:selectList id="ABase" value="{!selAnoBase}"  multiselect="false" size="1" >
+	                    		<apex:selectOptions value="{!AnoBase}"/>
+	                		</apex:selectList>
+	    				</td>
+	    				<td class="tg-031e">
+	    					<apex:outputLabel >Clonar para:</apex:outputLabel>
+	    					<apex:selectList id="AClone" value="{!selAnoClone}" size="1" title="Manager">
+	                    		<apex:selectOptions value="{!AnoClone}" />
+	                		</apex:selectList>
+	    				</td>
+	    			</tr>
+	  					<td class="tg-031e">
+	  						<apex:outputLabel >Tipo Adoção:</apex:outputLabel>
+	  					</td>
+	  					<td class="tg-031e">
+	  						<apex:selectList id="ATipo" value="{!selTipo}" size="4" multiselect="true">
+	                    		<apex:selectOptions value="{!Tipo}" />
+	                		</apex:selectList>
+	                		<apex:outputLabel escape="false"><font size="-1" color="red"><br/><b>*</b>Pressione Ctrl para selecionar mais de um item.</font></apex:outputLabel>
+	  					</td>
+	    			<tr>
+	  				</tr>
+	  			</table>
+        </apex:pageBlock>
+		<apex:pageBlock >
+			<apex:commandButton action="{!clonarLote}" value="Clonar Lote"/>
+			<apex:commandButton action="{!cancel}" value="Cancelar"/>
+		</apex:pageBlock>
+    </apex:form>
+</apex:page>

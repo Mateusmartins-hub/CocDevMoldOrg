@@ -1,0 +1,17 @@
+.THIS .field {
+    margin-top: 10px;
+}
+
+.THIS .button {
+    margin-top: 20px;
+}
+
+.THIS .loading {
+    padding-top: 50px !important;
+    padding-bottom: 50px !important;
+}
+
+.THIS .content {
+    padding-left: 20px;
+    padding-right: 20px;
+}

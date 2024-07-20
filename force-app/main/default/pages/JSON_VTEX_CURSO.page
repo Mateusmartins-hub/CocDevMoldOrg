@@ -1,0 +1,3 @@
+<apex:page controller="VTEX_CURSO"  contentType="application/x-JavaScript; charset=utf-8" showHeader="true" standardStylesheets="false" sidebar="false">
+{!jsonString_Curso}
+</apex:page>

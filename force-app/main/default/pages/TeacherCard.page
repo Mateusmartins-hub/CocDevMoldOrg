@@ -1,0 +1,288 @@
+<apex:page controller="TeacherCardController" renderAs="PDF">
+  <head>
+    <style type="text/css">
+      body {
+        font-family: sans-serif;
+        font-size: 10px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        page-break-inside: avoid;
+      }
+      td {
+        border-width: 1px;
+        border-style: solid;
+        border-color: black;
+      }
+      .tdMainTitle {
+        text-align: center;
+        font-size: 16px;
+        vertical-align: middle;
+        border-style: none;
+      }
+      .tdTitle {
+        background-color: #2F75B5;
+        color: white;
+        font-weight: bold;
+      }
+      .tdTitle2 {
+        background-color: #9BC2E6;
+      }
+      .tdLabel {
+        background-color: #DDEBF7;
+      }
+      @page {
+        @bottom-right {
+          font-family: Sans-serif;
+          font-size: 9px;
+          color: #444444;
+          content: counter(page) " / " counter(pages);
+        }
+      }
+    </style>
+  </head>
+  <apex:form >
+  
+    <apex:repeat var="t" value="{! lstTeacher}">
+      <!-- HEADER -->
+      <table id="header" style="border-collapse: collapse; page-break-before: {! IF(t.index > 0, 'always', 'auto') } ">
+        <tr>
+          <td class="tdMainTitle" width="15%">
+            <apex:image url="{! URLFOR($Resource.logo, 'logo.jpg') }" width="120px"/>
+          </td>
+          <td class="tdMainTitle">Ficha do Professor Universitário</td>
+        </tr>
+      </table>
+      <br/>
+      
+      <!-- Teacher Properties -->
+      <table  class="tableContent"> 
+        <tr>
+          <td colspan="8" class="tdTitle">
+            {! t.teacher.Name }
+          </td>
+        </tr>
+        <tr>
+          <td width="10%" class="tdLabel">Endereço:</td>
+          <td colspan="3">{! IF(t.teacher.BR_Address__c != NULL, t.teacher.BR_Address_Sidewalk__c, '') }&nbsp;{! t.teacher.BR_Address__c }</td>
+          <td class="tdLabel">N.º:</td>
+          <td>{! t.teacher.BR_Address_number__c }</td>
+          <td class="tdLabel">Complemento:</td>
+          <td>{! t.teacher.BR_Address_complement__c }</td>
+        </tr>
+        <tr>
+          <td class="tdLabel">Bairro:</td>
+          <td>{! t.teacher.BR_Address_district__c }</td>
+          <td width="6%" class="tdLabel">CEP:</td>
+          <td width="13%">{! t.teacher.BR_Address_zip_code__c }</td>
+          <td class="tdLabel">Cidade:</td>
+          <td width="15%">{! t.teacher.BR_Address_city__c }</td>
+          <td width="5%" class="tdLabel">UF:</td>
+          <td>{! t.teacher.BR_Address_state__c }</td>
+        </tr>
+        <tr>
+          <td class="tdLabel">Fone:</td>
+          <td>{! IF( AND(t.teacher.Phone != NULL, t.teacher.BR_Area_code__c != NULL), '(' & TEXT(t.teacher.BR_Area_code__c) & ')', '') }&nbsp;{! t.teacher.Phone }</td>
+          <td class="tdLabel">Fax:</td>
+          <td>{! IF( AND(t.teacher.Fax != NULL, t.teacher.BR_Area_code__c != NULL), '(' & TEXT(t.teacher.BR_Area_code__c) & ')', '') }&nbsp;{! t.teacher.Fax }</td>
+          <td class="tdLabel">Cel:</td>
+          <td>{! IF( AND(t.teacher.MobilePhone != NULL, t.teacher.BR_Area_code_cel__c != NULL), '(' & TEXT(t.teacher.BR_Area_code_cel__c) & ')', '') }&nbsp;{! t.teacher.MobilePhone }</td>
+          <td class="tdLabel">RG:</td>
+          <td>{! t.teacher.BR_RG__c }</td>
+        </tr>
+        <tr>
+          <td class="tdLabel">E-mail:</td>
+          <td colspan="3">{! t.teacher.Email }</td>
+          <td class="tdLabel">Aniv.:</td>
+          <td>{! t.teacher.BR_Contact_Birthdate__c }</td>
+          <td class="tdLabel">CPF:</td>
+          <td>{! t.teacher.BR_CPF__c }</td>
+        </tr>
+      </table>
+      <br/>
+    
+      <!-- Institution -->
+      <apex:repeat var="inst" value="{! t.institutions }">
+    
+        <table>
+          <tr><td class="tdTitle" colspan="6">Instituição/Campus : {! inst.accountContact.Account__r.Name }</td></tr>
+          
+          <tr><td colspan="6" style="border-style: none;">&nbsp;</td></tr>
+          
+          <tr>
+            <td class="tdTitle2" width="15%">Cargo:</td>
+            <td colspan="5">{! inst.accountContact.BR_AcademicRole__c }</td>
+          </tr>
+          
+          <tr><td colspan="6" style="border-style: none;">&nbsp;</td></tr>
+          
+          <tr><td class="tdTitle2" colspan="6">Adoções</td></tr>
+          <apex:repeat var="adoption" value="{! inst.adoptions }">
+            <tr>
+              <td class="tdLabel">Curso:</td>
+              <td>{! adoption.BR_University_Course__r.Name }</td>
+              <td class="tdLabel">Disciplina:</td>
+              <td colspan="3">{! adoption.BR_Course_Discipline__r.Name }</td>
+            </tr>
+            <tr>
+              <td class="tdLabel">Material Adotado:</td>
+              <td>{! IF(adoption.Product2Id != null, adoption.Product2.Name, adoption.BR_Product_Competitor__r.Name) }</td>
+              <td class="tdLabel">Ano:</td>
+              <td>{! adoption.BR_Year__c }</td>
+              <td class="tdLabel">Semestre:</td>
+              <td>{! adoption.BR_Term__c }</td>
+            </tr>
+            <tr>
+              <td width="15%" class="tdLabel">N.º de Alunos:</td>
+              <td width="25%">{! adoption.Quantity }</td>
+              <td width="10%" class="tdLabel">% Compra:</td>
+              <td width="15%">{! adoption.BR_Compras__c }</td>
+              <td width="18%" class="tdLabel">Editora:</td>
+              <td>{! adoption.BR_Editora__c }</td>
+            </tr>
+            <tr><td colspan="6"></td></tr>
+          </apex:repeat>
+        </table>
+        
+        <br/>
+      </apex:repeat>
+      
+      <!-- Teacher's Samples -->
+      <table>
+          <tr><td class="tdTitle">Doações</td></tr>
+      </table>
+      
+      <br/>
+      
+      <table>
+        <tr>
+          <td class="tdTitle2" colspan="4">Material Enviado - Amostra Física</td>
+        </tr>
+        <tr>
+          <td class="tdLabel">Data</td>
+          <td class="tdLabel">Título</td>
+          <td class="tdLabel">Autor</td>
+          <td class="tdLabel">Respondeu CRC</td>
+        </tr>
+          <apex:repeat var="sampleP" value="{! t.materialSentP }">
+          <tr>
+            <td style="text-align:right">{! sampleP.sampleDate }</td>
+            <td>{! sampleP.sampleTitle }</td>
+            <td>{! sampleP.sampleAuthor }</td>
+            <td>&nbsp;</td>
+          </tr>
+        </apex:repeat>
+        </table>
+        
+        <br/>
+      
+      <table>  
+        <tr>
+          <td class="tdTitle2" colspan="4">Material Enviado - Amostra Virtual</td>
+        </tr>
+        <tr>
+          <td class="tdLabel">Data</td>
+          <td class="tdLabel">Título</td>
+          <td class="tdLabel">Autor</td>
+          <td class="tdLabel">Respondeu CRC</td>
+        </tr>
+        <apex:repeat var="sampleV" value="{! t.materialSentV }">
+          <tr>
+            <td style="text-align:right">{! sampleV.sampleDate }</td>
+            <td>{! sampleV.sampleTitle }</td>
+            <td>{! sampleV.sampleAuthor }</td>
+            <td>&nbsp;</td>
+          </tr>
+        </apex:repeat>
+      </table>
+  
+        <br/>
+        
+        <table>               
+        <tr>
+          <td class="tdTitle2" colspan="4">Material Deixado em Visita</td>
+        </tr>
+        <tr>
+          <td class="tdLabel">Data</td>
+          <td class="tdLabel">Título</td>
+          <td class="tdLabel">Autor</td>
+          <td class="tdLabel">Respondeu CRC</td>
+        </tr>
+        <apex:repeat var="sampleVisit" value="{! t.materialVisit }">
+          <tr>
+            <td style="text-align:right">{! sampleVisit.sampleDate }</td>
+            <td>{! sampleVisit.sampleTitle }</td>
+            <td>{! sampleVisit.sampleAuthor }</td>
+            <td>&nbsp;</td>
+          </tr>
+        </apex:repeat>
+      </table>
+        
+      <br/>
+      
+      <!-- Selected Material and Appointments -->
+      <!-- Static Section - It doesn't receive data -->
+      <table>
+        <tr><td class="tdTitle" colspan="4">Material Selecionado para Análise (1 por disciplina)</td></tr>
+        <tr>
+          <td width="30%" class="tdLabel">Autor</td>
+          <td width="30%" class="tdLabel">Título</td>
+          <td class="tdLabel">Disciplina</td>
+          <td width="18%" class="tdLabel" style="text-align: center">Entregue Pessoalmente</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td style="text-align: center">(&nbsp;&nbsp; ) Sim &nbsp;&nbsp;&nbsp; (&nbsp;&nbsp; ) Não</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td style="text-align: center">(&nbsp;&nbsp; ) Sim &nbsp;&nbsp;&nbsp; (&nbsp;&nbsp; ) Não</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td style="text-align: center">(&nbsp;&nbsp; ) Sim &nbsp;&nbsp;&nbsp; (&nbsp;&nbsp; ) Não</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td style="text-align: center">(&nbsp;&nbsp; ) Sim &nbsp;&nbsp;&nbsp; (&nbsp;&nbsp; ) Não</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td style="text-align: center">(&nbsp;&nbsp; ) Sim &nbsp;&nbsp;&nbsp; (&nbsp;&nbsp; ) Não</td>
+        </tr>
+      </table>
+      <br/>
+      
+      <table>
+        <tr><td class="tdTitle" colspan="6">Observações</td></tr>
+        <tr>
+          <td colspan="6"><br/><br/><br/><br/><br/><br/><br/><br/></td>
+        </tr>
+        
+        <tr><td colspan="6" style="border-style: none">&nbsp;</td></tr>
+            
+        <tr>
+          <td width="18%" style="border-style: none"></td>
+          <td>Atendimento realizado por:</td>
+          <td width="13%">( &nbsp; ) Telefone</td>
+          <td width="13%">( &nbsp; ) E-mail</td>
+          <td width="13%">( &nbsp; ) Pessoalmente</td>
+          <td width="18%" style="border-style: none"></td>
+        </tr>
+      </table>
+      <br/>
+    </apex:repeat>
+    
+  </apex:form>
+</apex:page>

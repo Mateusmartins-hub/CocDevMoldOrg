@@ -1,0 +1,38 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" controller="EnvioAmostraDigitalController">
+    <aura:attribute name="objeto" type="Object" />
+    <aura:attribute name="amostras" type="List" />
+    <aura:attribute name="amostraVirtual" type="Product2" />
+    <aura:attribute name="formularioId" type="String" />
+    <aura:attribute name="loading" type="Boolean" default="true"/>
+    <aura:attribute name="name" type="String"/>
+    <aura:attribute name="email" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <lightning:card>
+        <div class="modal-header slds-modal__header slds-size_1-of-1">
+            <h4 class="title slds-text-heading--medium">Enviar e-mail marketing </h4>
+        </div>
+        <aura:renderIf isTrue="{!v.loading}">
+            <div class="slds-p-horizontal--small slds-size--1-of-1">
+                <div class="slds-p-horizontal--small slds-size--1-of-1" style="height: 200px">
+                    <lightning:spinner variant="brand"/>
+                </div>   
+            </div>
+        </aura:renderIf>
+        <aura:renderIf isTrue="{!v.amostras.length > 1}">            
+            <div class="slds-modal__content slds-p-around--x-small slds-size_1-of-1 slds-wrap">
+                <p><b>Nome:  </b> <lightning:formattedText value="{!v.name}" /></p>
+                <p><b>Email:  </b> <lightning:formattedText value="{!v.email}" /></p>
+                <br/>
+                <lightning:combobox label="Amostras virtuais" value="{!v.amostraVirtual}" dropdownAlignment="auto"  placeholder="--Selecione--" options="{!v.amostras}" />
+                <br/>
+                <br/>                
+            </div>                
+        </aura:renderIf>
+    </lightning:card>
+    <div class="modal-footer slds-modal__footer slds-size_1-of-1">
+            <div class="forceChangeRecordTypeFooter">                
+                <ui:button class="slds-button slds-button--brand" label="Enviar" press="{!c.amostraSelecionada}"/>
+            </div>
+        </div>
+</aura:component>

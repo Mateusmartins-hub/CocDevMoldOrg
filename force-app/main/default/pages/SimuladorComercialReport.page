@@ -1,0 +1,543 @@
+<apex:page standardController="Opportunity" extensions="SimuladorComercialReportController" renderAs="pdf">
+<apex:stylesheet value="{!$Resource.CSS_SimuladorComercial}" />
+<apex:form styleClass="CSSPage">
+	<apex:pageBlock rendered="{!erroMsg.size > 0}">
+		<div class="CCSTableMsg">
+			<table>
+				<apex:repeat value="{!erroMsg}" var="em">
+					<tr>
+						<td><apex:outputText value="{!em.Erro}"/></td>
+						<td><apex:outputText value="{!em.Descricao}"/></td>
+					</tr>
+				</apex:repeat>
+			</table>
+		</div>
+	</apex:pageBlock>
+	<apex:pageBlock rendered="{!IF(TipoReport = 'COC',true,false) && IF(erroMsg.size = 0,true,false)}">
+			<table width="750px">
+				<tr>
+					<td align="center"><apex:image url="{!$Resource.Logo_COC}" width="180" height="180"/></td>
+				</tr>
+			</table>
+			<apex:pageBlock title="Proposta Comercial">
+				<apex:outputText value="____________________________________________________________________________________"/>
+				<apex:pageBlockSection title="" columns="1">
+					<apex:outputLabel escape="false" value="Ao {!Opportunity.Account.Name}<br/><br/>"/>
+					<apex:outputLabel escape="false" value="A fim de descrever nossa proposta de parceria com o {!Opportunity.Account.Name}, apresentamos a proposta comercial versão 1.0, que é composta dos itens que seguem."/>
+				</apex:pageBlockSection>
+				
+				<apex:pageBlockSection title="Descrição Geral" columns="1" >
+					<apex:outputLabel escape="false" value="O COC desenvolveu um completo e avançado modelo de parceria que resultou em um novo conceito de Sistema de Ensino definido como “ECOSSISTEMA EDUCACIONAL”, pois promove, estimula e suporta o crescimento sustentável das Instituições de Ensino parceiras.<br/><br/>"/>
+					<apex:outputLabel escape="false" value="Em seus mais  de 50 anos de existência, o COC tornou-se a Marca da Educação, evolução e tradição que podem ser vistas através de seu pioneirismo na implantação de novas tecnologias educacionais, interação complementada pela construção de estratégias apoiadas por materiais impressos. Para ter um ensino de excelência é preciso investir na formação integrada continuada dos educadores frente às novidades e estar sempre presente com as Escolas Parceiras, incentivando boas práticas, garantindo sua eficácia  e dando subsídios para que elas se desenvolvam. São motivos assim que fazem do COC a marca com ótimo desempenho nos principais vestibulares e ENEM. Este modelo de Ensino faz parte do maior grupo educacional do mundo, a Pearson, presente em mais de 70 países."/>
+				</apex:pageBlockSection>
+				<div style="page-break-after: always"></div>
+				<apex:pageBlockSection title="Benefícios da parceria" columns="1">
+					<apex:outputLabel escape="false" value="Nossa proposta inicial é de firmarmos uma parceria com o conceituado colégio a fim de fornecermos nosso material didático impresso e digital, know-how pedagógico e tecnológico, capacitações para o uso de todos os nossos produtos, serviços e soluções, completa consultoria pedagógica para adoção e implantação do nosso Sistema, consultoria de mercado, campanhas publicitárias, além do compromisso de contínuo desenvolvimento de novos produtos e serviços.<br/><br/>"/>
+					<apex:outputLabel escape="false" value="O parceiro COC tem à sua disposição um amplo catálogo de Soluções Pearson com condições especiais, como apresentamos abaixo:<br/><br/>"/>
+					<apex:outputLabel escape="false" value="
+													<ul>
+		  												<li>Material de Língua Inglesa e Espanhola Pearson com 30% de desconto;</li>
+		  												<li>Projeto Escola Bilíngüe;</li>
+		  												<li>Virtual Labs – Laboratórios Virtuais;</li>
+		  												<li>Leitura e Cia – Paradidático: Títulos selecionados do catálogo da Companhia das letras com uma plataforma de aprendizagem para o desenvolvimento das habilidades leitoras, com descontos especiais;</li>
+		  												<li>Mangahigh – Plataforma digital de aprendizagem matemática;</li>
+		  												<li>Lousas Digitais e equipamentos;</li>
+													</ul>
+													"/>
+					<apex:outputLabel escape="false" value="Os investimentos para aquisição/implantação de nossos produtos, serviços e soluções estão dispostos conforme a opção de compra escolhida pelo colégio, apresentada na Tabela de Preços vigente.<br/><br/>"/>
+					<apex:outputLabel escape="false" value="Além disso, possuímos o Programa Escolas-Referência, apresentado abaixo em quatro modelos, com todas as possibilidades de segmentação que o Sistema COC oferece às suas escolas parceiras. O Colégio escolhe o modelo que melhor atende sua necessidade e avança na parceria conforme seu interesse. São eles:<br/><br/>"/>
+					<apex:image url="{!$Resource.proposta_comercial_coc1}" width="700" height="350"/>
+					<apex:image url="{!$Resource.proposta_comercial_coc2}" width="700" height="350"/>
+				</apex:pageBlockSection>
+				
+			<apex:pageBlockSection title="Suporte e Treinamento" columns="1">
+					<apex:outputLabel escape="false" value="Oferecemos amplo suporte para implantação, treinamento/capacitação e desenvolvimento contínuo dos nossos produtos, serviços e soluções, como descrito abaixo:"/>
+					<apex:outputLabel escape="false" value="
+													<ul>
+														<li>Implantação eficiente dos materiais didáticos do Sistema para diretores, coordenadores e professores de todos os segmentos, de acordo com o modelo de implantações do Sistema COC de Ensino;</li>
+														<li>Treinamento para uso dos recursos digitais de sala de aula, tais como Lousa Digital;</li>
+														<li>Capacitação no uso das ferramentas digitais adotadas pela escola, como as descritas a seguir:</li>
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-Portais (Turma COC, COC Educação, COC Vestibulares);<br/>
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-Classbuider (software de criação de aulas digitais);<br/>
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-COSMO (aulas digitais completas, com proposta didático-metodológica e avaliativa);<br/>
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-Virtual Labs (laboratórios virtuais de física, biologia e química);<br/>
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-Mangahigh (plataforma de aprendizagem matemática);<br/>
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-Leitura e Cia. Paradidáticos (plataforma digital de avaliação de habilidades e competências leitoras,<br/>
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;organizada a partir de paradidáticos impressos da Cia das Letras);<br/>
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-Etc.<br/>
+
+														<li>Visita da consultoria pedagógica para acompanhar o desenvolvimento da proposta do Sistema COC de Ensino e auxiliar na solução de alinhamentos e adaptações;</li>
+														<li>Produção de Relatórios de Consultoria objetivando propor iniciativas de melhorias para as escolas parceiras;</li>
+														<li>Disponibilidade para reunião com pais e apresentação dos diferenciais do Sistema COC de Ensino. O Sistema COC também oferece palestras relacionadas ao cotidiano escolar (ENEM, Comportamento, etc..) através de sua equipe de Consultoria Pedagógica, que poderão ser solicitadas pela Instituição em datas e locais a serem combinados;</li>
+														<li>Plantão Online para os professores: suporte online com orientações, solução de dúvidas, recepção de críticas e sugestões a respeito dos materiais didáticos, da proposta pedagógica ou Sistema de Ensino, para professores de todos os segmentos da escola parceira;</li>
+														<li>EREd (Encontro Regional de Educadores): eventos pedagógicos  com a presença de grandes palestrantes do cenário educacional e palestras técnicas para qualificar e atualizar o seu corpo docente;</li>
+														<li>ELPs (Encontros Locais de Professores): encontros locais de pequenos grupos de escolas parceiras, para palestras de importantes pedagogos e pensadores regionais e também para socialização de experiências;</li>
+														<li>Encontro de Mantenedores: Um evento de alto nível para apresentar tecnologias e soluções do sistema COC de Ensino, promovendo o conhecimento e a interação entre Parceiros de diferentes regiões do país.</li>
+													
+													</ul>
+													"/>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection title="Estrutura de Atendimento ao Parceiro" columns="1">
+					<apex:outputText escape="false" value="
+														<ul>
+															<li><b>NAPEP – Núcleo de Apoio Personalizado à Escola Parceira:</b> grupo de relacionamento especializado que centraliza o contato entre a Escola e o Sistema de Ensino. É através dele que o parceiro realiza seus pedidos, obtém todas as informações e cronogramas de remessa e entrega de todos os nossos produtos e serviços, além dos encaminhamentos de demandas específicas.</li>
+															<li><b>Consultoria Pedagógica:</b> apoio de um grupo de profissionais altamente capacitados e especialistas em soluções COC (produtos pedagógicos, serviços e soluções), por meio de atendimento remoto e visitas periódicas.</li>
+															<li><b>Consultoria de Mercado:</b> equipe especializada que oferece suporte máximo em ações personalizadas que visam potencializar seus negócios e garantir a evolução contínua da sua escola.</li>
+															<li><b>Marketing COC:</b> um setor estruturado para divulgar, de forma efetiva, a marca COC integrada às Escolas Parceiras, alavancando matrículas e captando novos alunos para sua escola.</li>
+															<b>Segue anexo nossa proposta de Suporte e Assessoria em Marketing.</b>
+															<li><b>TV COC:</b> canal de comunicação e interação online, com conteúdo relacionado a capacitações, informações aos parceiros, divulgação de novos produtos, palestras com renomados nomes da educação nacional, entre outras.</li>
+															<li><b>Ouvidoria:</b> canal de comunicação para sugestões e reclamações.</li>
+														</ul>
+														"/>
+			</apex:pageBlockSection>	
+				<div style="page-break-after: always"></div>	
+				<apex:pageBlock title="Condições gerais de fornecimento">
+					<div class="CSSTable">
+					<table>
+						<tr>
+							<td>Investimento:</td>
+							<td>
+								<div class="CSSTableChild">
+									<table>
+										<tr>
+											<td align="center" width="55%">Produto</td>
+											<td align="center" width="15%">Quantidade</td>
+											<td align="center" width="15%">Preço Final</td>
+						       			</tr>
+										<apex:repeat value="{!itemSimulador}" var="sc" >
+						       				<tr>
+						      					<td align="left"><apex:outputText value="{!sc.Produto__r.Name}"/></td>
+						       					<td align="center"><apex:outputText value="{!sc.Alunos__c}"/></td>
+						       					<td align="center"><apex:outputField value="{!sc.TKT_MED_Desconto__c}"/></td>
+						       				</tr>
+										</apex:repeat>
+									</table>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Pagamento:</td>
+							<td>4 ou 12 parcelas (Serão 4 remessas, cada remessa pode ser parcelada em 3 vezes, com vencimentos programados nos meses de uso do material didático. Ex.: 1a. remessa, vencimento Janeiro, Fevereiro e Março, 2a. remessa Abril, Maio e Junho, ...). Os pedidos complementares tem vencimento para 15 dias de sua fatura. 
+								Obs.: A condição parcelada esta vinculada a Análise do Departamento Financeiro para atribuição de limite de crédito. Caso não tenha limite de crédito a condição será pagamento à vista e antecipado o cada remessa.</td>
+						</tr>
+						<tr>
+							<td>Prazo de entrega:</td>
+							<td>Cronograma conforme manual de Orientações Gerais – MOG.</td>
+						</tr>
+						<tr>
+							<td>Validade da proposta:</td>
+							<td>Proposta válida até
+								<apex:outputText value="{0,date, dd/MM/yyyy}">
+				    				<apex:param value="{!Today()+30}" />
+								</apex:outputText>
+							</td>
+						</tr>
+						<tr>
+							<td>Condição comercial</td>
+							<td>
+								<apex:repeat value="{!Desconto}" var="desc">
+									Desconto de <apex:outputLabel value="{!IF(desc.desconto <> NULL,desc.desconto,0)}"/>%
+								 	para o ano letivo <apex:outputLabel value="{!desc.ano}"/>.
+								</apex:repeat>
+									Os valores apresentados estão com 13% de Desconto de Pontualidade (para pagamento até o dia 10 de cada mês).
+									Esses descontos serão válidos para os “pedidos cheios” realizados dentro do prazo estipulado pelo MOG. Os descontos não incidirão sobre os pedidos complementares.
+								</td>
+						</tr>
+					</table>
+					</div>
+				</apex:pageBlock>	
+				
+				<apex:pageBlock title="BENEFÍCIOS" rendered="{!IF(Opportunity.Beneficios__c <> '',true,false)}">
+					<apex:outputLabel escape="false" value="{!Opportunity.Beneficios__c}"/>
+				</apex:pageBlock>
+				
+				<div style="page-break-after: always"></div>
+				<apex:pageBlock title="Considerações finais">
+					<apex:outputLabel value="O Sistema COC agradece seu interesse e esta à disposição para discutir e avaliar solicitações, adequações e necessidades especiais para a realização de uma parceria de sucesso."/>
+					<table width="700px">
+						<tr>
+							<td width="50%">
+								<apex:outputLabel escape="false" value="<br></br>Atenciosamente,"/>
+								<apex:outputLabel escape="false" value="<br></br>{!opportunity.owner.Name}"/>
+								<apex:outputLabel escape="false" value="<br></br>Executivo de Vendas"/>
+							</td>
+							<td width="50%">
+								<apex:outputLabel escape="false" value="<br></br>{!opportunity.owner.Email}"/>
+							</td>
+						</tr>
+					</table>
+					<table width="700px">
+						<tr>
+							<td align="center">
+								<apex:outputLabel escape="false" value="<br></br><br></br>_______________________________________"/>
+								<apex:outputLabel escape="false" value="<br></br>Responsável"/>
+							</td>
+						</tr>
+					</table>
+				</apex:pageBlock>	
+			</apex:pageBlock>
+	</apex:pageBlock>
+	<apex:pageBlock rendered="{!IF(TipoReport = 'PD',true,false) && IF(erroMsg.size = 0,true,false)}">
+		<table width="750px">
+			<tr>
+				<td align="left"><apex:image url="{!$Resource.logo_pearson}" width="240" height="216"/></td>
+				<td align="right"><apex:image url="{!$Resource.logo_pueri_domus}" width="480" height="216"/></td>
+			</tr>
+		</table>			
+		<apex:pageBlock title="Proposta Comercial">
+			<apex:outputLabel escape="false" value="____________________________________________________________________________________<br/><br/>"/>
+			<apex:outputLabel escape="false" value="À Escola {!Opportunity.Account.Name}<br/><br/>"/>
+			<apex:outputLabel escape="false" value="Ref.: Proposta Técnica e Comercial<br/><br/>"/>
+			<apex:outputLabel escape="false" value="É com grande satisfação que, por meio desta, apresentamos nossa proposta técnica e comercial para fornecimento do Projeto Educacional do Sistema de Ensino Pueri Domus.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="Nas páginas que se seguem demonstraremos sucintamente as características básicas desse fornecimento e condições de sua contratação.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="Temos certeza do grande benefício e alto potencial de sucesso que essa parceria proporcionará garantindo o sucesso pedagógico, econômico e mercadológico da sua instituição, uma vez que esta proposta une uma visão empreendedora e reconhecida capacidade de gestão ao nosso consagrado modelo pedagógico com a assessoria dos nossos reconhecidos especialistas.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="Aguardamos pelo retorno de sua análise e confirmação nos próximos dias e estamos à inteira disposição para esclarecimentos e ajustes que se fizerem necessários.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="Muito Obrigado,<br/><br/>"/>
+			<apex:outputLabel escape="false" value="{!opportunity.owner.Name}<br/>"/>
+			<apex:outputLabel escape="false" value="Executivo de Vendas<br/><br/>"/>
+			<div style="page-break-after: always"></div>
+		</apex:pageBlock>
+		
+		<apex:pageBlock title="Objetivo">
+			<apex:outputLabel escape="false" value="A presente proposta técnica e comercial tem por finalidade estabelecer uma parceria de sucesso entre o Sistema de Ensino Pueri Domus e suas escolas que contempla o fornecimento de publicações de qualidade, assessorias pedagógicas para diretores, professores e coordenadores (presenciais e à distância), formação de professores e coordenadores, serviços tecnológicos por meio do Portal Pueri Domus e das ferramentas tecnológicas da Pearson, e apoio em marketing.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="Sabemos que uma escola de sucesso precisa inovar sempre, cuidar da fidelização por meio da qualidade de seus serviços pedagógicos, além de atrair novos alunos alinhados ao seu perfil.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="Para garantia desse sucesso é primordial que a parceria seja sustentada pelo alinhamento identificado entre a visão da escola e do sistema de ensino.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="É prioridade do Sistema Pueri Domus a criação de um ambiente de comunicação constante com o parceiro aonde o respeito pela instituição de ensino seja a base do relacionamento. Procuramos o crescimento mútuo sempre baseado nas demandas dos parceiros e trazendo soluções para aquelas que são as maiores dificuldades de nossa estrada conjunta.<br/><br/>"/>
+		</apex:pageBlock>
+
+		<apex:pageBlock title="Proposta Pedagógica">
+			<apex:outputLabel escape="false" value="A equipe do Sistema de Ensino Pueri Domus acredita que a utilização de publicações pedagógicas da mais alta qualidade e o apoio ao trabalho dos professores são fundamentais para uma aprendizagem eficaz.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="O material aqui apresentado foi criado para oferecer o melhor conteúdo com base em uma proposta de valorização do processo de construção do conhecimento.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="<b>Educação Infantil</b><br/>"/>
+			<apex:outputLabel escape="false" value="O primeiro passo rumo ao sucesso vem com os primeiros conhecimentos sobre  o mundo. Por isso, garantimos um sistema que motiva professores e alunos irem além da alfabetização e dos processos de letramento.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="Livro inicial: livro anual para crianças de 3 anos de idade; estruturado em torno de três eixos: espaço, identidade e sensações.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="Conhecimento de Mundo 1: 2 livros semestrais, para crianças de 4 anos, organizado por temas que apresentam conteúdos integrados das disciplinas de Linguagem, Matemática, Ciências e Estudos Sociais.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="Conhecimento de mundo 2: 2 livros semestrais, para crianças de 5 anos, organizado por temas que apresentam conteúdos integrados das disciplinas de Linguagem, Matemática, Ciências e Estudos Sociais.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="<bEducação Fundamental</b><br/>"/>
+			<div style="page-break-after: always"></div>
+			<apex:outputLabel escape="false" value="<b>Fundamental I</b> - Quando as primeiras lições de casa podem tornar-se lições de vida.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="<b>Fundamental II</b> - O aluno necessita do conhecimento sob diversas perspectivas e o conteúdo é garantia de sucesso dentro e fora da escola.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="1º ano: crianças de 6 anos:<br/>"/>
+			<apex:outputLabel escape="false" value="Livro Cantalelê (sistematização do processo de alfabetização). Acompanha o material Um CD com músicas inspiradas nos temas do livro. Também acompanha o Kit: Livros de Português, Matemática e, por fim, o de Natureza e Sociedade. Todos da coleção Interativa.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="1º ao 4º Ano:<br/>"/>
+			<apex:outputLabel escape="false" value="Livros de Matemática, Português História, Geografia, e Ciências  pertencem a Coleção Interativa; exceto o Português<br/><br/>"/>
+			<apex:outputLabel escape="false" value="- 5º ano os livros de: História, Geografia e Ciências pertencem a Coleção Interativa; exceto o de Português e Matemática.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="- 6º ano os livros de: Português, Matemática, História, Geografia e Ciências pertencem a Coleção Interativa; exceto Arte.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="- 7º ano os livros de: Matemática, História, Geografia e Ciências pertencem a Coleção Interativa; exceto Arte e Português.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="- 8º ano os livros de: Ciências, História e Geografia pertencem a Coleção Interativa; exceto Português, Arte e Matemática;<br/><br/>"/>
+			<apex:outputLabel escape="false" value="- 9º ano: Livros de Arte, Ciências, Geografia, História, Matemática e Português.<br/><br/>"/>
+			
+			<apex:outputLabel escape="false" value="<b>ENSINO MÉDIO:</b><br/>"/>
+			<apex:outputLabel escape="false" value="Em uma hora em que passam diversos pensamentos pela cabeça de um jovem, o educador deve ter ferramentas para auxiliá-lo na busca da melhor escolha profissional.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="- 1ª série do Ensino Médio: Temos os 4 módulos para Geografia e Biologia; 2 livros (A e B ) de: Português, Física, Química, História e um livro para Filosofia; -Kit também incluí  material de ENEM Vol1.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="- 2ª série do Ensino Médio : Temos os 4 módulos para Geografia, Biologia e Português; 2 livros (A e B) de: Matemática. História, Física e Química e um livro para Filosofia.; T-Kit também incluí  material de ENEM Vol2.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="- 3ª série do Ensino Médio são 4 módulos para Física, Química, Biologia, Matemática, História, Geografia e Português. -Kit também incluí  material de ENEM Vol3.<br/><br/>"/>
+			<div style="page-break-after: always"></div>
+			<apex:outputLabel escape="false" value="<b>Serviços adicionais gratuitos que acompanham livros didáticos:</b><br/>"/>
+			<apex:outputLabel escape="false" value="
+													<ul>
+														<li>Jornal InFormação - análise de temas atuais na mídia, dicas sobre vestibular, entre outras informações.</li>
+														<li>Olimpíadas de Conhecimento (OCA) - Criação, Impressão e Distribuição de provas anuais de conhecimento sobre o material didático do Pueri Domus para toda a rede de parceiros classificando escolas e alunos. Prêmios, troféus e medalhas são distribuídos para os melhores colocados na competição.</li>
+														<li>Encontros com alunos e pais para revitalização do processo ensino-aprendizagem. Incentivo e viabilização do intercâmbio entre as escolas parceiras, por meio de projetos especiais, favorecendo a troca de ideias e experiências.</li>
+														<li>Disponibilização de textos de apoio ao docente e à coordenação, preparados e selecionados pela Assessoria Pedagógica.</li>
+													</ul>
+													<br/><br/>"/>
+													
+			<apex:outputLabel escape="false" value="<b>Assessoria pedagógica online</b><br/>"/>													
+			<apex:outputLabel escape="false" value="Atendimento exclusivo, voltado para as necessidades da escola. Plantão permanente para apoiar a assessoria pedagógica e solucionar dúvidas de professores e coordenadores.<br/><br/>"/>
+			
+			<apex:outputLabel escape="false" value="<b>Formação Continuada</b><br/>"/>
+			<apex:outputLabel escape="false" value="Encontros de Formação Contínua e Oficinas Temáticas realizados durante o ano. Os temas são escolhidos de acordo com as necessidades de aperfeiçoamento dos professores.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="Cursos e palestras online para troca de experiências e informações importantes entre os educadores.<br/><br/>"/>
+
+			<apex:outputLabel escape="false" value="<b>Portal</b><br/>"/>
+			<apex:outputLabel escape="false" value="Gratuitamente para parceiros, o ambiente do portal tem informações institucionais sobre o programa, além de conteúdos segmentados exclusivos.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="
+													<ul>
+														<li>Pueri Interativo – TV WEB dedicada à formação do educador; Notícias, entrevistas e artigos sobre educação;</li>
+														<li>Apresentação das linhas teóricas gerais; Embasamento do trabalho dos autores;</li>
+														<li>Orientação para atividades com os alunos;</li>
+														<li>Material para pesquisa em casa ou na escola; Links educacionais de diversos segmentos;</li>
+														<li>Conteúdo das Publicações Pedagógicas, COPs (Caderno de Orientação ao Professor) e sugestões de atividades etc;</li>
+														<li>Área de Eventos (divulgação, informações e inscrições para Sala dos Autores, programas de formação contínua, viagens de estudo e palestras);</li>
+														<li>Acesso a jogos interativos e conteúdos online que permitem efetuar simulações e fixar conceitos.</li>
+														<li>Pró-Mestre – canal de publicação de projetos temáticos e trocas entre professores e escolas parceiras.</li>
+														<li>Planos de aulas – utilização de notícias atuais com foco no desenvolvimento de competências e habilidades</li>
+													</ul>
+													<br/><br/>"/>
+
+			<div style="page-break-after: always"></div>
+			<apex:outputLabel escape="false" value="<b>Orientação Profissional ao Aluno</b><br/>"/>
+			<apex:outputLabel escape="false" value="O Sistema de Ensino Pueri Domus oferece aos alunos, em seu portal, conteúdos, serviços e networking para auxiliá-los na escolha da carreira e vida profissional.<br/><br/>"/>
+			<table width="750px">
+				<tr>
+					<td align="center"><apex:image url="{!$Resource.pueri_domus_pedagogico}" width="500" height="400"/></td>
+				</tr>
+			</table>
+			
+			<apex:outputLabel escape="false" value="<b>Visitas Presenciais</b><br/>"/>
+			<apex:outputLabel escape="false" value="
+													<ul>
+														<li>Encontros e reuniões com a coordenação e direção, encaminhando contribuições para o desenvolvimento da gestão educacional.</li>
+														<li>Encontros com professores - Estudo e reflexão sobre os livros e temas pertinentes a prática pedagógica.</li>
+														<li>As visitas são realizadas na escola e as intervenções são feitas com base no diagnóstico da realidade local.</li>
+														<li>Formação digital</li>
+													</ul>
+													<br/><br/>"/>
+		</apex:pageBlock>
+		<div style="page-break-after: always"></div>
+		<apex:pageBlock title="Condições gerais de fornecimento">
+		<div class="CSSTable">
+			<table>
+				<tr>
+					<td>Investimento:</td>
+					<td>
+						<div class="CSSTableChild">
+							<table>
+								<tr>
+									<td align="center" width="55%">Produto</td>
+									<td align="center" width="15%">Quantidade</td>
+									<td align="center" width="15%">Preço Final</td>
+						    	</tr>
+								<apex:repeat value="{!itemSimulador}" var="sc">
+						    	<tr>
+						    		<td align="left"><apex:outputText value="{!sc.Produto__r.Name}"/></td>
+						    		<td align="center"><apex:outputText value="{!sc.Alunos__c}"/></td>
+						    		<td align="center"><apex:outputField value="{!sc.TKT_MED_Desconto__c}"/></td>
+						    	</tr>
+								</apex:repeat>
+							</table>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>Pagamento:</td>
+					<td>Em até 8X conforme análise de crédito.</td>
+				</tr>
+				<tr>
+					<td>Prazo de entrega:</td>
+					<td>Cronograma conforme política comercial Pueri Domus</td>
+				</tr>
+				<tr>
+					<td>Validade da proposta:</td>
+					<td>Proposta válida até
+						<apex:outputText value="{0,date, dd/MM/yyyy}">
+		    				<apex:param value="{!Today()+30}" />
+						</apex:outputText>
+					</td>
+				</tr>
+				<tr>
+					<td>Condição comercial</td>
+					<td>
+						<apex:repeat value="{!Desconto}" var="desc">
+							Desconto de <apex:outputLabel value="{!IF(desc.desconto <> NULL,desc.desconto,0)}"/>%
+						 	para o ano letivo <apex:outputLabel value="{!desc.ano}"/>.
+						</apex:repeat>
+							Os valores apresentados estão com 13% de Desconto de Pontualidade (para pagamento até o dia 10 de cada mês).
+					</td>
+				</tr>
+			</table>
+			</div>
+		</apex:pageBlock>
+		
+		<apex:pageBlock title="BENEFÍCIOS" rendered="{!IF(Opportunity.Beneficios__c <> '',true,false)}">
+			<apex:outputLabel escape="false" value="{!Opportunity.Beneficios__c}"/>
+		</apex:pageBlock>
+		
+		<div style="page-break-after: always"></div>
+		<apex:pageBlock title="Considerações finais">
+			<apex:outputLabel value="O Sistema Pueri Domus agradece seu interesse e esta à disposição para discutir e avaliar solicitações, adequações e necessidades especiais para a realização de uma parceria de sucesso."/>
+			<table width="700px">
+				<tr>
+					<td width="50%">
+						<apex:outputLabel escape="false" value="<br></br>Atenciosamente,"/>
+						<apex:outputLabel escape="false" value="<br></br>{!opportunity.owner.Name}"/>
+						<apex:outputLabel escape="false" value="<br></br>Executivo de Vendas"/>
+					</td>
+					<td width="50%">
+						<apex:outputLabel escape="false" value="<br></br>{!opportunity.owner.Email}"/>
+					</td>
+				</tr>
+			</table>
+			<table width="700px">
+				<tr>
+					<td align="center">
+						<apex:outputLabel escape="false" value="<br></br><br></br>_______________________________________"/>
+						<apex:outputLabel escape="false" value="<br></br>Responsável"/>
+					</td>
+				</tr>
+			</table>
+		</apex:pageBlock>
+			
+	</apex:pageBlock>
+	<apex:pageBlock rendered="{!IF(TipoReport = 'DB',true,false) && IF(erroMsg.size = 0,true,false)}">
+		<apex:pageBlock >
+			<table align="center">
+				<tr>
+					<td  align="center"><apex:image url="{!$Resource.Logo_DB}" width="385" height="165"/></td>
+				</tr>
+			</table>
+		</apex:pageBlock>
+		
+		<apex:pageBlock >
+			<apex:outputLabel escape="false" value="<br/>Ao {!Opportunity.Account.Name}<br/>"/>
+			<apex:outputLabel escape="false" value="REF.: PROPOSTA COMERCIAL – SISTEMA DE ENSINO DOM BOSCO<br/><br/>"/>
+			<apex:outputLabel escape="false" value="É com satisfação que apresentamos a seguir nossa proposta de soluções educacionais e plano comercial para aquisição dos materiais didáticos do Sistema de Ensino Dom Bosco para o ano letivo de {!Opportunity.BR_Ano_Inicio_do_contrato__c}*.<br/><br/>"/>
+		</apex:pageBlock>		
+			
+		<apex:pageBlock title="PROPOSTA">
+			<apex:outputLabel value="As condições apresentadas nesta proposta contemplam além do material didático, uma série de benefícios que o Sistema de Ensino Dom Bosco oferecerá À ESCOLA {!Opportunity.Account.Name} CNPJ {!Opportunity.Account.BR_cnpj__c}, a presente proposta é válida para a compra de material para todo ano letivo de {!Opportunity.BR_Ano_Inicio_do_contrato__c}, renovável por {!Opportunity.BR_Vigencia_do_contrato_anos__c} anos."/>
+		</apex:pageBlock>			
+			
+		<apex:pageBlock title="ASSESSORIA PEDAGÓGICA">
+			<apex:outputLabel escape="false" value="<b>Implantação do Material:</b><br/>"/>
+			<apex:outputLabel escape="false" value="O sistema de ensino Dom Bosco tem a preocupação de apresentar e instrumentalizar todo o professor que irá utilizar o material didático. Será oferecido o processo de implantação pedagógica para as escolas acima de 200 alunos de todos os materiais que serão utilizados pela primeira vez. Essa capacitação será realizada em data de comum acordo entre a escola e a editora, que disponibilizará o consultor pedagógico da região para este trabalho.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="<b>Apoio Pedagógico:</b><br/>"/>
+			<apex:outputLabel escape="false" value="As escolas acima de 350 alunos terão o apoio pedagógico de consultores educacionais.<br/>
+													A escola receberá visitas bimestrais do consultor pedagógico de sua região.<br/><br/>"/>
+			<apex:outputLabel escape="false" value="<b>Formação continuada:</b><br/>"/>
+			<apex:outputLabel escape="false" value="Congressos nacionais para mantenedores, encontros regionais, seminários e palestras para professores e coordenadores são alguns dos eventos que o Dom Bosco promove para a formação contínua em diversas regiões brasileiras.<br/> 
+													Atendimentos pedagógicos ministrados por profissionais altamente especializados, nas escolas parceiras, facilitam a tarefa de professores e coordenadores.<br/><br/>"/>
+		</apex:pageBlock>
+
+		<div style="page-break-after: always"></div>
+		<apex:pageBlock title="PORTAL DOM BOSCO">
+			<apex:outputLabel escape="false" value="Aperfeiçoamento docente em ambiente on-line e ferramentas exclusivas para enriquecer ainda mais as aulas com recursos de áudio e vídeo.<br/><br/>
+													<ul>
+														<li>Banco de provas</li>
+														<li>Agenda</li>
+														<li>Sala do professor</li>
+														<li>Cadernos docentes</li>
+														<li>Galeria de vídeos e imagens</li>
+														<li>Atividades integradas</li>
+														<li>Projetos de aulas</li>
+														<li>Datas comemorativas</li>
+														<li>Banco de provas<br/>
+															Portfólio de provas on-line desenvolvidas por profissionais capacitados e com matriz de referência, completamente integradas ao material didático. As provas são publicadas nas versões com gabarito (professor) e sem gabarito (aluno).
+														</li>
+														<li>Pré-vestibular<br/>
+															Conteúdo adequado e interativo para alunos de ensino médio e pré-vestibular, com exercícios resolvidos e gabaritos comentados dos principais vestibulares.
+														</li>
+														<li>Simulado on-line<br/>
+															Desafio aos alunos do ensino médio, e pré- vestibular, com correção automática das questões e avaliação instantânea do resultado.
+														</li>
+														<li>Atividades integradas</br>
+															Uma série de atividades com o objetivo de ampliar conhecimentos de professores e alunos em relação aos assuntos abordados no material didático
+														</li>
+														<li>Biblioteca<br/>
+															Conteúdos didáticos distribuídos pelas disciplinas e relacionados entre si. Contempla o currículo escolar de educação Infantil à ensino médio
+														</li>
+														<li>Material de apoio<br/>
+															As matérias são apresentadas com recursos de áudio e vídeo, interatividade que torna o entendimento do assunto mais ágil.<br/>
+															Destaque para os projetos de datas comemorativas, dicionário dos bichos, enciclopédia viva, galeria de vídeos, animações e jogos educativos.
+														</li>
+														<li>Obras literárias<br/>
+															Resumo de centenas de livros clássicos da literatura. As obras podem ser encontradas facilmente através de mecanismo de busca por título ou autor. Disponível para leitura, cópia e impressão.
+														</li>
+														<li>Especial Vestibular<br/>
+															Conteúdos exclusivos com simulado online, centro de carreiras, dossiês, notícias, tira-dúvidas e muito mais.
+														</li>
+														<li>Jornalismo Educativo<br/>
+															O Jornalismo Educativo traz para a sala de aula os contextos em que as notícias da atualidade são produzidas, fazendo conexões e oferecendo um olhar mais atento ao que está por trás delas. Com propostas de leituras, oferece alguns aplicativos exclusivos para professor e aluno do Ensino Médio.<br/>
+															- Animações, vídeos e links interessantes<br/>
+															- Planos de aula (cada notícia acompanha um plano de aula integrado com sequência didática e dica de leitura)
+														</li>
+													</ul>
+
+													"/>
+		</apex:pageBlock>
+		<div style="page-break-after: always"></div>
+		<apex:pageBlock title="MATERIAL DE APOIO PARA PROFESSOR">
+			<apex:outputLabel escape="false" value="A escola receberá sem custo adicional materiais de apoio para o professor. Este material será encaminhado junto com o material didático do aluno por ocasião dos pedidos de cada bimestre.<br/>"/>
+		</apex:pageBlock>
+		<apex:pageBlock title="Condições gerais de fornecimento">
+			<div class="CSSTable">
+			<table>
+				<tr>
+					<td>Investimento:</td>
+					<td>
+						<div class="CSSTableChild">
+							<table>
+								<tr>
+									<td align="center" width="55%">Produto</td>
+									<td align="center" width="15%">Quantidade</td>
+									<td align="center" width="15%">Preço Final</td>
+								</tr>
+								<apex:repeat value="{!itemSimulador}" var="sc">
+								<tr>
+						    		<td align="left"><apex:outputText value="{!sc.Produto__r.Name}"/></td>
+						    		<td align="center"><apex:outputText value="{!sc.Alunos__c}"/></td>
+						       		<td align="center"><apex:outputField value="{!sc.TKT_MED_Desconto__c}"/></td>
+								</tr>
+								</apex:repeat>
+							</table>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>Pagamento:</td>
+					<td>Em até 4X por pedido conforme análise de crédito.</td>
+				</tr>
+				<tr>
+					<td>Prazo de entrega:</td>
+					<td>Cronograma conforme manual cliente Dom Bosco.</td>
+				</tr>
+				<tr>
+					<td>Validade da proposta:</td>
+					<td>Proposta válida até
+						<apex:outputText value="{0,date, dd/MM/yyyy}">
+			   				<apex:param value="{!Today()+30}" />
+						</apex:outputText>
+					</td>
+				</tr>
+				<tr>
+					<td>Condição comercial</td>
+					<td>
+						<apex:repeat value="{!Desconto}" var="desc">
+							Desconto de <apex:outputLabel value="{!IF(desc.desconto <> NULL,desc.desconto,0)}"/>%
+						 	para o ano letivo <apex:outputLabel value="{!desc.ano}"/>.
+						</apex:repeat>
+					</td>
+				</tr>
+			</table>
+			</div>
+		</apex:pageBlock>
+		
+		<apex:pageBlock title="BENEFÍCIOS" rendered="{!IF(Opportunity.Beneficios__c <> '',true,false)}">
+			<apex:outputLabel escape="false" value="{!Opportunity.Beneficios__c}"/>
+		</apex:pageBlock>
+			
+		<apex:pageBlock >
+			<apex:outputLabel escape="false" value="Faturamento direto para a escola mediante contrato assinado e limite de crédito aprovado.<br/><br/>"/>
+		</apex:pageBlock>
+		<div style="page-break-after: always"></div>
+		<apex:pageBlock title="Considerações finais">
+			<apex:outputLabel value="O Sistema Dom Bosco agradece seu interesse e esta à disposição para discutir e avaliar solicitações, adequações e necessidades especiais para a realização de uma parceria de sucesso."/>
+			<table width="700px">
+				<tr>
+					<td width="50%">
+						<apex:outputLabel escape="false" value="<br></br>Atenciosamente,"/>
+						<apex:outputLabel escape="false" value="<br></br>{!opportunity.owner.Name}"/>
+						<apex:outputLabel escape="false" value="<br></br>Executivo de Vendas"/>
+					</td>
+					<td width="50%">
+						<apex:outputLabel escape="false" value="<br></br>{!opportunity.owner.Email}"/>
+					</td>
+				</tr>
+			</table>
+			<table width="700px">
+				<tr>
+					<td align="center">
+						<apex:outputLabel escape="false" value="<br></br><br></br>_______________________________________"/>
+						<apex:outputLabel escape="false" value="<br></br>Responsável"/>
+					</td>
+				</tr>
+			</table>
+		</apex:pageBlock>
+
+	</apex:pageBlock>
+	<apex:pageBlock rendered="{!IF(TipoReport = '',true,false)}">
+		<apex:outputLabel value="catalogo inválido"/>
+	</apex:pageBlock>
+</apex:form>
+</apex:page>

@@ -1,0 +1,12 @@
+<apex:page standardController="Task" extensions="CriarCasoAPartirAtividadeController">
+	<apex:form >
+		<apex:pageBlock title="Selecione o tipo de registro">
+			<apex:pageBlockSection columns="1" collapsible="false">
+			    <apex:selectList value="{!selected}" size="1">
+		            <apex:selectOptions value="{!RecordTypes}"/>
+		        </apex:selectList>
+		        <apex:commandButton value="Selecionar" action="{!abrirPagina}"/>
+		    </apex:pageBlockSection>
+	    </apex:pageBlock>
+    </apex:form>
+</apex:page>

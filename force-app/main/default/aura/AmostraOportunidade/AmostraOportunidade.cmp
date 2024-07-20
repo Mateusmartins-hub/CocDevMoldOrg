@@ -1,0 +1,18 @@
+<aura:component extensible="true" implements="force:lightningQuickAction,force:hasRecordId" access="global" controller="AmostraOportunidades">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="mapRecsTypesIds" type="Map" default="{}"/>
+    
+    <lightning:select name="marcaSelect" label="Marca:" required="true" onchange="{!c.openCriacao}">
+        <option value="">Escolha...</option>
+        <option value="Amostra_ELT">ELT</option>
+        <option value="Amostra_COC">COC</option>
+        <option value="Amostra_Dom_Bosco">Dom Bosco</option>
+        <option value="Amostra_Pueri_Domus">Pueri Domus</option> 
+        <!--
+        <option value="Amostra_Universitario">Universitário</option>
+        <option value="Amostra_NAME">NAME</option>
+        <option value="Amostra_Solucoes">Solucoes</option>
+		-->
+    </lightning:select>
+     
+</aura:component>

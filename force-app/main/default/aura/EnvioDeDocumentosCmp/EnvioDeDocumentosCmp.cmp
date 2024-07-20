@@ -1,0 +1,53 @@
+<aura:component extensible="true" access="global" controller="EnvioDocumentosController">
+    <aura:attribute name="documentsToSend" type="String"/>
+    <aura:attribute name="documentsURL" type="Object[]"/>
+    <aura:attribute name="state" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="documentsToUpload" type="Object[]"/>
+    <aura:attribute name="loading" type="Boolean" default="false"/>
+    <aura:attribute name="isSendButtonDisabled" type="Boolean" default="true"/>
+    <aura:attribute name="iterations" type="Integer" default="-1"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div class="logo">
+        <img style="width: 210px;" alt="Pearson logo" src="https://www.pearson.com/content/dam/one-dot-com/one-dot-com/corporate-selector/Pearson_logo.png/_jcr_content/renditions/cq5dam.web.1600.9600.png"/>
+    </div>
+    <div class="header">
+        <h1>Anexe os documentos faltantes e clique em enviar!</h1>
+    </div>
+    <aura:if isTrue="{!v.loading}">
+        <div class="slds-spinner_container" aura:id="uploadSpinner">
+            <lightning:spinner variant="brand" size="medium" />
+        </div>
+    </aura:if>
+    <div class="documentos">
+        <div class="slds-grid slds-wrap">
+            <aura:iteration items="{!v.documentsURL}" var="document" indexVar="index">
+                <div class="slds-col slds-size_1-of-2">     
+                    <div class="slds-form-element">
+                        <span class="slds-form-element__label" id="file-selector-primary-label">{!document.documentName}</span>
+                        <div class="slds-form-element__control">
+                            <div class="slds-file-selector slds-file-selector_files">
+                                <div class="slds-file-selector__dropzone">
+                                    <input type="file" onchange="{!c.handleFiles}" label="{!document.documentName}" name="{!document.documentFieldName}" class="slds-file-selector__input slds-assistive-text" accept="image/png" id="{!index}" aria-labelledby="file-selector-primary-label file-selector-secondary-label" />                                                                        
+                                    <label class="slds-file-selector__body" for="{!index}" id="file-selector-secondary-label">
+                                        <span id="{!'label' + index}" class="slds-file-selector__button slds-button slds-button_neutral">Escolha o arquivo...</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                 
+                    <aura:renderIf isTrue="{! document.documentURL != null }">
+                        <a target="_blank" href="{!document.documentURL}">Como conseguir o {!document.documentName}</a>
+                    </aura:renderIf>                                            	
+                </div>
+            </aura:iteration>
+        </div>
+    </div>
+    <div class="checkbox-aceite">
+        <ui:inputCheckbox aura:id="checkbox" class="documentCheckbox" change="{!c.handleAceite}" label="Aceitar termos e condições"/>
+    </div>
+    <div class="botao-enviar"> 
+        <lightning:button variant="brand" label="Enviar documentos" title="Enviar documentos" onclick="{!c.save}" disabled="{!v.isSendButtonDisabled}"/> 
+    </div>
+</aura:component>

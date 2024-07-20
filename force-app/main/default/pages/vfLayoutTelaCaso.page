@@ -1,0 +1,14 @@
+<apex:page standardController="LayoutCaso__c">
+    <apex:includeScript value="/lightning/lightning.out.js" />
+    <script>
+        $Lightning.use("c:layoutTelaCasoApp", function() {
+            $Lightning.createComponent(
+                "c:layoutTelaCaso",
+                { recordId : '{!$CurrentPage.parameters.Id}' },
+                "divId", 
+                function(cmp) 
+                { });
+            });
+    </script>
+    <div id="divId"></div>
+</apex:page>

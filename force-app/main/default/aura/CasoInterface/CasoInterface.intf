@@ -1,0 +1,107 @@
+<aura:interface description="Interface da tela padrão de caso">
+    <aura:attribute name="isClassic" type="boolean" default="false" />
+
+    <aura:attribute name="erroInit" type="Boolean" default="false"/>
+    <aura:attribute name="valorVazio" type="String" default="" />
+    <aura:attribute name="items" type="List" default="[]"/>
+    <aura:attribute name="activeSections" type="List" default="['A']" />
+    <aura:attribute name="activeSectionsMessage" type="String" default="" />
+
+    <aura:attribute name="linkAllSLAs" type="String" default="" />
+    <aura:attribute name="linkAllCaseHistories" type="String" default="" />
+    <aura:attribute name="linkAllNotes" type="String" default="" />
+    <aura:attribute name="linkAllMaterials" type="String" default="" />
+    <aura:attribute name="linkAllAttachments" type="String" default="" />
+    <aura:attribute name="linkAllEmails" type="String" default="" />
+    <aura:attribute name="linkNewComment" type="String" default="" />
+    <aura:attribute name="linkNewNote" type="String" default="" />
+    
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="recordTypeId" type="String"/>
+    <aura:attribute name="caso" type="Object"/>
+    <aura:attribute name="msgErro" type="String" default=""/>
+    <aura:attribute name="campoComErro" type="String" default="" />
+    <aura:attribute name="erroCampoMensagem" type="String" default="" />
+    
+    <aura:attribute name="subtipo" type="String"/>
+    <aura:attribute name="detalhamento" type="String"/>
+    <aura:attribute name="detalhamento2" type="String"/>
+    <aura:attribute name="grupoSolucionador" type="String"/>
+    <aura:attribute name="listGrupoSolucionador" type="List" default="[]"/>
+    <aura:attribute name="ordemGrupoSolucionador" type="Decimal"/>
+    <aura:attribute name="areaDonaDoProcesso" type="String"/>
+    
+    <aura:attribute name="camposDesativadoBoolean" type="Boolean" />
+                                    
+    <aura:attribute name="camposCasoVazio" type="List"/>
+    <aura:attribute name="camposCaso" type="List"/>
+    <aura:attribute name="mapCamposCaso" type="Map"/>
+    <aura:attribute name="camposProxGrupo" type="String[]"/>
+    <aura:attribute name="camposProxGrupoVazia" type="String[]"/>
+    
+    <aura:attribute name="edit" type="Boolean" default="false"/>
+    <aura:attribute name="view" type="Boolean" default="false"/>
+    
+    <aura:attribute name="tipos" type="List" default="[]"/>
+    <aura:attribute name="subtipos" type="List" default="[]"/>
+    <aura:attribute name="detalhamentos" type="List" default="[]"/>
+    <aura:attribute name="detalhamentos2" type="List" default="[]"/>
+    <aura:attribute name="gruposSolucionadoresAnteriores" type="List" default="[]"/>
+    <aura:attribute name="emailsDe" type="List" default="[]"/>
+    <aura:attribute name="emailDe" type="String"/>
+    
+    <aura:attribute name="tipoDesativado" type="Boolean" default="false"/>
+    <aura:attribute name="subtipoDesativado" type="Boolean" default="true"/>
+    <aura:attribute name="detalhamentoDesativado" type="Boolean" default="true"/>
+    <aura:attribute name="detalhamento2Desativado" type="Boolean" default="true"/>
+    <aura:attribute name="grupoSolucionadorDesativado" type="Boolean" default="true"/>
+    
+    <aura:attribute name="tipoErro" type="String" default="" />
+    <aura:attribute name="subtipoErro" type="String" default="" />
+    <aura:attribute name="detalhamentoErro" type="String" default="" />
+    <aura:attribute name="detalhamento2Erro" type="String" default="" />
+    <aura:attribute name="erroDescricaoGrupoAnterior" type="String" default="" />
+    <aura:attribute name="erroComboGrupoAnterior" type="String" default="" />
+    <aura:attribute name="erroDescEmailFechamento" type="String" default="" />
+    
+    <aura:attribute name="loading" type="Boolean" default="true"/>
+    <aura:attribute name="baseURL" type="String"/>
+    
+    <aura:attribute name="processoDeParametrizacao" type="Boolean" default="false"/>
+    <aura:attribute name="processoDeProxGrupo" type="Boolean" default="false"/>
+    <aura:attribute name="processoDeVoltarAoGrupo" type="Boolean" default="false"/>
+    <aura:attribute name="processoDeAddObservadores" type="Boolean" default="false"/>
+    <aura:attribute name="processoDeFecharCaso" type="Boolean" default="false"/>
+    <aura:attribute name="isLastGrupoSolucionador" type="Boolean" default="false"/>
+    
+    <aura:attribute name="SLAs" type="List" default="[]"/>    
+    <aura:attribute name="observadores" type="List" default="[]"/>
+    <aura:attribute name="emails" type="List" default="[]"/>  
+    <aura:attribute name="comments" type="List" default="[]"/>
+    <aura:attribute name="notasVinculadas" type="List" default="[]"/>
+    <aura:attribute name="materiais" type="List" default="[]"/>
+    <aura:attribute name="solutions" type="List" default="[]"/>
+    <aura:attribute name="attachments" type="List" default="[]"/>
+    <aura:attribute name="caseHistories" type="List" default="[]"/>
+    <aura:attribute name="approveHistories" type="List" default="[]"/>
+
+    <aura:attribute name="idConta" type="Id" default=""/>
+    
+    <aura:attribute name="temCampoProxGrupo" type="Boolean" />
+    
+    <aura:attribute name="showRelatedLists" type="Object" default="{ 
+                                                                   SlasDoCaso: false, 
+                                                                   ComentariosDoCaso: false, 
+                                                                   ObservadoresDoCaso: false, 
+                                                                   EmailsDoCaso: false, 
+                                                                   NotasDoCaso: false, 
+                                                                   MateriaisDoCaso: false, 
+                                                                   SolucoesDoCaso: false, 
+                                                                   AnexosDoCaso: false, 
+                                                                   HistoricosDoCaso: false, 
+                                                                   }"/>
+
+    <aura:attribute name="enviarPesquisaSatisfacao" type="Boolean" default="false"/>
+    <aura:attribute name="informouCliente" type="Boolean" default="true"/>
+    <aura:attribute name="motivosNaoEnvioPesquisaSatisfacao" type="List" default="[]"/>
+</aura:interface>

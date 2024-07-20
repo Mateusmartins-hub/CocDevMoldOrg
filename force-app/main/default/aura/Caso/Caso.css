@@ -1,0 +1,44 @@
+.THIS .icn svg{ 
+    fill: white;
+}
+
+.THIS .slds-notify_container {
+    z-index: 1;
+}
+
+.THIS .slds-form-element__control .slds-checkbox {
+    margin-top: 25px;
+}
+
+.THIS .slds-a lightning-formatted-lookup {
+    color: #006dcc;
+}
+
+.THIS .slds-a lightning-formatted-lookup:hover {
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+.THIS .slds-erro lightning-combobox{
+    background-color: white;
+    border-color: #c23934;
+    -webkit-box-shadow: #c23934 0 0 0 1px inset;
+    box-shadow: #c23934 0 0 0 1px inset;
+    background-clip: padding-box;
+}
+
+.THIS lightning-helptext{
+     visibility: hidden;
+}
+
+.THIS .slds-button-menu{
+    height: 100%;
+    border-radius: 0 .25rem .25rem 0 !important;
+    padding-left: 8px !important;
+    padding-right: 0 !important;
+}
+
+.THIS label {
+    color: rgb(107, 109, 112);
+    font-size: .75rem;
+}

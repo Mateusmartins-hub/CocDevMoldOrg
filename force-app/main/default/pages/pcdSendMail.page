@@ -1,0 +1,32 @@
+<apex:page standardController="Contact" extensions="pcdSendMailController">
+	<apex:form >
+		<apex:pageBlock title="Envio de e-mail para produtos com desconto ainda não adquiridos." mode="edit">
+		</apex:pageBlock>
+		<apex:pageBlock title="Dados do contato." mode="edit">
+			<strong>&nbsp;&nbsp;&nbsp;&nbsp;Contato:</strong> {!Contact.Name}
+			<br></br>
+			<strong>&nbsp;&nbsp;&nbsp;&nbsp;E-mail:</strong> {!Contact.Email}
+		</apex:pageBlock>
+		<apex:pageBlock title="Produtos com desconto não adquiridos">
+			<apex:dataTable value="{!pcd}" var="a" border="2" cellspacing="5%">
+    			<apex:column >
+        			<apex:facet name="header">Autor</apex:facet>
+        			<apex:outputText value="{!a.Autor__c}"/>
+    			</apex:column>
+    			<apex:column >
+        			<apex:facet name="header">Título</apex:facet>
+        			<apex:outputText value="{!a.Titulo__r.Descricao_Concatenado__c}"/>
+    			</apex:column>
+			</apex:dataTable>
+			<apex:pageBlockButtons >
+        		<apex:commandButton action="{!send}" value="Enviar E-mail"/>
+        		<apex:commandButton action="{!cancel}" value="Cancelar"/>
+      		</apex:pageBlockButtons>
+		</apex:pageBlock>
+		<apex:pageBlock >
+			<font color="Red">
+			<apex:messages />
+			</font>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

@@ -1,0 +1,188 @@
+<apex:page sidebar="false" showHeader="false" contentType="text/html" applyBodyTag="false"  controller="PesquisaSatisfacaoController" id="idPesquisaSatisfacaoController">
+
+    <style type="text/css">
+        .apexp .bPageBlock .detailList {
+            width: 8%;
+        }
+
+        body .bPageBlock .pbBody .dataCol {
+            white-space: nowrap;
+        }
+
+        .color-label{
+        	font: 15px Arial;
+            color: #4a4a56; 
+            font-size:15px;
+        }
+    </style>
+
+    <apex:form >
+		<table>
+            <colgroup>
+				<col width="70%"/>
+				<col width="25%"/>
+				<col width="5%"/>
+			</colgroup>
+			<tr>
+                <th style="font-size:15px;font-weight:bold"><b><apex:sectionHeader title="Pesquisa de Avaliação"/></b></th>
+                <th> </th>
+                <th style="text-align: right;"><apex:image url="https://www.pearson.com/content/dam/one-dot-com/one-dot-com/corporate-selector/Pearson_logo.png/_jcr_content/renditions/cq5dam.web.1600.9600.png" width="100px" height="30px"/></th>
+			</tr>
+
+		</table>
+	    <apex:pageMessages />
+
+	<div>
+     	<apex:outputPanel id="Etapa1"  rendered="{!tela1}">
+        <apex:pageBlock id="pb1">
+          <br></br>
+          <apex:outputLabel value="Etapa 1 – Atendimento"  styleClass="color-label" />
+          <br></br>
+          <br></br>
+          <br></br><br></br>
+                <apex:outputLabel value="1. Como avalia o atendimento prestado pela nossa equipe, de um modo geral?" styleClass="color-label"/>
+          <br></br><br></br>
+                <apex:selectList value="{!pesqSat.Resposta1}" size="1" style="margin-left: 16px;">
+                    <apex:selectOptions value="{!lstPerg1}"/>
+                </apex:selectList>
+          <br></br><br></br>
+                <apex:outputLabel value="2. Como soube da possibilidade de receber uma amostra de livro para avaliação?" styleClass="color-label"/>
+          <br></br><br></br>
+                <apex:selectList value="{!pesqSat.Resposta2}" size="1" style="margin-left: 16px;">
+                    <apex:selectOptions value="{!lstPerg2}"/>
+                </apex:selectList>
+          <br></br><br></br>
+                <apex:outputLabel value="3. Qual a sua percepção com relação à agilidade no atendimento?" styleClass="color-label"/>
+          <br></br><br></br>
+                <apex:selectList value="{!pesqSat.Resposta3}" size="1" style="margin-left: 16px;">
+                    <apex:selectOptions value="{!lstPerg3}"/>
+                </apex:selectList>
+          <br></br><br></br>
+                <apex:outputLabel value="4. O Executivo responsável pela sua região se mostrou empenhado em lhe apresentar o catálogo de livros, incluindo os lançamentos e títulos diferentes daqueles que você solicitou?" styleClass="color-label"/>
+          <br></br><br></br>
+                <apex:selectList value="{!pesqSat.Resposta4}" size="1" style="margin-left: 16px;">
+                    <apex:selectOptions value="{!lstPerg4}"/>
+                </apex:selectList>
+          <br></br>
+          <br></br>
+                <apex:outputLabel value="5. Durante o processo de avaliação, a Pearson enviou comunicados de acompanhamento com o objetivo de orientá-lo e lembra-lo da importância de cumprir todas as etapas. Na sua opinião, esta comunicação foi eficiente?" styleClass="color-label"/>
+          <br></br><br></br>
+                <apex:selectList value="{!pesqSat.Resposta5}" size="1" style="margin-left: 16px;">
+                    <apex:selectOptions value="{!lstPerg5}"/>
+                </apex:selectList>
+          <br></br>
+          <br></br>
+                <apex:outputLabel value="6. O fato de o atendimento ter sido realizado à distância foi prejudicial de alguma forma?" styleClass="color-label"/>
+          <br></br><br></br>
+                <apex:selectList value="{!pesqSat.Resposta6}" size="1" style="margin-left: 16px;">
+                    <apex:selectOptions value="{!lstPerg6}"/>
+                </apex:selectList>
+          <br></br>
+	  	  <br></br><br></br>
+		<table>
+            <colgroup>
+				<col width="95%"/>
+				<col width="5%"/>
+			</colgroup>
+			<tr>
+                <th> </th>
+                <th style="text-align: right;"><apex:commandButton action="{!ProximaFase}" value="Avançar" id="ProximaFase" styleClass="submit"/></th>
+			</tr>
+		</table>
+            	
+            	
+        </apex:pageBlock>
+ 		</apex:outputPanel>			
+	</div>
+
+	<div>    
+        <apex:outputPanel id="Etapa2"  rendered="{!tela2}">
+        <apex:pageBlock id="pb2">
+          <br></br>
+            <apex:outputLabel value="Etapa 2 - Motivação"  styleClass="color-label" />
+          <br></br><br></br>
+                <apex:outputLabel value="7. Qual a sua motivação ao solicitar uma amostra para avaliação?" styleClass="color-label"/>
+          <br></br><br></br>
+                <apex:selectList value="{!pesqSat.Resposta7}" size="1" style="margin-left: 16px;">
+                    <apex:selectOptions value="{!lstPerg7}"/>
+                </apex:selectList>
+          <br></br><br></br>
+                <apex:outputLabel value="8.	A Instituição onde leciona permite que o professor faça a atualização da bibliografia dos cursos?" styleClass="color-label"/>
+          <br></br><br></br>
+                <apex:selectList value="{!pesqSat.Resposta8}" size="1" style="margin-left: 16px;">
+                    <apex:selectOptions value="{!lstPerg8}"/>
+                </apex:selectList>
+          <br></br><br></br>
+                <apex:outputLabel value="9. Com qual frequência a instituição atualiza o acervo da biblioteca?" styleClass="color-label"/>
+          <br></br><br></br>
+                <apex:selectList value="{!pesqSat.Resposta9}" size="1" style="margin-left: 16px;">
+                    <apex:selectOptions value="{!lstPerg9}"/>
+                </apex:selectList>
+          <br></br><br></br>
+		<table>
+            <colgroup>
+				<col width="95%"/>
+				<col width="5%"/>
+			</colgroup>
+			<tr>
+                <th> </th>
+                <th style="text-align: right;"><apex:commandButton action="{!ProximaFase2}" value="Avançar" id="ProximaFase" styleClass="submit"/></th>
+			</tr>
+		</table>
+        </apex:pageBlock>
+	    </apex:outputPanel>			
+    </div>
+        
+   	<div> 
+       <apex:outputPanel id="Etapa3"  rendered="{!tela3}">
+       <apex:pageBlock id="pb3">
+ 		 <br></br>		
+            <apex:outputLabel value="Etapa final: comentários"  styleClass="color-label" />
+          <br></br><br></br> 
+          <apex:outputLabel value="10. Se tiver algum comentário, reclamação, sugestão ou elogio, sinta-se à vontade para compartilhar conosco." styleClass="color-label"/>
+          <br></br><br></br> 
+ 			<apex:inputText value="{!pesqSat.Resposta10}" style="width: 58em;height: 3.75em; margin-left: 16px;" />
+          <br></br><br></br>
+		<table>
+            <colgroup>
+				<col width="95%"/>
+				<col width="5%"/>
+			</colgroup>
+			<tr>
+                <th> </th>
+                <th style="text-align: right;"><apex:commandButton action="{!confirmarSalvar}" value="Salvar Pesquisa" id="ConfirmaResetButton" styleClass="submit"/></th>
+			</tr>
+		</table>           	
+       </apex:pageBlock>
+	   </apex:outputPanel>			
+    </div>
+			
+    <!--  <apex:outputPanel id="Mensagem"  rendered="{!tela4}">
+        <apex:pageBlock id="mg" >
+   		<div> 
+            <apex:outputLabel value="Etapa final: comentários"  styleClass="color-label" />
+          <br></br>
+   		</div> 
+
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="Nós da Pearson estamos comprometidos em colaborar com a formação de Educadores de Resultado e por isso agradecemos por ter respondido esta avaliação." styleClass="color-label"/>
+			</div>
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="Regularmente buscamos realizar melhorias em nossos serviços e produtos, baseado nos valiosos comentários recebidos de nossos professores." styleClass="color-label"/>
+			</div>
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="Estamos ansiosos por atendê-lo novamente em breve." styleClass="color-label"/>
+			</div>
+
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="Pearson Universidades" styleClass="color-label"/>
+			</div>
+       </apex:pageBlock>
+	</apex:outputPanel>		 -->	
+
+    </apex:form>
+</apex:page>

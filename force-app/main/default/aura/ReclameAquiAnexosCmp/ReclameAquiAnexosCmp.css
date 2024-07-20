@@ -1,0 +1,13 @@
+.THIS .slds-spinner_container {
+    background: none;
+}
+
+.THIS .isActivityLoading .slds-spinner_container {
+    position: absolute !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin: auto;
+ }

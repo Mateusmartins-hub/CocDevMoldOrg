@@ -1,0 +1,712 @@
+<aura:component implements="c:CasoInterface" extensible="true" access="global">
+    <aura:attribute name="parent" type="Aura.Component" required="true"/>
+    <aura:attribute name="searchSolutionValue" type="String" />
+    
+    <div class="slds-card">
+        <lightning:card title="Relacionados" class="slds-card">
+            <aura:if isTrue="{!v.showRelatedLists.SlasDoCaso}">
+                <div id="slasDoCaso" class="slds-card__body slds-card__body_inner">
+                    <article class="slds-card" style="border-style: solid; border-width: thin; border-color: rgb(221, 219, 218); box-shadow: 0 4px 4px 0 rgba(0,0,0,.1);">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                        <lightning:icon iconName="standard:today"/>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>SLA's do Caso</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <aura:if isTrue="{!v.SLAs.length == 0}">
+                            <div class="slds-card__body slds-card__body_inner">Nenhum registro para exibir</div>
+                            <aura:set attribute="else">
+                                <div class="slds-card__body">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered  slds-table_bordered slds-table_col-bordered slds-table_fixed-layout" role="grid">
+                                        
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Nome">Nome</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Data de Abertura">Data de Abertura</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Data de Fechamento">Data de Fechamento</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="SLA (em minutos)">SLA (em minutos)</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="SLA (em horas)">SLA (em horas)</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="SLA Utilizado (em minutos)">SLA Utilizado (em minutos)</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="SLA Utilizado (em horas)">SLA Utilizado (em horas)</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Farol do SLA">Farol do SLA</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="SLA Retomado?">SLA Retomado?</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.SLAs}" var="SLA">
+                                                <tr class="slds-line-height_reset">
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!SLA.Name}">
+                                                            <a href="{!v.baseURL + SLA.Id}" tabindex="-1">{!SLA.Name}</a>
+                                                        </div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!SLA.DataAbertura__c}">
+                                                            <lightning:formattedDateTime value="{!SLA.DataAbertura__c}" year="numeric" month="numeric" day="numeric" hour="2-digit" minute="2-digit" />
+                                                        </div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!SLA.ClosedDate__c}">
+                                                            <lightning:formattedDateTime value="{!SLA.ClosedDate__c}" year="numeric" month="numeric" day="numeric" hour="2-digit" minute="2-digit" />
+                                                        </div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!SLA.SLA__c}">{!SLA.SLA__c}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!SLA.SLAHoras__c}">{!SLA.SLAHoras__c}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!SLA.SLAUtilizado__c}">{!SLA.SLAUtilizado__c}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!SLA.SLAUtilizadoHoras__c}">{!SLA.SLAUtilizadoHoras__c}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <aura:unescapedHtml value="{!SLA.FarolSLA__c}" />
+                                                    </td> 
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!SLA.SLARetomado__c}">
+                                                            <ui:outputCheckbox aura:id="output" value="{!SLA.SLARetomado__c}"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!v.SLAs.length > 4}">
+                            <footer class="slds-card__footer" style="text-align: center;">
+                                <a class="slds-card__footer-action" href="{!v.linkAllSLAs}">Visualizar tudo
+                                    <span class="slds-assistive-text">SLA's</span>
+                                </a>
+                            </footer>
+                        </aura:if>
+                    </article>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.showRelatedLists.ComentariosDoCaso}">
+                <div id="comentariosDoCaso" class="slds-card__body slds-card__body_inner">
+                    <article class="slds-card" style="border-style: solid; border-width: thin; border-color: rgb(221, 219, 218); box-shadow: 0 4px 4px 0 rgba(0,0,0,.1);">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                        <lightning:icon iconName="standard:case_comment"/>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Comentários do caso</span>
+                                    </h2>
+                                </div>
+                                <div class="slds-no-flex">
+                                    <lightning:button label="Novo comentário" iconName="utility:add" onclick="{!c.newComment}" />
+                                </div>
+                            </header>
+                        </div>
+                        <aura:if isTrue="{!v.comments.length == 0}">
+                            <div class="slds-card__body slds-card__body_inner">Nenhum registro para exibir</div>
+                            <aura:set attribute="else">
+                                <div class="slds-card__body">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered  slds-table_bordered slds-table_col-bordered slds-table_fixed-layout" role="grid">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="slds-text-title_caps" style="width: 10%;" scope="col">
+                                                    <div class="slds-truncate" title="Público">Público</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" style="width: 20%;" scope="col">
+                                                    <div class="slds-truncate" title="Criado por">Criado por</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" style="width: 17%;" scope="col">
+                                                    <div class="slds-truncate" title="Data de criação">Data de criação</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Comentário">Comentário</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.comments}" var="comment">
+                                                <tr class="slds-line-height_reset">
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!comment.IsPublished}">
+                                                            <ui:outputCheckbox aura:id="output" value="{!comment.IsPublished}"/>
+                                                        </div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!comment.CreatedBy.Name}">{!comment.CreatedBy.Name}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!comment.CreatedDate}"><lightning:formattedDateTime value="{!comment.CreatedDate}" year="numeric" month="numeric" day="numeric" hour="2-digit" minute="2-digit" /></div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" styleClass="white-space: pre-line;" title="{!comment.CommentBody}">{!comment.CommentBody}</div>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                    </article>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.showRelatedLists.ObservadoresDoCaso}">
+                <div id="observadoresDoCaso" class="slds-card__body slds-card__body_inner">
+                    <article class="slds-card" style="border-style: solid; border-width: thin; border-color: rgb(221, 219, 218); box-shadow: 0 4px 4px 0 rgba(0,0,0,.1);">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                        <lightning:icon iconName="standard:user"/>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Observadores do caso</span>
+                                    </h2>
+                                </div>
+                                <div class="slds-no-flex">
+                                    <lightning:button label="Novo observador" iconName="utility:add" onclick="{!c.addObservadores}" />
+                                </div>
+                            </header>
+                        </div>
+                        <aura:if isTrue="{!v.observadores.length == 0}">
+                            <div class="slds-card__body slds-card__body_inner">Nenhum observador</div>
+                            <aura:set attribute="else">
+                                <div class="slds-card__body">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered  slds-table_bordered slds-table_col-bordered slds-table_fixed-layout" role="grid">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Nome">Nome do Observador</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Nome">Informação Por</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Nome">Descrição</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.observadores}" var="observador">
+                                                <tr class="slds-line-height_reset">
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!observador.Observador__r.Name}">{!observador.Observador__r.Name}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!observador.CreatedBy.Name}">{!observador.CreatedBy.Name}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!observador.Informacao__c}">{!observador.Informacao__c}</div>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                    </article>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.showRelatedLists.EmailsDoCaso}">
+                <div id="emailsDoCaso" class="slds-card__body slds-card__body_inner">
+                    <article class="slds-card" style="border-style: solid; border-width: thin; border-color: rgb(221, 219, 218); box-shadow: 0 4px 4px 0 rgba(0,0,0,.1);">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                        <lightning:icon iconName="standard:case_email"/>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Emails</span>
+                                    </h2>
+                                </div>
+                                <div class="slds-no-flex">
+                                    <lightning:button label="Novo e-mail" iconName="utility:send" onclick="{!c.sendEmail}" />
+                                </div>
+                            </header>
+                        </div>
+                        <aura:if isTrue="{!v.emails.length == 0}">
+                            <div class="slds-card__body slds-card__body_inner">Nenhum email disponível</div>
+                            <aura:set attribute="else">
+                                <div class="slds-card__body">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered  slds-table_bordered slds-table_col-bordered slds-table_fixed-layout" role="grid">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Status">Status</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="E-mail">E-mail</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="E-mail">E-mail</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Data da mensagem">Data da mensagem</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.emails}" var="email">
+                                                <tr class="slds-line-height_reset">
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate">
+                                                            <b>
+                                                                <aura:if isTrue="{!email.Status == '0'}">Novo</aura:if>
+                                                                <aura:if isTrue="{!email.Status == '1'}">Lido</aura:if>
+                                                                <aura:if isTrue="{!email.Status == '2'}">Respondido</aura:if>
+                                                                <aura:if isTrue="{!email.Status == '3'}">Enviado</aura:if>
+                                                                <aura:if isTrue="{!email.Status == '4'}">Encaminhado</aura:if>
+                                                            </b>
+                                                        </div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!email.TextBody}">
+                                                            <a href="{!v.baseURL + email.Id}" tabindex="-1">{!email.Subject == null ? 'Sem Assunto' : email.Subject}</a>
+                                                            <br/>
+                                                            <div class="slds-text-body_small slds-truncate">{!email.TextBody}</div>
+                                                        </div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!email.ToAddress}">{!email.ToAddress}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <lightning:formattedDateTime value="{!email.CreatedDate}" year="numeric" month="numeric" day="numeric" hour="2-digit" minute="2-digit" />
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!v.emails.length > 4}">
+                            <footer class="slds-card__footer" style="text-align: center;">
+                                <a class="slds-card__footer-action" href="{!v.linkAllEmails}">Visualizar tudo
+                                    <span class="slds-assistive-text">Emails</span>
+                                </a>
+                            </footer>
+                        </aura:if>
+                    </article>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.showRelatedLists.NotasDoCaso}">
+                <div id="notasDoCaso" class="slds-card__body slds-card__body_inner">
+                    <article class="slds-card" style="border-style: solid; border-width: thin; border-color: rgb(221, 219, 218); box-shadow: 0 4px 4px 0 rgba(0,0,0,.1);">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                        <lightning:icon iconName="standard:note"/>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Notas vinculadas</span>
+                                    </h2>
+                                </div>
+                                <div class="slds-no-flex">
+                                    <lightning:button label="Nova nota" iconName="utility:add" onclick="{!c.newNote}" />
+                                </div>
+                            </header>
+                        </div>
+                        <aura:if isTrue="{!v.notasVinculadas.length == 0}">
+                            <div class="slds-card__body slds-card__body_inner">Nenhum registro para exibir</div>
+                            <aura:set attribute="else">
+                                <div class="slds-card__body">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_bordered slds-table_col-bordered slds-table_fixed-layout" role="grid">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Nome">Nome</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.notasVinculadas}" var="nota">
+                                                <tr class="slds-line-height_reset">
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!nota.Name}">
+                                                            <a href="{!v.baseURL + nota.Id}" tabindex="-1">{!nota.Name}</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!v.notasVinculadas.length > 4}">
+                            <footer class="slds-card__footer" style="text-align: center;">
+                                <a class="slds-card__footer-action" href="{!v.linkAllNotes}">Visualizar tudo
+                                    <span class="slds-assistive-text">Notas</span>
+                                </a>
+                            </footer>
+                        </aura:if>
+                    </article>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.showRelatedLists.MateriaisDoCaso}">
+                <div id="materiaisDoCaso" class="slds-card__body slds-card__body_inner">
+                    <article class="slds-card" style="border-style: solid; border-width: thin; border-color: rgb(221, 219, 218); box-shadow: 0 4px 4px 0 rgba(0,0,0,.1);">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                        <lightning:icon iconName="standard:shipment"/>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Materiais</span>
+                                    </h2>
+                                </div>
+                                <div class="slds-no-flex">
+                                    <lightning:button label="Novo material" iconName="utility:add" onclick="{!c.newMaterial}" />
+                                </div>
+                            </header>
+                        </div>
+                        <aura:if isTrue="{!v.materiais.length == 0}">
+                            <div class="slds-card__body slds-card__body_inner">Nenhum registro para exibir</div>
+                            <aura:set attribute="else">
+                                <div class="slds-card__body">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered  slds-table_bordered slds-table_col-bordered slds-table_fixed-layout" role="grid">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Nome">Nome</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Cod. Item">Cod. Item</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Qtde. Informada">Qtde. Informada</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Qtde. Recebida">Qtde. Recebida</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Qtde. Comprada">Qtde. Comprada</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Valor Unitário">Valor Unitário</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Descrição do Defeito">Descrição do Defeito</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.materiais}" var="material">
+                                                <tr class="slds-line-height_reset">
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!material.Name}">
+                                                            <a href="{!v.baseURL + material.Id}" tabindex="-1">{!material.Name}</a>
+                                                        </div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!material.BR_Cod_Item__c}">{!material.BR_Cod_Item__c}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!material.BR_Qtd_Informada__c}">{!material.BR_Qtd_Informada__c}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!material.BR_Qtd_Recebida__c}">{!material.BR_Qtd_Recebida__c}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!material.BR_Qtd_Comprada__c}">{!material.BR_Qtd_Comprada__c}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!material.BR_Valor_Unitario__c}">{!material.BR_Valor_Unitario__c}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!material.BR_Descri_o_do_Defeito__c}">{!material.BR_Descri_o_do_Defeito__c}</div>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!v.materiais.length > 4}">
+                            <footer class="slds-card__footer" style="text-align: center;">
+                                <a class="slds-card__footer-action" href="{!v.linkAllMaterials}">Visualizar tudo
+                                </a>
+                            </footer>
+                        </aura:if>
+                    </article>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.showRelatedLists.SolucoesDoCaso}">
+                <div id="solucoesDoCaso" class="slds-card__body slds-card__body_inner">
+                    <article class="slds-card" style="border-style: solid; border-width: thin; border-color: rgb(221, 219, 218); box-shadow: 0 4px 4px 0 rgba(0,0,0,.1);">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                        <lightning:icon iconName="standard:solution"/>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Soluções</span>
+                                    </h2>
+                                </div>
+                                
+                                <div class="slds-no-flex slds-button-group">    
+                                    <lightning:buttonGroup>
+                                        <lightning:button label="Exibir soluções sugeridas" onclick="{!c.searchSuggestedSolutions}" />  
+                                    </lightning:buttonGroup>             
+                                    <div class="slds-table slds-table_cell-buffer" style="margin: auto 7px;">
+                                        ou
+                                    </div>                                        
+                                    <lightning:buttonGroup>
+                                        <lightning:input variant="label-hidden" value="{!v.searchSolutionValue}" />
+                                    </lightning:buttonGroup>                                              
+                                    <lightning:buttonGroup>
+                                        <lightning:button label="Encontrar solução" iconName="utility:search" onclick="{!c.searchSolution}" />  
+                                    </lightning:buttonGroup>  
+                                </div>
+                            </header>
+                        </div>
+                        <aura:if isTrue="{!v.solutions.length == 0}">
+                            <div class="slds-card__body slds-card__body_inner">Nenhuma solução anexada</div>
+                            <aura:set attribute="else">
+                                <div class="slds-card__body">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered  slds-table_bordered slds-table_col-bordered slds-table_fixed-layout" role="grid">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Nome">Nome</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Número da Solução">Número da Solução</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Status">Status</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Autor">Autor</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.solutions}" var="sol">
+                                                <tr class="slds-line-height_reset">
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!sol.Solution.SolutionName}">
+                                                            <a href="{!v.baseURL + sol.SolutionId}" tabindex="-1">{!sol.Solution.SolutionName}</a>
+                                                        </div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!sol.Solution.SolutionNumber}">{!sol.Solution.SolutionNumber}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!sol.Solution.Status}">{!sol.Solution.Status}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!sol.CreatedBy.Name}">{!sol.CreatedBy.Name}</div>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                    </article>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.showRelatedLists.AnexosDoCaso}">
+                <div id="anexosDoCaso" class="slds-card__body slds-card__body_inner">
+                    <article class="slds-card" style="border-style: solid; border-width: thin; border-color: rgb(221, 219, 218); box-shadow: 0 4px 4px 0 rgba(0,0,0,.1);">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                        <lightning:icon iconName="standard:file"/>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Anexos</span>
+                                    </h2>
+                                </div>
+                                <div class="slds-no-flex">
+                                    <lightning:button label="Anexar arquivo" iconName="utility:attach" onclick="{!c.attachFile}" />
+                                </div>
+                            </header>
+                        </div>
+                        <aura:if isTrue="{!v.attachments.length == 0}">
+                            <div class="slds-card__body slds-card__body_inner">Nenhum registro para exibir</div>
+                            <aura:set attribute="else">
+                                <div class="slds-card__body">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered  slds-table_bordered slds-table_col-bordered slds-table_fixed-layout" role="grid">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Nome do arquivo">Nome do arquivo</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Tamanho">Tamanho</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Última modificação">Última modificação</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Criado por">Criado por</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.attachments}" var="anexo">
+                                                <tr class="slds-line-height_reset">
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!anexo.Name}">
+                                                            <a href="{!v.baseURL + anexo.Id}" tabindex="-1">{!anexo.Name}</a>
+                                                        </div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!(anexo.BodyLength/1024)+'KB'}"><lightning:formattedNumber value="{!(anexo.BodyLength/1024/1000)}" maximumFractionDigits="2"/>MB</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!anexo.LastModifiedDate}"><lightning:formattedDateTime value="{!anexo.LastModifiedDate}" year="numeric" month="numeric" day="numeric" hour="2-digit" minute="2-digit" /></div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!anexo.CreatedBy.Name}">{!anexo.CreatedBy.Name}</div>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!v.attachments.length > 4}">
+                            <footer class="slds-card__footer" style="text-align: center;">
+                                <a class="slds-card__footer-action" href="{!v.linkAllAttachments}">Visualizar tudo
+                                    <span class="slds-assistive-text">Anexos</span>
+                                </a>
+                            </footer>
+                        </aura:if>
+                    </article>
+                </div>
+            </aura:if>
+            <aura:if isTrue="{!v.showRelatedLists.HistoricosDoCaso}">
+                <div id="historicosDoCaso" class="slds-card__body slds-card__body_inner">
+                    <article class="slds-card" style="border-style: solid; border-width: thin; border-color: rgb(221, 219, 218); box-shadow: 0 4px 4px 0 rgba(0,0,0,.1);">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-account" title="account">
+                                        <lightning:icon iconName="standard:search"/>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <span>Histórico do caso</span>
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>
+                        <aura:if isTrue="{!v.caseHistories.length == 0}">
+                            <div class="slds-card__body slds-card__body_inner">Nenhum registro para exibir</div>
+                            <aura:set attribute="else">
+                                <div class="slds-card__body">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered  slds-table_bordered slds-table_col-bordered slds-table_fixed-layout" role="grid">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Data da alteração">Data da alteração</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Alterado por">Alterado por</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Campo">Campo</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Valor antigo">Valor antigo</div>
+                                                </th>
+                                                <th class="slds-text-title_caps" scope="col">
+                                                    <div class="slds-truncate" title="Valor novo">Valor novo</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.caseHistories}" var="hist">
+                                                <tr class="slds-line-height_reset">
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!hist.DataCriacao}">
+                                                            <b><lightning:formattedDateTime value="{!hist.DataCriacao}" year="numeric" month="numeric" day="numeric" hour="2-digit" minute="2-digit" /></b></div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!hist.CriadoPor}">{!hist.CriadoPor}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!hist.Campo}">{!hist.Campo}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!hist.ValorAntigo}">{!hist.ValorAntigo}</div>
+                                                    </td>
+                                                    <td role="gridcell">
+                                                        <div class="slds-truncate" title="{!hist.NovoValor}">{!hist.NovoValor}</div>
+                                                    </td>
+                                                </tr>
+                                            </aura:iteration> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                        <aura:if isTrue="{!v.caseHistories.length > 4}">
+                            <footer class="slds-card__footer" style="text-align: center;">
+                                <a class="slds-card__footer-action" href="{!v.linkAllCaseHistories}">Visualizar tudo
+                                    <span class="slds-assistive-text">SLA's</span>
+                                </a>
+                            </footer>
+                        </aura:if>
+                    </article>
+                </div>
+            </aura:if>
+        </lightning:card>
+    </div>
+</aura:component>

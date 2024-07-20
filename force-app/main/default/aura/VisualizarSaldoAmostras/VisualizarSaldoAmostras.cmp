@@ -1,0 +1,57 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="VisualizarSaldoAmostrasController">
+    
+    <aura:attribute name="usuarioLogado" type="Object" default="new Object()"/>
+    <aura:attribute name="usuarioOwner" type="Object" default="new Object()"/>
+    
+    <aura:attribute name="loading" type="Boolean" default="true"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <lightning:card  title="{!'Saldo ' + v.usuarioLogado.nome}">
+        <aura:set attribute="actions">
+            <lightning:button label="Atualizar" onclick="{!c.setUsuarioLogado}"/>
+        </aura:set>
+        <p class="slds-p-horizontal_small">
+            <aura:renderIf isTrue="{!v.loading}">
+                    <div class="slds-p-horizontal--small slds-size--1-of-1">
+                        <div class="slds-p-horizontal--small slds-size--1-of-1 isActivityLoading">
+                            <lightning:spinner variant="brand" size="small"/>
+                        </div>   
+                    </div>
+                    <div style="height: 40px"></div>
+                    <aura:set attribute="else">
+                        <div class="slds-text-heading_large">
+                            R$ {!v.usuarioLogado.saldo}
+                        </div>
+                    </aura:set>
+            </aura:renderIf>
+        </p>
+    </lightning:card>
+    <aura:renderIf isTrue="{!v.usuarioOwner.nome != v.usuarioLogado.nome}">
+        <lightning:card  title="{!'Saldo ' + v.usuarioOwner.nome}">
+            <aura:set attribute="actions">
+                <lightning:button label="Atualizar" onclick="{!c.setUsuarioOwner}"/>
+            </aura:set>
+            <p class="slds-p-horizontal_small">
+                <aura:renderIf isTrue="{!v.loading}">
+                    <div class="slds-p-horizontal--small slds-size--1-of-1">
+                        <div class="slds-p-horizontal--small slds-size--1-of-1 isActivityLoading">
+                            <lightning:spinner variant="brand" size="small"/>
+                        </div>   
+                    </div>
+                    <div style="height: 40px"></div>
+                    <aura:set attribute="else">
+                        <aura:renderIf isTrue="{!v.usuarioOwner.podeVisualizar}">
+                            <div class="slds-text-heading_large">
+                                R$ {!v.usuarioOwner.saldo}
+                            </div>
+                            <aura:set attribute="else">
+                                Privilégios Insulficientes
+                            </aura:set>
+                        </aura:renderIf>
+                    </aura:set>
+                </aura:renderIf>
+            </p>
+        </lightning:card>
+    </aura:renderIf>
+</aura:component>

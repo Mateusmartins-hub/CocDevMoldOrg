@@ -1,0 +1,594 @@
+<aura:component extensible="true"
+    implements="c:CasoInterface,flexipage:availableForAllPageTypes,lightning:actionOverride,flexipage:availableForRecordHome,force:hasRecordId"
+    access="global" controller="CasoController">
+    <aura:method name="addObservadores" action="{!c.addObservadores}" />
+    <lightning:workspaceAPI aura:id="workspace" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <lightning:recordEditForm aura:id="caseFormEdit" onsubmit="{!c.salvar}" onload="{!c.onloadForm}"
+        onerror="{!c.errorInformation}" onsuccess="{!c.successInformation}" recordId="{!v.recordId}" density="comfy"
+        objectApiName="Case">
+        <div>
+            <div aura:id="uploadCard" class="slds-card__header" style="position:relative">
+                <div class="slds-form--compound">
+                    <div class="slds-card">
+                        <div class="slds-page-header">
+                            <div class="slds-grid">
+                                <div class="slds-col slds-has-flexi-truncate">
+                                    <div class="slds-media slds-no-space slds-grow">
+                                        <div class="slds-media__figure">
+                                            <lightning:icon iconName="action:new_case" alternativeText="Approved" />
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <h1 class="slds-page-header__title slds-truncate slds-align-middle">Caso
+                                            </h1>
+                                            <p class="slds-text-body_small slds-line-height_reset">Preencha os campos
+                                                abaixo
+                                                com as
+                                                informações do caso</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-no-flex slds-m-around_x-small slds-float_right">
+
+                                    <aura:renderIf isTrue="{!v.isClassic}">
+                                        <aura:if isTrue="{!v.edit != true}">
+                                            <lightning:buttonGroup>
+                                                <lightning:button label="Voltar" iconName="utility:back"
+                                                    onclick="{!c.inicio}" />
+                                            </lightning:buttonGroup>
+                                            <aura:set attribute="else">
+                                                <aura:if isTrue="{!v.recordId == ''}">
+                                                    <lightning:buttonGroup>
+                                                        <lightning:button label="Voltar" iconName="utility:back"
+                                                            onclick="{!c.inicio}" />
+                                                    </lightning:buttonGroup>
+                                                </aura:if>
+                                            </aura:set>
+                                        </aura:if>
+                                    </aura:renderIf>
+
+                                    <lightning:buttonGroup class="{!v.edit != true ? 'slds-hide' : ''}">
+                                        <aura:if isTrue="{!v.recordId != '' &amp;&amp; v.informouCliente}">
+                                            <lightning:button label="Cancelar" onclick="{!c.cancelarForm}" />
+                                        </aura:if>
+                                        <aura:if isTrue="{!!v.processoDeFecharCaso &amp;&amp; v.informouCliente}">
+                                            <lightning:button aura:id="submit" label="Salvar" type="submit"
+                                                variant="brand" />                                            
+                                                                                                                     
+                                        </aura:if>
+                                         <aura:if isTrue="{!v.processoDeFecharCaso &amp;&amp; v.informouCliente}">                                                    
+                                                        <lightning:button label="Enviar" onclick="{!c.eviarEmail}"
+                                                                          variant="brand" />                                                    
+                                                </aura:if>    
+                                    </lightning:buttonGroup>
+
+                                    <!--<lightning:buttonGroup class="{!v.edit == true ? 'slds-hide' : 'slds-button_first'}">
+                            <aura:if isTrue="{!!v.caso.IsClosed &amp;&amp; v.caso.Situacao__c != 'Aguardando Cliente'}">
+                                <lightning:button label="Enviar para um grupo anterior" onclick="{!c.voltarAoGrupoSolucionador}"/>
+                                <lightning:button label="Enviar para próximo grupo" onclick="{!c.enviarProxGrupoSolucionador}"/>
+                            </aura:if>
+                        </lightning:buttonGroup>-->
+
+                                    <lightning:buttonGroup
+                                        class="{!v.edit == true ? 'slds-hide' : 'slds-button_first'}">
+                                        <aura:if isTrue="{!v.caso.IsClosed}">
+                                            <lightning:button label="Clonar" onclick="{!c.clonar}" />
+                                        </aura:if>
+                                        <aura:if isTrue="{!!v.caso.IsClosed}">
+                                            <lightning:button label="Fechar caso" onclick="{!c.fechar}" />
+                                            <lightning:button label="Aceitar" onclick="{!c.aceitar}" />
+                                            <lightning:button label="Editar" onclick="{!c.editarForm}" />
+
+                                            <div aura:id="buttonMenu"
+                                                class="slds-dropdown-trigger slds-dropdown-trigger_click"
+                                                onclick="{!c.clickMenu}">
+                                                <lightning:button class="slds-button-menu" iconName="utility:down" />
+                                                <div class="slds-dropdown slds-dropdown_right">
+                                                    <ul class="slds-dropdown__list" role="menu"
+                                                        aria-label="Mostrar mais">
+                                                        <li class="slds-dropdown__item" role="presentation">
+                                                            <a onclick="{!c.clickMenuItem}" id="enviaGrupoAnterior"
+                                                                role="menuitem" tabindex="-1">
+                                                                <span class="slds-truncate"
+                                                                    title="Enviar para um grupo anterior">Enviar para um
+                                                                    grupo
+                                                                    anterior</span>
+                                                            </a>
+                                                            <a onclick="{!c.clickMenuItem}" id="enviaProximoGrupo"
+                                                                role="menuitem" tabindex="-1">
+                                                                <span class="slds-truncate"
+                                                                    title="Enviar para próximo grupo">Enviar
+                                                                    para próximo grupo</span>
+                                                            </a>
+                                                            <a onclick="{!c.clickMenuItem}" id="clonarCaso"
+                                                                role="menuitem" tabindex="-1">
+                                                                <span class="slds-truncate" title="Clonar caso">Clonar
+                                                                    caso</span>
+                                                            </a>
+                                                            <a onclick="{!c.clickMenuItem}" id="cancelarCaso"
+                                                                role="menuitem" tabindex="-1">
+                                                                <span class="slds-truncate"
+                                                                    title="Cancelar caso">Cancelar
+                                                                    caso</span>
+                                                            </a>
+                                                            <a onclick="{!c.clickMenuItem}" id="addObservadores"
+                                                                role="menuitem" tabindex="-1">
+                                                                <span class="slds-truncate"
+                                                                    title="Adicionar observador">Adicionar
+                                                                    observador</span>
+                                                            </a>
+                                                            <a onclick="{!c.clickMenuItem}" id="retornarFila"
+                                                                role="menuitem" tabindex="-1">
+                                                                <span class="slds-truncate"
+                                                                    title="Retornar à Fila">Retornar
+                                                                    à
+                                                                    Fila</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </aura:if>
+                                    </lightning:buttonGroup>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!v.processoDeVoltarAoGrupo}">
+                        <ui:message title="Atenção" severity="warning" closable="false" class="slds-p-left_medium">
+                            Após retornar para um grupo solucionador, não será possível ver este caso na sua fila.
+                        </ui:message>
+                    </aura:if>
+                    <aura:if isTrue="{!v.isLastGrupoSolucionador &amp;&amp; !v.caso.IsClosed}">
+                        <ui:message title="Atenção" severity="error" closable="false" class="slds-p-left_medium">
+                            Esta é a ultima etapa do processo, após solução e contato com o cliente, o caso deve ser
+                            encerrado.
+                        </ui:message>
+                    </aura:if>
+                    <aura:if isTrue="{!v.msgErro != ''}">
+                        <p style="margin-top: 5px;">
+                            <div class="demo-only" style="height: 3rem;">
+                                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error slds-is-relative"
+                                    role="alert" style="border-radius: 4px;">
+                                    <span class="slds-assistive-text">error</span>
+                                    <span class="slds-icon_container slds-icon-utility-error slds-m-right_small"
+                                        title="Description of icon when needed">
+                                        <lightning:icon class="icn" iconName="utility:error" alternativeText="Error!"
+                                            variant="error" size="small" />
+                                    </span>
+                                    <h2>
+                                        {!v.msgErro}
+                                    </h2>
+                                    <div class="slds-notify__close">
+                                        <span
+                                            class="slds-icon_container slds-icon-utility-error slds-m-right_small slds-no-flex "
+                                            title="Description of icon when needed">
+                                            <lightning:buttonIcon class="icn" iconName="utility:close" size="medium"
+                                                onclick="{!c.closeError}" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </p>
+                    </aura:if>
+                    <aura:if isTrue="{!v.erroInit == false}">
+                        <div class="slds-card">
+                            <lightning:card class="slds-card">
+                                <div class="slds-card__body slds-card__body_inner">
+                                    <aura:if isTrue="{!v.view}">
+                                        <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="Case"
+                                            density="comfy">
+                                            <aura:iteration items="{!v.mapCamposCaso}" var="sessao" indexVar="key">
+                                                <div class="slds-section slds-is-open">
+                                                    <h3 class="slds-section__title slds-theme_shade">
+                                                        <span class="slds-truncate slds-p-horizontal_small"
+                                                            title="Section Title">{!sessao.key}</span>
+                                                    </h3>
+                                                    <div aria-hidden="false" class="slds-section__content">
+                                                        <div class="slds-grid slds-wrap">
+                                                            <aura:iteration items="{!sessao.value}" var="campo">
+                                                                <div class="slds-col slds-size_1-of-2">
+                                                                    <div
+                                                                        class="slds-m-around_xx-small slds-form-element">
+                                                                        <div class="slds-border_bottom"
+                                                                            style="width: 97%; padding-bottom: 2px;">
+                                                                            <aura:if
+                                                                                isTrue="{!campo.key == 'AccountId' || campo.key == 'ContactId'}">
+                                                                                <aura:if
+                                                                                    isTrue="{!campo.key == 'AccountId'}">
+                                                                                    <label for="AccountId">Nome da
+                                                                                        Conta</label>
+                                                                                </aura:if>
+                                                                                <aura:if
+                                                                                    isTrue="{!campo.key == 'ContactId'}">
+                                                                                    <label for="ContactId">Nome do
+                                                                                        Indivíduo</label>
+                                                                                </aura:if>
+                                                                                <span class="slds-a"
+                                                                                    onclick="{!c.clickSpan}"
+                                                                                    data-value="{!campo.key}">
+                                                                                    <lightning:outputField
+                                                                                        aura:id="{!campo.key + Output}"
+                                                                                        fieldName="{!campo.key}"
+                                                                                        variant="label-hidden" />
+                                                                                </span>
+                                                                                <aura:set attribute="else">
+                                                                                    <lightning:outputField
+                                                                                        aura:id="{!campo.key + Output}"
+                                                                                        fieldName="{!campo.key}" />
+                                                                                </aura:set>
+                                                                            </aura:if>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </aura:iteration>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </aura:iteration>
+                                        </lightning:recordViewForm>
+                                    </aura:if>
+                                    <aura:if isTrue="{!v.edit}">
+                                        <aura:if
+                                            isTrue="{! (!v.processoDeProxGrupo &amp;&amp; !v.processoDeAddObservadores  &amp;&amp; !v.processoDeVoltarAoGrupo &amp;&amp; !v.processoDeParametrizacao &amp;&amp; !v.processoDeFecharCaso &amp;&amp; !!v.informouCliente) || v.recordId == ''}">
+                                            <aura:iteration items="{!v.mapCamposCaso}" var="sessao" indexVar="key">
+                                                <div class="slds-section slds-is-open">
+                                                    <h3 class="slds-section__title slds-theme_shade">
+                                                        <span class="slds-truncate slds-p-horizontal_small"
+                                                            title="{!sessao.key}">{!sessao.key}</span>
+                                                    </h3>
+                                                    <div class="slds-grid slds-wrap">
+                                                        <aura:iteration items="{!sessao.value}" var="campo">
+                                                            <div class="slds-col slds-size_1-of-2">
+                                                                <div
+                                                                    class="{!v.campoComErro ==  campo.key ? 'slds-m-around_xx-small slds-form-element slds-has-error' : 'slds-m-around_xx-small slds-form-element'}">
+                                                                    <lightning:inputField aura:id="campoEdicao"
+                                                                        id="{!'Input' + campo.key}"
+                                                                        fieldName="{!campo.key}"
+                                                                        disabled="{!campo.value}" />
+                                                                    <div class="slds-has-error">
+                                                                        <div
+                                                                            class="{!v.campoComErro ==  campo.key ? 'slds-form-element__help' : 'slds-hide'}">
+                                                                            {!v.erroCampoMensagem}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </aura:iteration>
+                                                    </div>
+                                                </div>
+                                            </aura:iteration>
+                                        </aura:if>
+
+                                        <aura:if
+                                            isTrue="{!v.processoDeProxGrupo || v.processoDeAddObservadores || v.processoDeVoltarAoGrupo || v.processoDeParametrizacao || v.recordId == '' || v.recordId == undefined || v.recordId == null}">
+                                            <div class="slds-section slds-is-open">
+                                                <h3 class="slds-section__title slds-theme_shade">
+                                                    <span class="slds-truncate slds-p-horizontal_small"
+                                                        title="Section Title">Informações sobre a árvore de
+                                                        assunto</span>
+                                                </h3>
+                                                <div class="slds-grid slds-wrap">
+                                                    <lightning:inputField aura:id="tipoInput" fieldName="Tipo__c"
+                                                        value="{!v.tipo}" class="slds-hide" />
+                                                    <lightning:inputField aura:id="subtipoInput" fieldName="Subtipo__c"
+                                                        value="{!v.subtipo}" class="slds-hide" />
+                                                    <lightning:inputField aura:id="detalhamentoInput"
+                                                        fieldName="Detalhamento__c" value="{!v.detalhamento}"
+                                                        class="slds-hide" />
+                                                    <lightning:inputField aura:id="detalhamento2Input"
+                                                        fieldName="Detalhamento2__c" value="{!v.detalhamento2}"
+                                                        class="slds-hide" />
+
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-m-around_xx-small slds-form-element">
+                                                            <lightning:combobox aura:id="tipoCombobox" label="Tipo"
+                                                                disabled="{!v.tipoDesativado}" placeholder="--Nenhum--"
+                                                                options="{!v.tipos}" onchange="{!c.alteracaoTipo}" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-m-around_xx-small slds-form-element">
+                                                            <lightning:combobox aura:id="subtipoCombobox"
+                                                                label="Subtipo" disabled="{!v.subtipoDesativado}"
+                                                                placeholder="--Nenhum--" options="{!v.subtipos}"
+                                                                onchange="{!c.alteracaoSubtipo}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-m-around_xx-small slds-form-element}">
+                                                            <lightning:combobox aura:id="detalhamentoCombobox"
+                                                                label="Detalhamento"
+                                                                disabled="{!v.detalhamentoDesativado}"
+                                                                placeholder="--Nenhum--" options="{! v.detalhamentos }"
+                                                                onchange="{! c.alteracaoDetalhamento }" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-m-around_xx-small slds-form-element">
+                                                            <lightning:combobox aura:id="detalhamento2Combobox"
+                                                                label="Detalhamento 2"
+                                                                disabled="{!v.detalhamento2Desativado}"
+                                                                placeholder="--Nenhum--" options="{! v.detalhamentos2 }"
+                                                                onchange="{! c.alteracaoDetalhamento2 }" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-m-around_xx-small slds-form-element">
+                                                            <lightning:input aura:id="areaDonaDoProcesso"
+                                                                name="areaDonaDoProcesso" disabled="true"
+                                                                label="Área dona do processo"
+                                                                value="{!v.areaDonaDoProcesso}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <div class="slds-m-around_xx-small slds-form-element">
+                                                            <lightning:combobox aura:id="grupoSolucionador"
+                                                                label="Grupo solucionador"
+                                                                disabled="{!v.grupoSolucionadorDesativado}"
+                                                                value="{!v.grupoSolucionador}"
+                                                                onchange="{!c.changeGrupoSolucionador}"
+                                                                placeholder="--Nenhum--"
+                                                                options="{!v.listGrupoSolucionador}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </aura:if>
+                                        <aura:if isTrue="{!!v.informouCliente}">
+                                                <div class="slds-section slds-is-open">
+                                                    <h3 class="slds-section__title slds-theme_shade">
+                                                        <span class="slds-truncate slds-p-horizontal_small"
+                                                            title="Enviar pesquisa de satisfação ao cliente">
+                                                            Enviar pesquisa de satisfação ao cliente
+                                                        </span>
+                                                    </h3>
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-col slds-size_1-of-1">
+                                                            <div class="slds-m-around_xx-small slds-form-element">
+                                                                <ui:inputCheckbox aura:id="enviarPesquisaSatisfacao" label="Enviar pesquisa de satisfação?" change="{!c.handleEnviarPesquisa}"/>
+                                                            </div>
+                                                        </div>
+                                                        <aura:if isTrue="{!!v.enviarPesquisaSatisfacao}">
+                                                            <div class="slds-col slds-size_1-of-1">
+                                                                <div class="slds-m-around_xx-small slds-form-element">
+                                                                    <lightning:combobox aura:id="motivoNaoEnvio" label="Motivo não envio da pesquisa"
+                                                                     placeholder="--Nenhum--"
+                                                                        options="{!v.motivosNaoEnvioPesquisaSatisfacao}" />
+                                                                </div>
+                                                            </div>
+                                                        </aura:if>
+                                                        <div class="slds-col slds-size_1-of-1">
+                                                            <div class="slds-m-around_xx-small slds-form-element">
+                                                                <lightning:button variant="brand" label="Fechar caso" title="Fechar caso" onclick="{!c.handlePesquisaMotivo}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.temCampoProxGrupo}">
+                                            <div class="slds-section slds-is-open">
+                                                <h3 class="slds-section__title slds-theme_shade">
+                                                    <span class="slds-truncate slds-p-horizontal_small">Informações
+                                                        para o
+                                                        próximo grupo</span>
+                                                </h3>
+                                                <div class="slds-grid slds-wrap">
+                                                    <aura:iteration items="{!v.camposProxGrupo}" var="campo">
+                                                        <div class="slds-col slds-size_1-of-2">
+                                                            <div class="slds-m-around_xx-small slds-form-element">
+                                                                <lightning:inputField fieldName="{!campo}" />
+                                                            </div>
+                                                        </div>
+                                                    </aura:iteration>
+                                                </div>
+                                            </div>
+                                        </aura:if>
+                                        <aura:if isTrue="{!v.processoDeProxGrupo || v.processoDeAddObservadores || v.processoDeVoltarAoGrupo || v.processoDeParametrizacao || v.processoDeFecharCaso}">
+                                            <aura:if isTrue="{!v.processoDeAddObservadores}">
+                                                <div class="slds-section slds-is-open">
+                                                    <h3 class="slds-section__title slds-theme_shade">
+                                                        <span class="slds-truncate slds-p-horizontal_small"
+                                                            title="Section Title">Adicionar observadores</span>
+                                                    </h3>
+                                                    <div class="slds-col slds-size_1-of-1">
+                                                        <div class="slds-m-around_xx-small slds-form-element">
+                                                            <lightning:inputField aura:id="usuarioCombo"
+                                                                fieldName="AddObservador__c" onchange="{!c.addUser}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-1">
+                                                        <div class="slds-m-around_xx-small slds-form-element">
+                                                            <label class="slds-form-element__label"
+                                                                for="text-input-id-1">Observadores</label>
+                                                            <lightning:pillContainer items="{!v.items}"
+                                                                onitemremove="{!c.handleItemRemove}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <aura:iteration items="{!v.items}" var="item">
+                                                    <div class="slds-col slds-size_1-of-1">
+                                                        <div class="slds-m-around_xx-small slds-form-element">
+                                                            <lightning:textarea disabled="{!item.existente}"
+                                                                value="{!item.informacao}" aura:id="InputInformacoes"
+                                                                name="{!item.value}"
+                                                                label="{!'Informações para ' + item.label}" />
+                                                        </div>
+                                                    </div>
+                                                </aura:iteration>
+                                            </aura:if>
+
+                                            <aura:if isTrue="{!v.processoDeVoltarAoGrupo}">
+                                                <div class="slds-section slds-is-open">
+                                                    <h3 class="slds-section__title slds-theme_shade">
+                                                        <span class="slds-truncate slds-p-horizontal_small"
+                                                            title="Section Title">Escolher grupo solucionador
+                                                            anterior</span>
+                                                    </h3>
+                                                    <div class="slds-col slds-size_1-of-1">
+                                                        <div
+                                                            class="{!v.erroComboGrupoAnterior != '' ? 'slds-m-around_xx-small slds-form-element slds-has-error' : 'slds-m-around_xx-small slds-form-element'}">
+                                                            <lightning:combobox aura:id="inputBackGrupoSolucionador"
+                                                                label="Grupo solucionador - *Só serão listados os grupos antecessores (já transicionados no fluxo) que passaram pelos SLA's na lista*"
+                                                                placeholder="Selecione uma opção"
+                                                                options="{!v.gruposSolucionadoresAnteriores}" />
+                                                            <div
+                                                                class="{!v.erroComboGrupoAnterior !=  '' ? 'slds-form-element__help' : 'slds-hide'}">
+                                                                {!v.erroComboGrupoAnterior}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-1">
+                                                        <div
+                                                            class="{!v.erroDescricaoGrupoAnterior != '' ? 'slds-m-around_xx-small slds-form-element slds-has-error' : 'slds-m-around_xx-small slds-form-element'}">
+                                                            <lightning:textarea aura:id="inputDescBackGrupoSolucionador"
+                                                                label="Comentário para o grupo a ser enviado" />
+                                                            <div
+                                                                class="{!v.erroDescricaoGrupoAnterior !=  '' ? 'slds-form-element__help' : 'slds-hide'}">
+                                                                {!v.erroDescricaoGrupoAnterior}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </aura:if>
+
+                                            <aura:if isTrue="{!v.processoDeParametrizacao}">
+                                                <aura:iteration items="{!v.mapCamposCaso}" var="sessao" indexVar="key">
+                                                    <div class="slds-section slds-is-open">
+                                                        <h3 class="slds-section__title slds-theme_shade">
+                                                            <span class="slds-truncate slds-p-horizontal_small"
+                                                                title="{!sessao.key}">{!sessao.key}</span>
+                                                        </h3>
+                                                        <div class="slds-grid slds-wrap">
+                                                            <aura:iteration items="{!sessao.value}" var="campo">
+                                                                <aura:if
+                                                                    isTrue="{!campo.key != 'AreaDonaProcesso__c' &amp;&amp; campo.key != 'GrupoSolucionador__c' &amp;&amp; campo.key != 'Tipo__c' &amp;&amp; campo.key != 'Subtipo__c' &amp;&amp; campo.key != 'Detalhamento__c' &amp;&amp; campo.key != 'Detalhamento2__c'}">
+                                                                    <div class="slds-col slds-size_1-of-2">
+                                                                        <div
+                                                                            class="{!v.campoComErro ==  campo.key ? 'slds-m-around_xx-small slds-form-element slds-has-error' : 'slds-m-around_xx-small slds-form-element'}">
+                                                                            <lightning:inputField aura:id="campoEdicao"
+                                                                                id="{!'Input' + campo.key}"
+                                                                                fieldName="{!campo.key}"
+                                                                                disabled="{!campo.value}" />
+                                                                            <div class="slds-has-error">
+                                                                                <div
+                                                                                    class="{!v.campoComErro ==  campo.key ? 'slds-form-element__help' : 'slds-hide'}">
+                                                                                    {!v.erroCampoMensagem}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </aura:if>
+                                                            </aura:iteration>
+                                                        </div>
+                                                    </div>
+                                                </aura:iteration>
+                                            </aura:if>
+                                            
+                                            
+
+                                            <aura:if isTrue="{!v.processoDeFecharCaso}">
+                                                <div class="slds-section slds-is-open">
+                                                    <h3 class="slds-section__title slds-theme_shade">
+                                                        <span class="slds-truncate slds-p-horizontal_small"
+                                                            title="Informar resolução ao cliente">Informar fechamento do
+                                                            caso ao
+                                                            cliente</span>
+                                                    </h3>
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-col slds-size_1-of-1">
+                                                            <div class="slds-m-around_xx-small slds-form-element">
+                                                                <lightning:combobox aura:id="emailDe" label="De"
+                                                                    value="{!v.emailDe}" placeholder="--Nenhum--"
+                                                                    options="{!v.emailsDe}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-1">
+                                                            <div class="slds-m-around_xx-small slds-form-element">
+                                                                <lightning:input type="email" aura:id="emailPara"
+                                                                    value="{!v.caso.Account.BR_Account_email__c}"
+                                                                    label="Para" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col slds-size_1-of-1">
+                                                            <div
+                                                                class="{!v.erroDescEmailFechamento != '' ? 'slds-m-around_xx-small slds-form-element slds-has-error' : 'slds-m-around_xx-small slds-form-element'}">
+                                                                <lightning:textarea aura:id="inputDescEmailFechamento"
+                                                                    label="Descrição da resolução a ser enviada" />
+                                                                <div
+                                                                    class="{!v.erroDescEmailFechamento !=  '' ? 'slds-form-element__help' : 'slds-hide'}">
+                                                                    {!v.erroDescEmailFechamento}
+                                                                </div>
+                                                            </div>
+                                                        </div>                                                        
+                                                    </div>
+                                                </div>
+                                            </aura:if>
+                                        </aura:if>
+                                    </aura:if>
+                                </div>
+                            </lightning:card>
+                        </div>
+                    </aura:if>
+                    <div class="{!v.edit != true ? 'slds-hide' : 'slds-card'}" style="margin-bottom: 50px;">
+                        <div class="slds-page-header">
+                            <div class="slds-grid">
+                                <div class="slds-col slds-has-flexi-truncate">
+                                </div>
+                                <div class="slds-no-flex slds-button-group slds-m-around_x-small slds-float_right">
+                                    <aura:if isTrue="{!v.edit != true}">
+                                        <lightning:buttonGroup>
+                                            <lightning:button label="Voltar" iconName="utility:back"
+                                                onclick="{!c.inicio}" />
+                                        </lightning:buttonGroup>
+                                        <aura:set attribute="else">
+                                            <aura:if isTrue="{!v.recordId == ''}">
+                                                <lightning:buttonGroup>
+                                                    <lightning:button label="Voltar" iconName="utility:back"
+                                                        onclick="{!c.inicio}" />
+                                                </lightning:buttonGroup>
+                                            </aura:if>
+                                        </aura:set>
+                                    </aura:if>
+                                    <aura:if isTrue="{!v.recordId != '' &amp;&amp; v.informouCliente}">
+                                        <lightning:button label="Cancelar" onclick="{!c.cancelarForm}" />
+                                    </aura:if>
+                                    <aura:if isTrue="{!!v.processoDeFecharCaso &amp;&amp; v.informouCliente}">
+                                        <lightning:button aura:id="submit" label="Salvar" type="submit"
+                                            variant="brand" />                                                                                  
+                                    </aura:if>
+                                      <aura:if isTrue="{!v.processoDeFecharCaso &amp;&amp; v.informouCliente}">                                                
+                                                <lightning:button label="Enviar" onclick="{!c.eviarEmail}"
+                                                    variant="brand" />                                                
+                                            </aura:if>                                        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <aura:renderIf isTrue="{!v.loading}">
+                        <div class="slds-spinner_container" aura:id="uploadSpinner">
+                            <lightning:spinner variant="brand" size="medium" />
+                        </div>
+                    </aura:renderIf>
+                </div>
+            </div>
+
+        </div>
+    </lightning:recordEditForm>
+    <p style="margin-top: 20px;"></p>
+    <aura:renderIf isTrue="{!v.isClassic}">
+        <aura:if isTrue="{!v.view}">
+            <c:CaseRelatedLists aura:id="relatedListsComp" caso="{!v.caso}" parent="{!this}"
+                showRelatedLists="{!v.showRelatedLists}" recordId="{!v.recordId}" baseURL="{!v.baseURL}"
+                SLAs="{!v.SLAs}" linkAllSLAs="{!v.linkAllSLAs}" observadores="{!v.observadores}" emails="{!v.emails}"
+                linkAllEmails="{!v.linkAllEmails}" comments="{!v.comments}" notasVinculadas="{!v.notasVinculadas}"
+                linkAllNotes="{!v.linkAllNotes}" materiais="{!v.materiais}" linkAllMaterials="{!v.linkAllMaterials}"
+                solutions="{!v.solutions}" attachments="{!v.attachments}" linkAllAttachments="{!v.linkAllAttachments}"
+                caseHistories="{!v.caseHistories}" linkAllCaseHistories="{!v.linkAllCaseHistories}"
+                approveHistories="{!v.approveHistories}" />
+        </aura:if>
+    </aura:renderIf>
+</aura:component>

@@ -1,0 +1,19 @@
+<apex:page standardStylesheets="FALSE" sidebar="false" showHeader="false" applyHtmlTag="TRUE" docType="html-5.0" lightningStylesheets="true" title="Envio de documentos - Pearson">
+    <apex:includeLightning />
+    <apex:includeScript value="/lightning/lightning.out.js" />
+    <apex:slds />
+    
+    <script>
+    const documentsToSend = '{!$CurrentPage.parameters.documentsToSend}';
+    const state = '{!$CurrentPage.parameters.state}';
+    const recordId = '{!$CurrentPage.parameters.recordId}';
+    
+    $Lightning.use("c:EnvioDeDocumentosApp", function() {
+        $Lightning.createComponent("c:EnvioDeDocumentosCmp",
+                                   { documentsToSend : documentsToSend, state : state, recordId: recordId },
+                                   "envio-documentos",
+                                   function(cmp) {});
+    });
+    </script>        
+    <div id="envio-documentos"></div>
+</apex:page>

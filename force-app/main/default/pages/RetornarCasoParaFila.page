@@ -1,0 +1,52 @@
+<apex:page standardController="Case" recordSetVar="casos" lightningStylesheets="true" standardStylesheets="false">
+    <apex:slds />
+    <script src="/soap/ajax/25.0/connection.js"></script>
+    <script src="/soap/ajax/25.0/apex.js"></script>
+    <div class="slds-spinner_container">
+        <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <span class="slds-assistive-text">Loading</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+        </div>
+    </div>
+
+    <!--<div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 10% 50%">
+        <img src="http://upload.wikimedia.org/wikipedia/commons/e/ed/Cursor_Windows_Vista.gif" />
+    </div>-->
+    <script type="text/javascript">
+        window.onload = function()
+        {
+            var records = '{!selected}';
+            
+            if (typeof records == 'undefined' || records.length == 0) 
+            { 
+                alert("Por favor, selecione pelo menos uma linha");
+                window.history.back();
+            }
+            else
+            {
+                if(confirm("Tem certeza que deseja retornar para fila estes casos?")) 
+                { 
+                    records = records.replace('[','');
+                    records = records.replace(']','');
+                    records = records.split(', ');
+
+                    sforce.connection.sessionId = '{!$Api.Session_ID}';
+                    var error = sforce.apex.execute("CaseReturnClass","returnToQueue",{casosIds: records}); 
+
+                    if(error != "sucesso") { 
+                        alert(error); 
+                    } else { 
+                        alert("Caso(s) retornados"); 
+                    }
+
+                    window.history.back();
+                } 
+                else
+                {
+                    window.history.back();
+                }
+            }
+        }
+    </script>
+</apex:page>

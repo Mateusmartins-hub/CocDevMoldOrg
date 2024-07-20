@@ -1,0 +1,67 @@
+<template>
+    <template if:true={erroInit}>
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+            <span class="slds-assistive-text">Erro</span>
+            <lightning-icon icon-name="utility:error" size="x-small" alternative-text="Erro" class="slds-m-right_xx-small" variant="inverse"></lightning-icon>
+            <h2>
+                {msgErroInit}
+            </h2>
+        </div>
+    </template>
+    <template if:false={erroInit}>
+        <lightning-card>
+            <template if:true={displayModal}>
+                <c-confirmation-modal onconfirmationcloseclick={handleCloseClickConfirmationModal} onconfirmationokclick={handleOkClickConfirmationModal} text={textModal}></c-confirmation-modal>
+            </template>
+
+            <template if:true={loading}>
+                <div class="spinnerHolder slds-align_absolute-center">
+                    <lightning-spinner alternative-text="Carregando" size="medium" variant="brand"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:false={loading}>
+                <div class={divGradientClass}>
+                    <div class="slds-grid slds-p-horizontal_medium">
+                        <div class={divColScrollableClass}>
+                            <div data-id="scrollDiv" class="slds-scrollable_x">
+                                <div class={divScrollableClass}>
+                                    <div class="slds-progress">
+                                        <div class="slds-progress__list">
+                                            <template for:each={gruposSolucionadores} for:item="grupo" for:index="i">
+                                                <div key={grupo.index} class={grupo.classes.div} onclick={openModalConfirm} data-id={i}>
+                                                    <div style="height: 25px; line-height: 22px;">
+                                                        <button class={grupo.classes.button}>
+                                                            <template if:true={grupo.icon.enabled}>
+                                                                <lightning-icon variant={grupo.icon.variant} icon-name={grupo.icon.name} size="xx-small">
+                                                                </lightning-icon>
+                                                            </template>
+                                                        </button>
+                                                    </div>
+                                                    <div style="height: 37.29px">
+                                                        <button class="btnGroupText">
+                                                            <div class={grupo.classes.textButton}>{grupo.name}</div>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <div class="slds-progress-bar slds-progress-bar_x-small" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" role="progressbar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <template if:true={isDivScrollable}>
+                            <div class="slds-col">
+                                <div style="text-align: center">
+                                    <lightning-button-icon icon-name="utility:chevronleft" size="medium" alternative-text="Navegar para a esquerda" class="slds-m-left_xx-small" onclick={scrollLeft}></lightning-button-icon>
+                                    <lightning-button-icon icon-name="utility:chevronright" size="medium" alternative-text="Navegar para a direita" class="slds-m-left_xx-small" onclick={scrollRight}></lightning-button-icon>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+        </lightning-card>
+    </template>
+</template>

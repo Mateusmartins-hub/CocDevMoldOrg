@@ -1,0 +1,27 @@
+<apex:page standardController="Case" standardStylesheets="FALSE" sidebar="false" showHeader="false" applyHtmlTag="TRUE" docType="html-5.0" extensions="vfCasoController" lightningStylesheets="true">
+    <apex:includeScript value="/lightning/lightning.out.js" />
+    <script>
+    var idCaso = '{!$CurrentPage.parameters.Id}';
+    
+    if((idCaso == null || idCaso == undefined || idCaso == '') || {!caso.Novo__c}) {
+        $Lightning.use("c:CasoApp", function() {
+            $Lightning.createComponent(
+                "c:Caso", 
+                { recordId : idCaso },
+                "divId",
+                function(cmp)
+                { });
+        });
+    }else{
+        $Lightning.use("c:CasoAntigoApp", function() {
+            $Lightning.createComponent(
+                "c:CasoAntigo", 
+                { recordId : idCaso },
+                "divId",
+                function(cmp)
+                { });
+        });
+    }
+    </script>
+    <div id="divId"></div>
+</apex:page>

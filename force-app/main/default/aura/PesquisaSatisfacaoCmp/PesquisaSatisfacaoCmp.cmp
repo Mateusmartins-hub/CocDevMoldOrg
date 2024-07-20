@@ -1,0 +1,38 @@
+<aura:component  extensible="true" access="global" controller="PesquisaSatisfacaoCasoController">
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="selectedRate" type="Integer"/>
+    <aura:attribute name="loading" type="Boolean" default="false"/>
+    <ltng:require scripts="/support/console/34.0/integration.js"/>
+    
+    <div class="logo">
+        <img style="width: 210px;" alt="Pearson logo" src="https://www.pearson.com/content/dam/one-dot-com/one-dot-com/corporate-selector/Pearson_logo.png/_jcr_content/renditions/cq5dam.web.1600.9600.png"/>
+    </div>
+    <aura:if isTrue="{!v.loading}">
+        <div class="slds-spinner_container" aura:id="uploadSpinner">
+            <lightning:spinner variant="brand" size="medium" />
+        </div>
+    </aura:if>
+    <div class="pesquisa">
+        <div class="pesquisa-header">
+            <h1>O quão satisfeito você ficou com nosso atendimento?</h1>
+        </div>
+        <div class="pesquisa-escolha"> 
+            <p class="insatisfeito" style="color:#ff470a">Muito insatisfeito</p>
+            <lightning:button aura:id="0" variant="brand" label="0" title="0" class="rate-zero" onclick="{!c.handleRate}"/> 
+            <lightning:button aura:id="1" variant="brand" label="1" title="1" class="rate-one" onclick="{!c.handleRate}"/> 
+            <lightning:button aura:id="2" variant="brand" label="2" title="2" class="rate-two" onclick="{!c.handleRate}"/>
+            <lightning:button aura:id="3" variant="brand" label="3" title="3" class="rate-three" onclick="{!c.handleRate}"/>
+            <lightning:button aura:id="4" variant="brand" label="4" title="4" class="rate-four" onclick="{!c.handleRate}"/>
+            <lightning:button aura:id="5" variant="brand" label="5" title="5" class="rate-five" onclick="{!c.handleRate}"/>
+            <lightning:button aura:id="6" variant="brand" label="6" title="6" class="rate-six" onclick="{!c.handleRate}"/>
+            <lightning:button aura:id="7" variant="brand" label="7" title="7" class="rate-seven" onclick="{!c.handleRate}"/>
+            <lightning:button aura:id="8" variant="brand" label="8" title="8" class="rate-eight" onclick="{!c.handleRate}"/>
+            <lightning:button aura:id="9" variant="brand" label="9" title="9" class="rate-nine" onclick="{!c.handleRate}"/>
+            <lightning:button aura:id="10" variant="brand" label="10" title="10" class="rate-ten" onclick="{!c.handleRate}"/>
+            <p class="satisfeito" style="color:#23dc84">Muito satisfeito</p>
+        </div>        
+    </div>
+    <div class="botao-enviar"> 
+        <lightning:button variant="brand" label="Enviar pesquisa" title="Enviar pesquisa" onclick="{!c.sendRate}"/> 
+    </div>
+</aura:component>

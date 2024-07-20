@@ -1,0 +1,151 @@
+<apex:page sidebar="false" showHeader="false" contentType="text/html" applyBodyTag="false"  controller="PesquisaSatisfacaoLivroController" id="idPesquisaSatisfacaoLivroController">
+
+    <style type="text/css">
+        .apexp .bPageBlock .detailList {
+            width: 8%;
+        }
+
+        body .bPageBlock .pbBody .dataCol {
+            white-space: nowrap;
+        }
+
+        .color-label{
+        	font: 15px Arial;
+            color: #4a4a56; 
+            font-size:15px;
+        }
+    </style>
+
+    <apex:form >
+		<table>
+            <colgroup>
+				<col width="60%"/>
+				<col width="40"/>
+				<col width="5%"/>
+			</colgroup>
+			<tr>
+                <th style="font-size:10px;font-weight:bold;font-family:Ariel"><apex:sectionHeader title="{!titulo}"/></th>
+                <th></th>
+                <th style="text-align: right;"><apex:image url="https://www.pearson.com/content/dam/one-dot-com/one-dot-com/corporate-selector/Pearson_logo.png/_jcr_content/renditions/cq5dam.web.1600.9600.png" width="100px" height="30px"/></th>
+			</tr>
+
+		</table>
+		    <apex:pageMessages />
+ 
+    <apex:outputPanel id="Perguntas"  rendered="{!tela1}">
+
+		<apex:pageBlock id="pb" >
+		
+			<div>
+	  			<br></br>
+	  			<apex:outputLabel value="Avaliação do livro" styleClass="color-label" /> 
+	  			<br></br>
+	  			<br></br>
+ 			</div>
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="1. Em uma escala de 1 a 10, como você avalia o livro recebido, de um modo geral?" styleClass="color-label" />
+ 			</div>
+			<div>
+	  			<br></br>
+                <apex:selectList value="{!AvaliaLivro}" size="1" style="margin-left: 16px;">
+                    <apex:selectOptions value="{!lstAvaliaLivro}"/>
+                </apex:selectList>
+ 			</div>
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="2.	O livro foi adotado na ementa do curso?" styleClass="color-label" />
+			</div>
+			<div>
+	  			<br></br>
+                <apex:selectList value="{!adotaLivro}" size="1" style="margin-left: 16px;" >
+                    <apex:selectOptions value="{!lstAdotaLivro}"/>
+                </apex:selectList>
+			</div>
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="3.	Você utilizou a Sala Virtual para baixar Materiais de Apoio do livro recebido?" styleClass="color-label" />
+			</div>
+			<div>
+	  			<br></br>
+                <apex:selectList value="{!salaVirtual}" size="1" style="margin-left: 16px;" >
+                    <apex:selectOptions value="{!lstSalaVirtual}"/>
+                </apex:selectList>
+			</div>
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="4.	Se não, porque?" styleClass="color-label" />
+			</div>
+			<div>
+	  			<br></br>
+                <apex:selectList value="{!seNao}" size="1" style="margin-left: 16px;" >
+                    <apex:selectOptions value="{!lstSeNao}"/>
+                </apex:selectList>
+			</div>
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="5.	Se sim, qual o seu grau de satisfação em relação ao conteúdo baixado?" styleClass="color-label" />
+			</div>
+			<div>
+	  			<br></br>
+                <apex:selectList value="{!seSim}" size="1" style="margin-left: 16px;" >
+                    <apex:selectOptions value="{!lstSeSim}"/>
+                </apex:selectList>
+			</div>
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="6.	Qual a probabilidade de você recomendar os livros da Pearson a um colega professor?" styleClass="color-label" />
+			</div>
+			<div>
+	  			<br></br>
+                <apex:selectList value="{!recomenda}" size="1" style="margin-left: 16px;" >
+                    <apex:selectOptions value="{!lstRecomenda}"/>
+                </apex:selectList>
+			</div>
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="7.	Se tiver algum comentário, reclamação, sugestão ou elogio sobre o livro, sinta-se a vontade para compartilhar conosco." styleClass="color-label"/>
+			</div>
+			<div>
+	  			<br></br>
+  				<apex:inputText value="{!comentario}" style="width: 58em;height: 3.75em; margin-left: 16px;" />
+			</div>
+
+		<table>
+            <colgroup>
+				<col width="95%"/>
+				<col width="5%"/>
+			</colgroup>
+			<tr>
+                <th> </th>
+                <th style="text-align: right;"><apex:commandButton action="{!confirmarSalvar}" value="Salvar Pesquisa" id="ConfirmaResetButton" styleClass="submit"/></th>
+			</tr>
+		</table>
+       </apex:pageBlock>
+       
+	</apex:outputPanel>			
+	
+    <!-- apex:outputPanel id="Mensagem"  rendered="{!tela2}">
+        <apex:pageBlock id="mg" title="Mensagem final">
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="Nós da Pearson estamos comprometidos em colaborar com a formação de Educadores de Resultado e por isso agradecemos por ter respondido esta avaliação." styleClass="color-label"/>
+			</div>
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="Regularmente buscamos realizar melhorias em nossos serviços e produtos, baseado nos valiosos comentários recebidos de nossos professores." styleClass="color-label"/>
+			</div>
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="Estamos ansiosos por atendê-lo novamente em breve." styleClass="color-label"/>
+			</div>
+
+			<div>
+	  			<br></br>
+                <apex:outputLabel value="Pearson Universidades" styleClass="color-label"/>
+			</div>
+       </apex:pageBlock>
+	</apex:outputPanel> -->			
+
+    </apex:form>
+</apex:page>

@@ -1,0 +1,145 @@
+<apex:page standardController="Diagnostico_Sistemas__c" renderAs="pdf">
+    <apex:form >
+        <div align="Center">
+        <apex:image url="{!$Resource.Diagnostico_Logo}"/>        
+        </div>
+        <table width="700px">
+            <tr>
+                <td align="Center" width="700px" style="color: White; font-weight: bold; font-family: Arial; font-size:18px; background-color: #364395;" colspan="3" >Ferramenta de Diagnóstico de Sistemas</td>
+            </tr>
+            <tr>
+                <td width="20%" style="color: White; font-weight: bold; font-family: Arial; font-size:14px; background-color: #0089b7;">Nome da Escola:</td>
+                <td width="80%" style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Account__r.Name}</td>
+            </tr>
+            <tr>
+                <td width="20%" style="color: White; font-weight: bold; font-family: Arial; font-size:14px; background-color: #0089b7;">Nome do Contato:</td>
+                <td width="80%" style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Contato__r.Contact__r.Name}</td>
+                
+            </tr>
+            <tr>
+                <td width="20%" style="color: White; font-weight: bold; font-family: Arial; font-size:14px; background-color: #0089b7;">Cargo:</td>
+                <td width="80%" style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Contato__r.BR_AcademicRole__c}</td>
+            </tr>
+			<tr>
+                <td width="20%" style="color: White; font-weight: bold; font-family: Arial; font-size:14px; background-color: #0089b7;">Executivo:</td>
+                <td width="80%" style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Owner.name}</td>
+            </tr>            
+			<tr>
+                <td width="20%" style="color: White; font-weight: bold; font-family: Arial; font-size:14px; background-color: #0089b7;">Código:</td>
+                <td width="80%" style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Codigo__c}</td>
+            </tr>
+        </table>
+        
+        <table width="700px">
+            <tr align="Center">
+                <td style="color: White; font-weight: bold; font-family: Arial; font-size:16px; background-color: #364395;">Observações</td>
+                <td width="34%" style="color: White; font-weight: bold; font-family: Arial; font-size:16px; background-color: #364395;" colspan="3">Diagnóstico</td>
+            </tr>
+            <tr align="Center">
+                <td align="Left" rowspan="5" style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Observacao__c}</td>
+                <td width="17%" style="color: White; font-weight: bold; font-family: Arial; font-size:14px; background-color: #0089b7;">Sistema</td>
+                <td width="17%" style="color: White; font-weight: bold; font-family: Arial; font-size:14px; background-color: #0089b7;">Pontos</td>
+            </tr>
+            <tr align="Center">
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">COC</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.PesoCoCTotal__c}</td>
+            </tr>
+            <tr align="Center">
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">DOM Bosco</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.PesoDBTotal__c}</td>
+            </tr>
+            <tr align="Center">
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">Pueri Domus</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.PesoPDTotal__c}</td>
+            </tr>    
+            <tr align="Center">
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;"></td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;"></td>
+            </tr>               
+        </table>
+        
+        <table width="700px">
+            <tr align="Center" style="color: White; font-weight: bold; font-family: Arial; font-size:14px; background-color: #364395;">
+                <td width="2%" style="color: White; font-weight: bold; font-family: Arial; font-size:16px; background-color: #364395;">#</td>
+                <td width="63%" style="color: White; font-weight: bold; font-family: Arial; font-size:16px; background-color: #364395;">Critério</td>
+                <td width="45%" style="color: White; font-weight: bold; font-family: Arial; font-size:16px; background-color: #364395;">Resposta</td>
+            </tr>
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">1.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp1__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp1__c}</td>
+            </tr>            
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">2.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp2__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp2__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">3.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp3__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp3__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">4.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp4__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp4__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">5.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp5__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp5__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">6.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp6__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp6__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">7.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp7__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp7__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">8.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp8__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp8__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">9.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp9__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp9__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">10.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp10__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp10__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">11.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp11__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp11__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">12.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp12__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp12__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">13.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp13__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp13__c}</td>
+            </tr>        
+            <tr>
+                <td align="Right" style="color: White; font-weight: bold; font-family: Arial; font-size:12px; background-color: #0089b7;">14.</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!$ObjectType.Diagnostico_Sistemas__c.Fields.Resp14__c.inlineHelpText}</td>
+                <td style="color: #364395; font-family: Arial; font-size:12px; background-color: #F2F2F2;">{!Diagnostico_Sistemas__c.Resp14__c}</td>
+            </tr>    
+        </table>
+        
+        <p align="Center" style="color: #364395; font-family: Arial; font-size:12px;">
+        	<apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+    			<apex:param value="{!Diagnostico_Sistemas__c.LastModifiedDate}" /> 
+			</apex:outputText>    
+        </p>
+    </apex:form>
+</apex:page>

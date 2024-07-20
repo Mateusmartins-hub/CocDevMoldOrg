@@ -1,0 +1,265 @@
+/******************************* HEADER *****************************************/
+
+@page{
+	/*size: A4 portrait;*/
+	padding: 0;
+	margin-top: 100pt;
+	margin-left: 20pt;
+	margin-right: 0;
+
+	@top-center {
+		 content: element(hd);
+	}
+
+	@bottom-right {
+	    content: "Página "counter(page) " de " counter(pages);
+	    font-size: 8.8pt;
+	    padding-right: 5pt;
+	}
+}
+
+/*
+@page { size : landscape }
+@page rotated { size : landscape }
+*/
+
+div.header{
+	position: running(hd);
+    display: block;
+    height: 71pt;	
+    width: 580pt;
+}
+
+.header .principal div, .header .professor div{
+	float: left;
+}
+
+.header .principal .tit{
+	width: 430pt;
+	margin-left: 10pt;
+	font-weight: bold;
+}
+
+.header .principal .tit .sub-tit{
+    float: none;
+    /*margin-top: 26pt;*/
+    font-weight: bold;
+    margin-left: 135pt;
+}
+
+.header .principal .info{
+	 width: 60pt;
+	 text-align: right;
+}
+
+.header .principal .info .status{
+	margin-top: 20pt;
+	color: rgb(247,0,0);
+	font-weight: bold;
+}
+
+.header .professor {
+    margin-top: 52pt;
+}
+
+.header .professor div{
+	margin: 1pt 6pt;
+	width: 410pt;
+}
+
+.header .professor .num{
+	width: 60pt;
+}
+
+div.footer {
+	position: running(footer);
+}
+
+.banner-cinza {
+    background-color: rgb(206,206,206);
+    border: 1pt solid;
+    font-weight: bold;
+    height: 17pt !important;
+}
+
+.banner-cinza label{
+	padding: 1pt 6pt;	
+}
+
+.pular-pagina{
+	page-break-after: always;
+	border: none !important;
+}
+
+
+/********************************** CORPO GERAL *****************************************/
+
+.corpo div, .corpo table{
+	 border: 1pt solid;
+	 margin: 0;
+     width: 577pt;
+     margin-left: -5pt;
+     margin-bottom: 3pt;
+     margin-top: 3pt;
+}
+
+.corpo table{
+	width: 579pt;
+	font-size: 9pt;
+	border-spacing: 0;
+}
+
+.corpo table thead tr th {
+	font-weight: bold;
+	border-bottom: 1px solid;
+}
+
+.corpo ul li{
+	float: left;
+	list-style: none;
+	margin-left: 47pt;
+}
+
+.corpo span{
+	font-weight: bold;
+}
+
+
+/********************************** CORPO ITENS *****************************************/
+
+/***** ENDERECO *****/
+
+.endereco{
+	height: 71pt;
+}
+
+.endereco td{
+	border-bottom: 1px solid;
+}
+
+.endereco tr + tr + tr + tr td {
+	border: none;
+}
+
+.endereco tr td div{
+    border: none;
+    float: left;
+    height: 16pt;
+    margin: 0;
+    font-size: 7.5pt;
+}
+
+.endereco tr:first-child td div{
+	width: 38%;
+}
+
+.endereco tr td div.num	{
+	 width: 19%;	
+}
+
+.endereco tr + tr td div, .endereco tr + tr + tr td div{
+	width: 19%;
+}
+
+.endereco tr + tr + tr + tr td div{
+	width: 38%;
+}	
+
+/***** CARGO *****/
+
+table.cargo{
+	height: 40pt;
+}
+
+
+
+/***** ADOCOES *****/
+
+.adocoes tbody{
+	font-size: 7.5pt;
+}
+
+.adocoes tbody tr td{
+	 border-bottom: 1.4pt dotted;
+	 /*margin: 5pt 0; NAO FUNCIONA EM TD*/
+}
+
+/* NAO FUNCIONA EM PDF
+.adocoes tbody tr:last-child td{
+	border-bottom: none;
+}*/
+
+.adocoes tbody tr td div {
+    border: medium none;
+    margin-left: 6pt;
+    width: auto;
+}
+
+.adocoes tr td:first-child {
+	width: 15%;
+}
+
+.adocoes tr td + td {
+	width: 2%;
+}
+
+.adocoes tr td + td + td {
+	width: 12%;
+}
+
+.adocoes tr td + td + td + td {
+	width: 13%;
+}
+
+/***** EVIADOS *****/
+
+.mat-envi{
+	font-size: 9pt;
+}
+
+.mat-envi table{
+	margin-bottom: 10pt;
+	margin-top: 2pt;
+	margin-left: 6pt;
+	margin-right: 6pt;
+	width: 98%;
+	border: none;
+	font-size: 8pt;
+}
+
+.mat-envi table thead tr th {
+	font-weight: bold;
+	border-bottom: none;
+	width: 20%;
+}
+
+.mat-envi div{
+	border: none;
+	margin: 0;
+	border-bottom: 1px solid;
+	margin-left: 0.57pt;
+	height: 12pt;
+	font-weight: bold;
+}
+
+.mat-envi span{
+	font-weight: bold;	
+	padding: 4pt 7pt;
+}
+
+/***** SOLICITADOS *****/
+
+.mat-sol td{
+	border:	 1px solid;
+	width: 22%;
+}
+
+.mat-sol tr td:last-child {
+	width: 5%;
+}
+
+/***** OBS *****/
+
+.observacoes{
+	height: 71pt;
+}

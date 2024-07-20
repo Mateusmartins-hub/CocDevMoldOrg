@@ -1,0 +1,67 @@
+<apex:page docType="html-5.0" title="Lista do Cadastro de Clientes - SAP" sidebar="true" showHeader="true" lightningStylesheets="true" controller="CadastroClienteListaController" >   
+    <apex:includeScript value="{!$Resource.jQuery}"/>    
+    
+    <apex:includeScript value="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.18.3/js/jquery.tablesorter.js"/>
+    <apex:includeScript value="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.18.3/js/jquery.tablesorter.widgets.js"/>
+    <apex:stylesheet value="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.18.3/css/theme.jui.css"/>
+    <script>
+    
+    $(document).ready(function(){
+        $("table").tablesorter({
+            
+            theme : 'jui', 
+            
+            headerTemplate : '{content} {icon}',
+            
+            widgets : ['uitheme', 'zebra'],
+            
+            widgetOptions : {
+                zebra   : ["even", "odd"],
+            }
+            
+        });
+    });
+    </script>
+    <apex:form title="Solicitação do Cadastro de Clientes" styleClass="slds" >
+        <apex:pageMessages />
+        <apex:pageBlock title="Solicitações do Cadastro de Cliente" >
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockTable value="{!listRegister}" var="a" styleClass="outBorder" columnsWidth="10%,15%,35%,15%,10%,15%" >
+                    <apex:column styleClass="inBorder">
+                        <apex:facet name="header">Código</apex:facet>
+                        <apex:outputLink value="/apex/CadastroCliente?id={!a.Id}">{!a.Codigo}</apex:outputLink>
+                    </apex:column>
+                    <apex:column styleClass="inBorder">
+                        <apex:facet name="header">Conta</apex:facet>
+                        <apex:outputLink value="/{!a.ContaId}">{!a.ContaName}</apex:outputLink>
+                    </apex:column>                    
+                    <apex:column styleClass="inBorder">
+                        <apex:facet name="header">Nome do Cliente</apex:facet>
+                        <apex:outputText >{!a.Nome}</apex:outputText>
+                    </apex:column>
+                    <apex:column styleClass="inBorder">
+                        <apex:facet name="header">Tipo de Pessoa</apex:facet>
+                        <apex:outputText >{!a.TipoPessoa}</apex:outputText>
+                    </apex:column>
+                    <apex:column styleClass="inBorder">
+                        <apex:facet name="header">Status</apex:facet>
+                        <apex:outputText >{!a.Status}</apex:outputText>
+                    </apex:column>
+                    <apex:column styleClass="inBorder">
+                        <apex:facet name="header">Solicitado em</apex:facet>
+                        <apex:outputText value="{0,date,dd/MM/yyyy}">
+                            <apex:param value="{!a.DataCriacao}"/> 
+                        </apex:outputText>
+                    </apex:column>
+                    <apex:column styleClass="inBorder">
+                        <apex:facet name="header">Solicitante</apex:facet>
+                        <apex:outputLink value="/{!a.SolicitanteId}">{!a.SolicitanteName}</apex:outputLink>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton action="{!newRequest}" value="Novo"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

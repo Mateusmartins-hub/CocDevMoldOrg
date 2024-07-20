@@ -1,0 +1,103 @@
+<apex:page standardController="Event">
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSlpREyea9ZDeBmBJYxvxskFGAORWe4-U&v=3.exp&signed_in=true"></script>
+    <apex:includeScript value="{!$Resource.forcetk}" />
+    <apex:includeScript value="{!$Resource.jQuery}" />
+    <apex:includeScript value="{!$Resource.angularjs}" />
+    <script type="text/javascript">
+        // Get an instance of the REST API client and set the session ID
+        var client = new forcetk.Client();
+        client.setSessionToken('{!$Api.Session_ID}');
+    </script>
+    <script>
+        var map,
+            mapZoom = 15,
+            coords,
+            placeLatitude = '{!Event.Account.BR_Latitude__c}'.replace(',','.'),
+            placeLongitude = '{!Event.Account.BR_Longitude__c}'.replace(',','.'),
+            initialLatitude = '{!Event.BR_InitialLocation__Latitude__s}',
+            initialLongitude = '{!Event.BR_InitialLocation__Longitude__s}',
+            mapOptions = { zoom: 5, center: new google.maps.LatLng(-22, -52), preserveViewport: true };
+    
+        function initialize() {
+            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            
+            // checkin feito
+            if(initialLatitude != '') {
+                if(placeLatitude != '' && placeLongitude != '') {
+                    var start = new google.maps.LatLng(initialLatitude, initialLongitude);
+                    var end = new google.maps.LatLng(placeLatitude, placeLongitude);
+                    var request = { origin : end, destination : start, travelMode : google.maps.TravelMode.DRIVING };
+                    var directionsDisplay = new google.maps.DirectionsRenderer();
+                    var directionsService = new google.maps.DirectionsService();
+                    
+                    directionsDisplay.setMap(map);
+                    
+                    directionsService.route(request, function(response, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                            directionsDisplay.setDirections(response);
+                        } else if(status == google.maps.DirectionsStatus.ZERO_RESULTS)  {
+                            var startMarker = new google.maps.Marker({
+                                position: start,
+                                animation: google.maps.Animation.DROP,
+                                map: map
+                            }); 
+                            
+                            var endMarker = new google.maps.Marker({
+                                position: end,
+                                animation: google.maps.Animation.DROP,
+                                map: map
+                            }); 
+                            
+                            map.setCenter(endMarker.getPosition()); 
+                            map.setZoom(mapZoom);  
+                        }
+                    }); 
+                } else {
+                    var start = new google.maps.LatLng(initialLatitude, initialLongitude);
+                    var startMarker = new google.maps.Marker({ position: start, animation: google.maps.Animation.DROP, map: map }); 
+                    map.setCenter(startMarker.getPosition()); 
+                    map.setZoom(mapZoom);   
+                }           
+            } else if(placeLatitude != '' && placeLongitude != '') {
+                var end = new google.maps.LatLng(placeLatitude, placeLongitude);
+                var request = { origin : end, destination : end, travelMode : google.maps.TravelMode.DRIVING };
+                var directionsDisplay = new google.maps.DirectionsRenderer();
+                var directionsService = new google.maps.DirectionsService(); 
+                    
+                directionsDisplay.setMap(map);
+                    
+                directionsService.route(request, function(response, status) {
+                        
+                    if (status == google.maps.DirectionsStatus.OK) {
+                       directionsDisplay.setDirections(response);
+                    } else if(status == google.maps.DirectionsStatus.ZERO_RESULTS)  {
+                        var endMarker = new google.maps.Marker({
+                            position: end,
+                            animation: google.maps.Animation.DROP,
+                            map: map
+                        });
+                            
+                        var endMarker2 = new google.maps.Marker({
+                            position: end,
+                            animation: google.maps.Animation.DROP,
+                            map: map
+                        }); 
+                            
+                        map.setCenter(endMarker.getPosition()); 
+                        map.setZoom(mapZoom);  
+                    }
+                }); 
+            }
+        }
+        
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+    <div id="map-canvas"></div>
+</apex:page>

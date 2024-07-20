@@ -1,0 +1,127 @@
+<apex:page docType="html-5.0" title="Cadastro de Clientes - SAP" Controller="CadastroClienteController" lightningStylesheets="true" >
+    <apex:includeScript value="{!$Resource.jQuery}"/>
+    <apex:includeScript value="{!$Resource.jMaskedInput}"/>	
+    <apex:form title="Solicitação do Cadastro de Clientes" >
+        <script>
+            $(document).ready(function() {
+                $(".cpf-mask").mask("999.999.999-99");
+                $(".cnpj-mask").mask("99.999.999/9999-99");
+                $(".date-mask").mask("99/99/9999");
+                $(".cep-mask").mask("99999-999");
+                $(".phone-mask").mask("(99)?99999-9999");
+            });
+            
+        </script>
+        <apex:pageMessages />
+        <apex:pageBlock title="Cadastro de Cliente">
+            <apex:outputText ></apex:outputText>
+            <apex:pageBlockSection title="Dados de Cadastro">
+                <apex:inputField value="{!CadCli.Tipo_de_Pessoa__c}" label="Tipo de Pessoa" >
+                    <apex:actionSupport action="{!showBlockPF}" event="onchange" immediate="true" />
+                </apex:inputField>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Unidade" for="unidadeSel"/>
+                    <apex:actionRegion >
+                        <apex:inputField id="unidadeSel" value="{!CadCli.Unidade__c}" label="Unidade" required="false">
+                            <apex:actionSupport event="onchange" reRender="slEscritorioVenda" />
+                        </apex:inputField>
+                    </apex:actionRegion>
+                </apex:pageBlockSectionItem>
+                <!-- INC5427144 Inclusão de lista com tipo de registro usado nos accounts 
+								Para evitar que alterem os tipos em Accounts e fique sem 
+								sincronia, haverá uma consulta aos tipos ativos     para
+								preencher a lista de opções aqui.
+				-->
+                <apex:pageBlockSectionItem >
+					<apex:outputLabel for="slTipoRegistroConta" value="Tipo Registro da Conta" />
+                    <apex:actionRegion >
+                        <apex:selectList id="slTipoRegistroConta" value="{!selectedAccountType}" size="1" multiselect="false" >
+                            <apex:selectOptions value="{! AccountTypes }"/>
+                            <apex:actionSupport event="onchange" reRender="slTipoRegistroConta" />
+                        </apex:selectList>
+                        
+                    </apex:actionRegion>
+                </apex:pageBlockSectionItem>
+                <apex:inputText id="status" value="{!CadCli.BR_Status__c}" label="Status" disabled="true" />
+                <apex:InputField value="{!CADCLI.BR_ClienteBloqueado__c}" label="Bloqueia"></apex:InputField>
+                <!--PF-->
+                <apex:pageBlockSectionItem id="searchCPF" rendered="{! IF(showpageBlockPF == true, true, false)}">
+                    <apex:outputLabel >CPF</apex:outputLabel>
+                    <apex:actionRegion >
+                        <apex:panelGroup >
+                            <apex:inputField value="{!CadCli.BR_CPF__c}" styleClass="cpf-mask">
+                            	<apex:actionSupport event="onchange" action="{!SearchAccountByCpf}" />
+                            </apex:inputField>
+                        </apex:panelGroup>
+                    </apex:actionRegion>
+                </apex:pageBlockSectionItem>
+                <apex:inputText value="{!CadCli.BR_Name__c}" label="Nome" required="false"  rendered="{! IF(showpageBlockPF == true, true, false)}" maxlength="80" />
+                
+                <!--PJ-->
+                <apex:pageBlockSectionItem id="searchCNPJ" rendered="{! IF(showpageBlockPF == true, false, true)}">
+                    <apex:outputLabel >CNPJ</apex:outputLabel>
+                    <apex:actionRegion >
+                        <apex:panelGroup >
+                            <apex:inputField value="{!CadCli.BR_CNPJ__c}" styleClass="cnpj-mask" rendered="{! IF(showpageBlockPF == true, false, true)}">
+                            	<apex:actionSupport event="onchange" action="{!SearchAccountByCnpj}" />
+                            </apex:inputField>
+                        </apex:panelGroup>
+                    </apex:actionRegion>
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputText value="{!CadCli.BR_RazaoSocial__c}" label="Razão Social" rendered="{! IF(showpageBlockPF == true, false, true)}" maxlength="80" />    
+                <apex:inputText value="{!CadCli.InscricaoEstadual__c}" label="Inscr. Estadual" rendered="{! IF(showpageBlockPF == true, false, true)}" /> 
+                <apex:inputField value="{!CADCLI.BR_GrupoClientes__c}" label="Grupo de Cliente"></apex:inputField>
+                
+                
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Endereço">
+                <apex:inputField value="{!CadCli.BR_Main_Address__c}" label="Endereço"  />
+                <apex:inputField value="{!CadCli.BR_Main_Nbr__c}" label="Número"  />
+                <apex:inputField value="{!CadCli.BR_Bairro__c}" label="Bairro"  />
+                <apex:inputField value="{!CadCli.BR_Main_Complement__c}" label="Complemento" />
+                <apex:inputField value="{!CadCli.BR_Main_City__c}" label="Cidade"  />
+                <apex:inputField value="{!CadCli.BR_Main_State__c}" label="UF"  />
+                <apex:inputField value="{!CadCli.BR_Main_Zip_code__c}" label="CEP"  styleClass="cep-mask" />
+                <apex:inputField value="{!CadCli.BR_Phone__c}" label="Telefone" styleClass="phone-mask"  />
+                <apex:inputField value="{!CadCli.BR_email__c}" label="E-mail"  />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Informação Adicional" id="pbAdicional">
+                <apex:inputField value="{!CADCLI.BR_RegionalVendas__c}" label="Regional de Vendas" ></apex:inputField>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="slEscritorioVenda" value="Escrit. de Vendas" />
+                    <apex:actionRegion >
+                        <apex:selectList id="slEscritorioVenda" value="{!selectedEscritorioVenda}" size="1" multiselect="false" >
+                            <apex:selectOptions value="{! EscritorioVenda }"/>
+                            <apex:actionSupport event="onchange" reRender="slEquipeVenda" />
+                        </apex:selectList>
+                    </apex:actionRegion>
+                    
+                </apex:pageBlockSectionItem>
+                <apex:selectList id="slEquipeVenda" label="Equipe de Vendas" value="{!selectedEquipeVenda}" size="1" multiselect="false" >
+                    <apex:selectOptions value="{! EquipeVenda }"/>
+                </apex:selectList>
+                <apex:inputTextarea value="{!CADCLI.BR_Observacoes__c}" label="Motivo do Cadastro"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Integração com SAP" rendered="{! IF(showpageBlockSAP == true, true, false)}" >
+                <apex:inputField value="{!CADCLI.BR_CRTN__c}" label="Regime Tributário"  ></apex:inputField>
+                <apex:inputField value="{!CADCLI.BR_GrupoClassificaContrib__c}" label="Classif. Contrib."></apex:inputField>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Informações do solicitante">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Solicitante" for="solicitante" />
+                    <apex:outputText id="solicitante" value="{!Solicitante}"></apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Papel" for="Papel" />
+                    <apex:outputText id="Papel" value="{!ProfileApproverName}"></apex:outputText>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!CustomSave}" value="Salvar"/>
+                <apex:commandButton action="{!cancel}" value="Cancel" immediate="true" html-formnovalidate="formnovalidate"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+    
+</apex:page>

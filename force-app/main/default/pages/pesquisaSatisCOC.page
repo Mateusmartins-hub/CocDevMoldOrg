@@ -1,0 +1,8 @@
+<apex:page standardStylesheets="false">
+    <flow:interview name="Avaliar_Caso" finishLocation="{!URLFOR('https://p2deducacao.my.salesforce-sites.com/obrigadoCOC')}">
+		<apex:param name="recordId" value="{!$CurrentPage.parameters.recordId}"/>
+        <apex:param name="avaliacao" value="{!$CurrentPage.parameters.avaliacao}"/>
+        <apex:param name="atendida" value="{!$CurrentPage.parameters.atendida}"/>
+        <apex:param name="textArea" value="{!$CurrentPage.parameters.textArea}"/>
+    </flow:interview>
+</apex:page>

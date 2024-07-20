@@ -1,0 +1,25 @@
+<apex:page standardController="Produtos_com_desconto__c" extensions="ProdutoComDescontoController">
+  <apex:form >
+    <apex:pageBlock title="Produto com Desconto" mode="edit">
+      <apex:pageBlockButtons >
+        <apex:commandButton action="{!save}" value="Salvar"/>
+        <apex:commandButton action="{!cancel}" value="Cancelar"/>
+      </apex:pageBlockButtons>
+      <apex:pageMessages escape="false" />
+      <apex:pageBlockSection title="Dados gerais" columns="2">
+	        <apex:inputField value="{!pcd.Titulo__c}" required="true"/>
+    	    <apex:outputField value="{!pcd.ISBN__c}"/>
+        	<apex:inputField value="{!pcd.Professor__c}"/>
+        	<apex:outputField value="{!pcd.Autor__c}"/>
+        	<apex:inputField value="{!pcd.Ativo__c}"/>
+        	<apex:inputField value="{!pcd.Contabiliza__c}"/>
+       </apex:pageBlockSection>
+       <apex:pageBlockSection title="Informações portal e-commerce" columns="2">
+        	<apex:outputField value="{!pcd.Pedido_Site__c}"/>
+        	<apex:outputField value="{!pcd.Data_do_pedido__c}"/>
+        	<apex:inputField value="{!pcd.Produto_Adquirido__c}"/>
+        	<apex:inputField value="{!pcd.Desconto__c}"/>
+       </apex:pageBlockSection>
+    </apex:pageBlock>
+  </apex:form>
+</apex:page>

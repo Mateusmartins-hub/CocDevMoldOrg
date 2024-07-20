@@ -1,0 +1,278 @@
+<apex:page standardController="Case" showHeader="false" standardStylesheets="false">
+    <html lang="pt-br">
+        <head>
+            <meta charset="UTF-8"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <title>Pesquisa de satisfação</title>
+            
+            <style>
+                /*Estilo do modelo*/
+                *{
+                	box-sizing:border-box;
+                }
+                .emoji{
+                height:70px;
+                margin-top:8px;
+                margin-bottom:8px;
+                margin-right:10px; 
+                margin-left:13px;
+                width:80px;
+                }
+                .emoji:hover{
+                	width:90px;
+                	height:90px
+                }
+                .emoji1:hover{
+                	width:90px;
+                	height:90px
+                }
+                .emoji1{
+                height:80px;
+                margin-right:10px; 
+                margin-left:10px;
+                width:80px;
+                }
+                .select{
+                    width:90px;
+                    height:90px;
+                }
+                .select1{
+                    width:90px;
+                    height:90px;
+                }
+                table{
+                font: bold 17px arial, sans-serif;
+                }
+                p{
+                width:750px
+                }
+                img{
+                width:750px
+                }
+                .satisfact{
+                margin:auto;
+                width: 100%;
+                color:grey;
+                display: flex; 
+                justify-content: center;
+                font: normal 14px arial, sans-serif;
+                }
+                .satisfact1{
+                margin:auto;
+                margin-left:3px;
+                width: 100%;
+                color:grey;
+                display: flex; 
+                justify-content: center;
+                font: normal 14px arial, sans-serif;
+                }
+                textarea{
+                width:100%;
+                border-radius: 4px;
+                margin:auto;
+                border: 2px solid green;
+                outline: none;
+               	
+                }
+                
+                input[type=submit] {
+                background-color: #189e45;
+                border: none;
+                color: white;
+                padding: 16px 32px;
+                text-decoration: none;
+                margin: 4px 2px;
+                cursor: pointer;
+                width: 15%;
+                font: normal 13pt Arial;
+                
+                
+                }
+            </style>
+        </head>
+        
+        <body>
+            
+            <!-- Estrutura do modelo de email -->
+            <table style="margin:auto;" id="page">
+                
+                <tr>
+                    <td>
+                        <img alt="" src=" https://coc.com.br/wp-content/uploads/2023/02/at1.png" style="width:750px" />
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <p>&nbsp;</p>
+                        <p><span style="color:#78d200"><span style="font-size:16px"><strong>Oi! Como vai?&nbsp;</strong></span></span></p>
+                        
+                        <p><strong>Como voc&ecirc; entrou em contato conosco recentemente, queremos saber mais sobre a sua experi&ecirc;ncia com o nosso atendimento!&nbsp;</strong></p>
+                        
+                        <p>&nbsp;</p>
+                        
+                        <p><strong>1- O seu problema foi resolvido?&nbsp;</strong></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style='height:6.25rem;'> 
+                            <img alt="" class="emoji1 atendida" id="at-Sim" src="{! $Resource.checkCOC }" onclick="setAtendida('Sim')"/>
+                            <img alt="" class="emoji1 atendida" id="at-Não" src="{! $Resource.xCOC }" onclick="setAtendida('Não')"/>
+                        </div>
+                        
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>                
+                        <p>&nbsp;</p>
+                        <p><strong>2- Qual &eacute; o seu n&iacute;vel de satisfa&ccedil;&atilde;o com o atendimento recebido?&nbsp;</strong></p>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <div class="buttonSelect" style="display:flex;height:6.25rem;">	
+                            
+                            <div>
+                                <div>
+                                    <p class="satisfact">Muito Insatisfeito</p>
+                                </div>
+                                <img alt="" id="av-1" class="emoji" src="{! $Resource.muitoInsatisfeitoCOC}" onclick="setAvaliacao('1')"/>
+                                <div>
+                                    <p class="satisfact1">1</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <p class="satisfact">Insatisfeito</p>
+                                </div>
+                                <img alt="" id="av-2" class="emoji" src="{! $Resource.insatisfeitoCOC }" onclick="setAvaliacao('2')"/>
+                                <div>
+                                    <p class="satisfact1">2</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <p class="satisfact">Neutro</p>
+                                </div>
+                                <img alt="" id="av-3" class="emoji" src="{! $Resource.neutroCOC}" onclick="setAvaliacao('3')"/>
+                                <div>
+                                    <p class="satisfact1">3</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <p class="satisfact">Satisfeito</p>
+                                </div>
+                                <img alt="" id="av-4" class="emoji" src="{! $Resource.satisfeitoCOC}" onclick="setAvaliacao('4')"/>
+                                <div>
+                                    <p class="satisfact1">4</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <p class="satisfact"> Muito Satisfeito</p>    
+                                </div>
+                                <img alt="" id="av-5" class="emoji" src="{! $Resource.muitoSatisfeitoCOC}" onclick="setAvaliacao('5')"/>
+                                <div>
+                                    <p class="satisfact1">5</p>
+                                </div>
+                            </div>
+                        </div>        
+                        
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <p>&nbsp;&nbsp;</p>
+                        <p><strong>3- Voc&ecirc; teria alguma sugest&atilde;o de melhoria para o nosso processo de atendimento ao cliente?&nbsp;</strong></p>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div >
+                            
+                       
+                        <textarea id='textarea' type="textarea" name="suggestion" placeholder="Digite aqui..." style="resize:none" minlength="750" maxlength="750"/>
+                             </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="margin-top:15px;display:flex;justify-content:center;">
+                            <input type="submit" value="Enviar" onclick="enviar()" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p><strong>Atenciosamente</strong>,&nbsp;&nbsp;</p>
+                        
+                        <p><span style="color:#78d200"><strong>Equipe Sucesso do Cliente COC&nbsp;</strong></span></p>
+                        
+                        <p>&nbsp;</p>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img alt="" src=" https://coc.com.br/wp-content/uploads/2023/02/at2.png" style="width:750px" />
+                    </td>
+                </tr>
+                
+                
+            </table>
+            <script>
+            let baseUrl='https://p2deducacao.my.salesforce-sites.com/pesquisaCOC';
+            let avaliacao;
+            let atendida;
+            function setAvaliacao(av) {
+                avaliacao = av;
+                let botoes = document.querySelectorAll('.select1');
+                for(let botao of botoes) {
+                	botao.classList.remove('select1');
+                }
+                document.getElementById('av-'+av).classList.add('select1');
+            }
+            
+            function setAtendida(at) {
+           		atendida = at;
+                if(avaliacao == undefined || avaliacao == null) {
+                	avaliacao = 'NA';
+                }
+                let botoes = document.querySelectorAll('.select');
+                for(let botao of botoes) {
+                	botao.classList.remove('select');
+                }
+                document.getElementById('at-'+at).classList.add('select');
+                let url = baseUrl + '&avaliacao='+avaliacao;
+                url +='&atendida='+at;
+            }  
+                
+            function enviar(){
+                let textArea = document.getElementById('textarea').value;
+                
+                let AtUrl = window.location.href;
+            	var Url = new URL(AtUrl);
+            	var recordId = Url.searchParams.get("recordId");
+                if(avaliacao == undefined || avaliacao == null) {
+                    avaliacao = 'NA';
+                }
+                let url = baseUrl + '?avaliacao='+avaliacao;
+                url +='&atendida='+atendida;
+                url +='&textArea='+textArea;
+                url+='&recordId='+recordId;
+                window.location.href = url;               
+            }
+            
+            	
+            </script>
+        </body>
+        
+    </html>
+</apex:page>

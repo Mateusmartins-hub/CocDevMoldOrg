@@ -1,0 +1,22 @@
+<apex:page id="AprovacaoCotacaoPage" showHeader="false" controller="AprovacaoCotacaoController" action="{!InitPage}" cache="false">
+    <style>
+        h1 {
+           font-size: 30px;
+        }
+    </style>
+    <apex:form >
+    <div style="text-align: center;">
+            <br/>
+                <br/>
+            <apex:image alt="Pearson logo" value="https://www.pearson.com/content/dam/one-dot-com/one-dot-com/corporate-selector/Pearson_logo.png/_jcr_content/renditions/cq5dam.web.1600.9600.png" width="210px"/>        
+            <br/>
+            <br/>
+            <apex:image alt="Pearson cotação" value="https://pearsonlatam--PrjPoWer--c.cs77.content.force.com/file-asset-public/cq5damweb16009600?oid=00D0t0000001CSY" style="max-width: 1310.86px;" 
+            width="531" />
+            <br/>
+            <br/>
+            <br/>
+            <h1>Sua resposta foi enviada com sucesso!</h1>
+    </div>    
+    </apex:form>
+</apex:page>

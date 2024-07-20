@@ -1,0 +1,24 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId"
+    controller="CheckinCheckoutController">
+    <aura:attribute name="isLoading" type="Boolean" default="false" />
+    <aura:attribute name="checkinDone" type="Boolean" default="false" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:handler name="init" value="this" action="{!c.doInit}" />
+
+    <aura:renderIf isTrue="{!v.isLoading}">
+        <div class="spinner">
+            <lightning:spinner alternativeText="Loading" size="large" />
+        </div>
+    </aura:renderIf>
+
+    <aura:renderIf isTrue="{!v.checkinDone}">
+        <header class="slds-modal__header">
+            <h2 class="slds-modal__title slds-hyphenate">Check-in</h2>
+        </header>
+        <div style="margin-top: 30px;">
+            <p class="slds-p-horizontal_medium" style="font-size: 20px;">
+                Check-in realizado com sucesso!
+            </p>
+        </div>
+    </aura:renderIf>
+</aura:component>

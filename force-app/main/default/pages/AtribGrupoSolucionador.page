@@ -1,0 +1,356 @@
+<apex:page showHeader="false" sidebar="false" standardController="Case" id="pgAtribGrupoSolucionador" > <!--
+    <head>
+    <apex:includeScript value="{!$Resource.jQuery}" />
+    <apex:includeScript value="/support/console/42.0/integration.js"/>
+    <script type="text/javascript">
+
+        function executeMethod(){
+            executeAndRefresh();
+        }
+
+        function atualizarTudo(){
+            var primaryTabId = 'scc-pt-0';
+            sforce.console.refreshPrimaryTabById(primaryTabId, true, true);
+            window.location.reload();
+        }
+
+
+    </script>
+    </head>
+    <body>
+    <div id="divPrincipal" style="height:300px;">
+    <apex:form id="pgForm">
+        <apex:actionFunction name="executeAndRefresh" action="{!onSaveSecaoDois}" oncomplete="atualizarTudo();"/>
+        <apex:actionFunction name="changeType" action="{!onChangeTipo}" reRender="pgForm" />
+        <apex:actionFunction name="changeSubtipo" action="{!onChangeSubtipo}" reRender="pgForm" />
+        <apex:actionFunction name="changeDetalhamento" action="{!onChangeDetalhamento}" reRender="pgForm" />
+        <apex:actionFunction name="changeDetalhamentoDois" action="{!onChangeDetalhamentoDois}" reRender="pgForm" />
+
+        <apex:pageBlock id="pgAGS">
+
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockSection id="pgPrimeiraSecao" columns="2">
+                <apex:pageblocksection columns="2" rendered="{!primeiraSecao}" id="primeiraSecao">
+                    <apex:outputLabel rendered="{!exibirGrupoAtual}" value="Você está em {!grupoAtual}" styleClass="color-label"/>
+                    <apex:pageblocksection columns="1" rendered="{!primeiraSecao}" id="primeiraSecaoUm">
+                        <apex:inputField id="editCasoType" value="{!caso.Type}" onchange="functionOnChangeTipo();" html-disabled="true"/>
+
+                        <apex:inputField id="editCasoSubtipo" value="{!caso.Subtipo2__c}"
+                                          onchange="functionOnChangeSubtipo();" html-disabled="true" />
+
+                        <apex:inputField id="editCasoDetalhamento" value="{!caso.Detalhamento_del__c}"
+                                         onchange="functionOnChangeDetalhamento();" html-disabled="true"/>
+
+                        <apex:inputField id="editCasoDetalhamentoDois" value="{!caso.BR_Detalhamento2__c}"
+                                         onchange="functionOnChangeDetalhamentoDois();" html-disabled="true"/>
+                    </apex:pageblocksection>
+
+                    <apex:pageblocksection columns="1" rendered="{!primeiraSecao}" id="primeiraSecaoDois">
+                        <apex:commandButton action="{!onSave}" value="Avançar" reRender="pgForm"/><!-- disabled="{!enabledBotaoSalvar}"
+                    </apex:pageblocksection>
+                    
+                    <apex:selectList size="1" label="Tipo" value="{!caso.Type}" onchange="onChangeTipo();"
+                                     disabled="{!enabledTipo}">
+                        <apex:selectOption itemLabel=" -- Selecione um Tipo --" itemValue="" />
+                        <apex:selectOptions value="{!lstTipo}" />
+                    </apex:selectList>
+
+                    <apex:selectList size="1" label="Subtipo" value="{!caso.Subtipo2__c}" onchange="onChangeSubtipo();"
+                                     disabled="{!enabledSubtipo}">
+                        <apex:selectOption itemLabel=" -- Selecione um Subtipo --" itemValue="" />
+                        <apex:selectOptions value="{!lstSubtipo}" />
+                    </apex:selectList>
+
+                    <apex:selectList size="1" label="Detalhamento" value="{!caso.Detalhamento__c}" onchange="onChangeDetalhamento();"
+                                     disabled="{!enabledDetalhamento}">
+                        <apex:selectOption itemLabel=" -- Selecione um Detalhamento --" itemValue="" />
+                        <apex:selectOptions value="{!lstDetalhamento}" />
+                    </apex:selectList>
+
+                    <apex:selectList size="1" label="Detalhamento 2" value="{!caso.BR_Detalhamento2__c}" onchange="onChangeDetalhamentoDois();"
+                                     disabled="{!enabledDetalhamentoDois}">
+                        <apex:selectOption itemLabel=" -- Selecione um Detalhamento --" itemValue="" />
+                        <apex:selectOptions value="{!lstDetalhamentoDois}" />
+                    </apex:selectList>
+                </apex:pageblocksection>
+
+                <apex:pageblocksection rendered="{!segundaSecao}" columns="1" id="segundaSecao" html-disabled="{!segundaSecao}">
+                    <!-- <apex:outputLabel rendered="{!exibirProximoGrupo}" value="Preencha o(s) campo(s) para prosseguir para {!proximoGrupo}" styleClass="color-label"/> -->
+                    <!-- <apex:inputField id="editCasoContact" value="{!caso.ContactId}"/>
+
+                    <apex:inputField id="editCasoResumo" value="{!caso.Resumo__c}"/>
+
+                    <apex:inputField id="editCasoMarca" value="{!caso.BR_MarcaSegmentoNegocio__c}"/>
+
+                    <apex:inputField id="editCasoStatus" value="{!caso.Status}"/>
+
+                    <apex:inputField id="editCasoReason" value="{!caso.Reason}"/>
+
+                    <apex:inputField id="editCasoOrigin" value="{!caso.Origin}"/>
+
+                    <apex:inputField id="editCasoSubject" value="{!caso.Subject}"/>
+
+                    <apex:inputField id="editCasoDesc" value="{!caso.Description}"/>
+
+                    <apex:inputField value="{!caso.Aprovador_Comercial__c}" rendered="{!mapCamposObrigatorios['aprovador_comercial__c']}"/>
+                    <apex:inputField value="{!caso.Aprovador_Financeiro__c}" rendered="{!mapCamposObrigatorios['aprovador_financeiro__c']}"/>
+                    <apex:inputField value="{!caso.Area_Dona_do_Processo__c}" rendered="{!mapCamposObrigatorios['area_dona_do_processo__c']}"/>
+                    <apex:inputField value="{!caso.AssetId}" rendered="{!mapCamposObrigatorios['assetid']}"/>
+                    <apex:inputField value="{!caso.BR_Agencia__c}" rendered="{!mapCamposObrigatorios['br_agencia__c']}"/>
+                    <apex:inputField value="{!caso.BR_Alcada1__c}" rendered="{!mapCamposObrigatorios['br_alcada1__c']}"/>
+                    <apex:inputField value="{!caso.BR_Alcada2__c}" rendered="{!mapCamposObrigatorios['br_alcada2__c']}"/>
+                    <apex:inputField value="{!caso.BR_Alcada3__c}" rendered="{!mapCamposObrigatorios['br_alcada3__c']}"/>
+                    <apex:inputField value="{!caso.BR_Alterar_caso_para_tipo__c}" rendered="{!mapCamposObrigatorios['br_alterar_caso_para_tipo__c']}"/>
+                    <apex:inputField value="{!caso.BR_Alterar_para_Demandas_Devolu_o__c}" rendered="{!mapCamposObrigatorios['br_alterar_para_demandas_devolu_o__c']}"/>
+                    <apex:inputField value="{!caso.BR_AlunoUsuario__c}" rendered="{!mapCamposObrigatorios['br_alunousuario__c']}"/>
+                    <apex:inputField value="{!caso.BR_AM_Data_Cadastro_SAP__c}" rendered="{!mapCamposObrigatorios['br_am_data_cadastro_sap__c']}"/>
+                    <apex:inputField value="{!caso.BR_AM_Data_Cria_o_OV__c}" rendered="{!mapCamposObrigatorios['br_am_data_cria_o_ov__c']}"/>
+                    <apex:inputField value="{!caso.BR_AM_Data_Cria_o_Pedido_Mannesoft__c}" rendered="{!mapCamposObrigatorios['br_am_data_cria_o_pedido_mannesoft__c']}"/>
+                    <apex:inputField value="{!caso.BR_AM_Data_do_Fornecimento__c}" rendered="{!mapCamposObrigatorios['br_am_data_do_fornecimento__c']}"/>
+                    <apex:inputField value="{!caso.BR_AM_Data_Entrega__c}" rendered="{!mapCamposObrigatorios['br_am_data_entrega__c']}"/>
+                    <apex:inputField value="{!caso.BR_AM_Kit_Segmento__c}" rendered="{!mapCamposObrigatorios['br_am_kit_segmento__c']}"/>
+                    <apex:inputField value="{!caso.BR_AM_Previs_o_de_Entrega__c}" rendered="{!mapCamposObrigatorios['br_am_previs_o_de_entrega__c']}"/>
+                    <apex:inputField value="{!caso.BR_AM_SAP__c}" rendered="{!mapCamposObrigatorios['br_am_sap__c']}"/>
+                    <apex:inputField value="{!caso.BR_AM_Solicita_o_Cadastro_SAP__c}" rendered="{!mapCamposObrigatorios['br_am_solicita_o_cadastro_sap__c']}"/>
+                    <apex:inputField value="{!caso.BR_AM_Status_Amostras__c}" rendered="{!mapCamposObrigatorios['br_am_status_amostras__c']}"/>
+                    <apex:inputField value="{!caso.BR_AM_Transportado__c}" rendered="{!mapCamposObrigatorios['br_am_transportado__c']}"/>
+                    <apex:inputField value="{!caso.BR_AmbienteSecao__c}" rendered="{!mapCamposObrigatorios['br_ambientesecao__c']}"/>
+                    <apex:inputField value="{!caso.BR_Amostras_Entregas__c}" rendered="{!mapCamposObrigatorios['br_amostras_entregas__c']}"/>
+                    <apex:inputField value="{!caso.BR_AnoDeConclusao__c}" rendered="{!mapCamposObrigatorios['br_anodeconclusao__c']}"/>
+                    <apex:inputField value="{!caso.BR_area_impacto_retencao__c}" rendered="{!mapCamposObrigatorios['br_area_impacto_retencao__c']}"/>
+                    <apex:inputField value="{!caso.BR_area_negocio__c}" rendered="{!mapCamposObrigatorios['br_area_negocio__c']}"/>
+                    <apex:inputField value="{!caso.BR_area_origem__c}" rendered="{!mapCamposObrigatorios['br_area_origem__c']}"/>
+                    <apex:inputField value="{!caso.BR_AreaDoSite__c}" rendered="{!mapCamposObrigatorios['br_areadosite__c']}"/>
+                    <apex:inputField value="{!caso.BR_ArquivoAnexo__c}" rendered="{!mapCamposObrigatorios['br_arquivoanexo__c']}"/>
+                    <apex:inputField value="{!caso.BR_AtividadeQuestaoExercicioLicao__c}" rendered="{!mapCamposObrigatorios['br_atividadequestaoexerciciolicao__c']}"/>
+                    <apex:inputField value="{!caso.BR_Bairro__c}" rendered="{!mapCamposObrigatorios['br_bairro__c']}"/>
+                    <apex:inputField value="{!caso.BR_BorderoMannesoft__c}" rendered="{!mapCamposObrigatorios['br_borderomannesoft__c']}"/>
+                    <apex:inputField value="{!caso.BR_Browser__c}" rendered="{!mapCamposObrigatorios['br_browser__c']}"/>
+                    <apex:inputField value="{!caso.BR_Campanha__c}" rendered="{!mapCamposObrigatorios['br_campanha__c']}"/>
+                    <apex:inputField value="{!caso.BR_Causa_Tecnica__c}" rendered="{!mapCamposObrigatorios['br_causa_tecnica__c']}"/>
+                    <apex:inputField value="{!caso.BR_CEP__c}" rendered="{!mapCamposObrigatorios['br_cep__c']}"/>
+                    <apex:inputField value="{!caso.BR_CidadeConta__c}" rendered="{!mapCamposObrigatorios['br_cidadeconta__c']}"/>
+                    <apex:inputField value="{!caso.BR_Codigo_do_Material__c}" rendered="{!mapCamposObrigatorios['br_codigo_do_material__c']}"/>
+                    <apex:inputField value="{!caso.BR_CodigoDoMaterialISBN__c}" rendered="{!mapCamposObrigatorios['br_codigodomaterialisbn__c']}"/>
+                    <apex:inputField value="{!caso.BR_Combo__c}" rendered="{!mapCamposObrigatorios['br_combo__c']}"/>
+                    <apex:inputField value="{!caso.BR_Complemento__c}" rendered="{!mapCamposObrigatorios['br_complemento__c']}"/>
+                    <apex:inputField value="{!caso.BR_CondicaoPagamento__c}" rendered="{!mapCamposObrigatorios['br_condicaopagamento__c']}"/>
+                    <apex:inputField value="{!caso.BR_CondicaoPagamentoAtual__c}" rendered="{!mapCamposObrigatorios['br_condicaopagamentoatual__c']}"/>
+                    <apex:inputField value="{!caso.BR_ConfiguracaoDaMaquina__c}" rendered="{!mapCamposObrigatorios['br_configuracaodamaquina__c']}"/>
+                    <apex:inputField value="{!caso.BR_ContaBanco__c}" rendered="{!mapCamposObrigatorios['br_contabanco__c']}"/>
+                    <apex:inputField value="{!caso.BR_Contrato__c}" rendered="{!mapCamposObrigatorios['br_contrato__c']}"/>
+                    <apex:inputField value="{!caso.BR_CPF__c}" rendered="{!mapCamposObrigatorios['br_cpf__c']}"/>
+                    <apex:inputField value="{!caso.BR_Credito_Solicitado__c}" rendered="{!mapCamposObrigatorios['br_credito_solicitado__c']}"/>
+                    <apex:inputField value="{!caso.BR_Curso__c}" rendered="{!mapCamposObrigatorios['br_curso__c']}"/>
+                    <apex:inputField value="{!caso.BR_DataDaCompra__c}" rendered="{!mapCamposObrigatorios['br_datadacompra__c']}"/>
+                    <apex:inputField value="{!caso.BR_DataDeNascimento__c}" rendered="{!mapCamposObrigatorios['br_datadenascimento__c']}"/>
+                    <apex:inputField value="{!caso.BR_DataDoDespachoDoPedido__c}" rendered="{!mapCamposObrigatorios['br_datadodespachodopedido__c']}"/>
+                    <apex:inputField value="{!caso.BR_DataHorarioDoOcorrido__c}" rendered="{!mapCamposObrigatorios['br_datahorariodoocorrido__c']}"/>
+                    <apex:inputField value="{!caso.BR_DataOVNF__c}" rendered="{!mapCamposObrigatorios['br_dataovnf__c']}"/>
+                    <apex:inputField value="{!caso.BR_DatasTreinamentoSugestoes3Datas__c}" rendered="{!mapCamposObrigatorios['br_datastreinamentosugestoes3datas__c']}"/>
+                    <apex:inputField value="{!caso.BR_Descricao_do_Material__c}" rendered="{!mapCamposObrigatorios['br_descricao_do_material__c']}"/>
+                    <apex:inputField value="{!caso.BR_Detalhamento2__c}" rendered="{!mapCamposObrigatorios['br_detalhamento2__c']}"/>
+                    <apex:inputField value="{!caso.BR_Detalhamento2_Franquias__c}" rendered="{!mapCamposObrigatorios['br_detalhamento2_franquias__c']}"/>
+                    <apex:inputField value="{!caso.BR_detalhamento2p3__c}" rendered="{!mapCamposObrigatorios['br_detalhamento2p3__c']}"/>
+                    <apex:inputField value="{!caso.BR_Detalhamento_Franquia__c}" rendered="{!mapCamposObrigatorios['br_detalhamento_franquia__c']}"/>
+                    <apex:inputField value="{!caso.BR_Detalhamento_Tecnico__c}" rendered="{!mapCamposObrigatorios['br_detalhamento_tecnico__c']}"/>
+                    <apex:inputField value="{!caso.BR_Detalhamento_Tecnico_EDU__c}" rendered="{!mapCamposObrigatorios['br_detalhamento_tecnico_edu__c']}"/>
+                    <apex:inputField value="{!caso.BR_detalhamentop2__c}" rendered="{!mapCamposObrigatorios['br_detalhamentop2__c']}"/>
+                    <apex:inputField value="{!caso.BR_detalhamentop3__c}" rendered="{!mapCamposObrigatorios['br_detalhamentop3__c']}"/>
+                    <apex:inputField value="{!caso.BR_detalhamentop3_K12__c}" rendered="{!mapCamposObrigatorios['br_detalhamentop3_k12__c']}"/>
+                    <apex:inputField value="{!caso.BR_Devolvido_pela_Transportadora_porque__c}" rendered="{!mapCamposObrigatorios['br_devolvido_pela_transportadora_porque__c']}"/>
+                    <apex:inputField value="{!caso.BR_DiaHora__c}" rendered="{!mapCamposObrigatorios['br_diahora__c']}"/>
+                    <apex:inputField value="{!caso.BR_DisciplinaAulasVideo__c}" rendered="{!mapCamposObrigatorios['br_disciplinaaulasvideo__c']}"/>
+                    <apex:inputField value="{!caso.BR_EmailContato__c}" rendered="{!mapCamposObrigatorios['br_emailcontato__c']}"/>
+                    <apex:inputField value="{!caso.BR_EmailDoUsuario__c}" rendered="{!mapCamposObrigatorios['br_emaildousuario__c']}"/>
+                    <apex:inputField value="{!caso.BR_EnderecoCompleto__c}" rendered="{!mapCamposObrigatorios['br_enderecocompleto__c']}"/>
+                    <apex:inputField value="{!caso.BR_Envio_para__c}" rendered="{!mapCamposObrigatorios['br_envio_para__c']}"/>
+                    <apex:inputField value="{!caso.BR_EstadoCivil__c}" rendered="{!mapCamposObrigatorios['br_estadocivil__c']}"/>
+                    <apex:inputField value="{!caso.BR_EstadoConta__c}" rendered="{!mapCamposObrigatorios['br_estadoconta__c']}"/>
+                    <apex:inputField value="{!caso.BR_EstimativaDeFaturamento__c}" rendered="{!mapCamposObrigatorios['br_estimativadefaturamento__c']}"/>
+                    <apex:inputField value="{!caso.BR_EventoProvaCampanha__c}" rendered="{!mapCamposObrigatorios['br_eventoprovacampanha__c']}"/>
+                    <apex:inputField value="{!caso.BR_EvidenciaBancaria__c}" rendered="{!mapCamposObrigatorios['br_evidenciabancaria__c']}"/>
+                    <apex:inputField value="{!caso.BR_ExercicioLicao__c}" rendered="{!mapCamposObrigatorios['br_exerciciolicao__c']}"/>
+                    <apex:inputField value="{!caso.BR_Faturada__c}" rendered="{!mapCamposObrigatorios['br_faturada__c']}"/>
+                    <apex:inputField value="{!caso.BR_Field1__c}" rendered="{!mapCamposObrigatorios['br_field1__c']}"/>
+                    <apex:inputField value="{!caso.BR_Foi_Resolvido__c}" rendered="{!mapCamposObrigatorios['br_foi_resolvido__c']}"/>
+                    <apex:inputField value="{!caso.BR_Grupo_Solucionador__c}" rendered="{!mapCamposObrigatorios['br_grupo_solucionador__c']}"/>
+                    <apex:inputField value="{!caso.BR_ID_Usuario__c}" rendered="{!mapCamposObrigatorios['br_id_usuario__c']}"/>
+                    <apex:inputField value="{!caso.BR_IDDoCurso__c}" rendered="{!mapCamposObrigatorios['br_iddocurso__c']}"/>
+                    <apex:inputField value="{!caso.BR_Improcedente__c}" rendered="{!mapCamposObrigatorios['br_improcedente__c']}"/>
+                    <apex:inputField value="{!caso.BR_InformacaoASerAlteradaIncorreta__c}" rendered="{!mapCamposObrigatorios['br_informacaoaseralteradaincorreta__c']}"/>
+                    <apex:inputField value="{!caso.BR_InstituicaoBancaria__c}" rendered="{!mapCamposObrigatorios['br_instituicaobancaria__c']}"/>
+                    <apex:inputField value="{!caso.BR_Institution__c}" rendered="{!mapCamposObrigatorios['br_institution__c']}"/>
+                    <apex:inputField value="{!caso.BR_IntegracaoComQualProduto__c}" rendered="{!mapCamposObrigatorios['br_integracaocomqualproduto__c']}"/>
+                    <apex:inputField value="{!caso.BR_IntegracaoSAP__c}" rendered="{!mapCamposObrigatorios['br_integracaosap__c']}"/>
+                    <apex:inputField value="{!caso.BR_IntegrarSAP__c}" rendered="{!mapCamposObrigatorios['br_integrarsap__c']}"/>
+                    <apex:inputField value="{!caso.BR_ISBN__c}" rendered="{!mapCamposObrigatorios['br_isbn__c']}"/>
+                    <apex:inputField value="{!caso.BR_Justificativa__c}" rendered="{!mapCamposObrigatorios['br_justificativa__c']}"/>
+                    <apex:inputField value="{!caso.BR_LoginDoUsuario__c}" rendered="{!mapCamposObrigatorios['br_logindousuario__c']}"/>
+                    <apex:inputField value="{!caso.BR_LogIntegracao__c}" rendered="{!mapCamposObrigatorios['br_logintegracao__c']}"/>
+                    <apex:inputField value="{!caso.BR_MarcaSegmentoNegocio__c}" rendered="{!mapCamposObrigatorios['br_marcasegmentonegocio__c']}"/>
+                    <apex:inputField value="{!caso.BR_MateriaisRetirados__c}" rendered="{!mapCamposObrigatorios['br_materiaisretirados__c']}"/>
+                    <apex:inputField value="{!caso.BR_Material_Didatico_Apresentado__c}" rendered="{!mapCamposObrigatorios['br_material_didatico_apresentado__c']}"/>
+                    <apex:inputField value="{!caso.BR_MaterialNomeEModalidade__c}" rendered="{!mapCamposObrigatorios['br_materialnomeemodalidade__c']}"/>
+                    <apex:inputField value="{!caso.BR_MateriaSetorTemas__c}" rendered="{!mapCamposObrigatorios['br_materiasetortemas__c']}"/>
+                    <apex:inputField value="{!caso.BR_Modulo__c}" rendered="{!mapCamposObrigatorios['br_modulo__c']}"/>
+                    <apex:inputField value="{!caso.BR_Motivo_da_devolu_o__c}" rendered="{!mapCamposObrigatorios['br_motivo_da_devolu_o__c']}"/>
+                    <apex:inputField value="{!caso.BR_Motivos_Reclama_o__c}" rendered="{!mapCamposObrigatorios['br_motivos_reclama_o__c']}"/>
+                    <apex:inputField value="{!caso.BR_N_mero_do_Pedido_Ecommerce__c}" rendered="{!mapCamposObrigatorios['br_n_mero_do_pedido_ecommerce__c']}"/>
+                    <apex:inputField value="{!caso.BR_N_NF_Devolu_o_Emitida_pelo_Franqueado__c}" rendered="{!mapCamposObrigatorios['br_n_nf_devolu_o_emitida_pelo_franqueado__c']}"/>
+                    <apex:inputField value="{!caso.BR_N_Nota_Fiscal_do_Material_com_defeito__c}" rendered="{!mapCamposObrigatorios['br_n_nota_fiscal_do_material_com_defeito__c']}"/>
+                    <apex:inputField value="{!caso.BR_NomeCompleto__c}" rendered="{!mapCamposObrigatorios['br_nomecompleto__c']}"/>
+                    <apex:inputField value="{!caso.BR_NomePalestrantePlantonista__c}" rendered="{!mapCamposObrigatorios['br_nomepalestranteplantonista__c']}"/>
+                    <apex:inputField value="{!caso.BR_NomeTitularResponsavel__c}" rendered="{!mapCamposObrigatorios['br_nometitularresponsavel__c']}"/>
+                    <apex:inputField value="{!caso.BR_Nota_Reclame_aqui__c}" rendered="{!mapCamposObrigatorios['br_nota_reclame_aqui__c']}"/>
+                    <apex:inputField value="{!caso.BR_NovaCondicaoPagamento__c}" rendered="{!mapCamposObrigatorios['br_novacondicaopagamento__c']}"/>
+                    <apex:inputField value="{!caso.BR_NovoVencimento__c}" rendered="{!mapCamposObrigatorios['br_novovencimento__c']}"/>
+                    <apex:inputField value="{!caso.BR_Numero__c}" rendered="{!mapCamposObrigatorios['br_numero__c']}"/>
+                    <apex:inputField value="{!caso.BR_Numero_da_Nota_Fiscal__c}" rendered="{!mapCamposObrigatorios['br_numero_da_nota_fiscal__c']}"/>
+                    <apex:inputField value="{!caso.BR_Numero_da_OV__c}" rendered="{!mapCamposObrigatorios['br_numero_da_ov__c']}"/>
+                    <apex:inputField value="{!caso.BR_NumeroAlunos__c}" rendered="{!mapCamposObrigatorios['br_numeroalunos__c']}"/>
+                    <apex:inputField value="{!caso.BR_NumeroMarco__c}" rendered="{!mapCamposObrigatorios['br_numeromarco__c']}"/>
+                    <apex:inputField value="{!caso.BR_NumeroNFe__c}" rendered="{!mapCamposObrigatorios['br_numeronfe__c']}"/>
+                    <apex:inputField value="{!caso.BR_NumeroOrdemVenda__c}" rendered="{!mapCamposObrigatorios['br_numeroordemvenda__c']}"/>
+                    <apex:inputField value="{!caso.BR_NumeroPedido__c}" rendered="{!mapCamposObrigatorios['br_numeropedido__c']}"/>
+                    <apex:inputField value="{!caso.BR_NumeroTask__c}" rendered="{!mapCamposObrigatorios['br_numerotask__c']}"/>
+                    <apex:inputField value="{!caso.BR_Objeto__c}" rendered="{!mapCamposObrigatorios['br_objeto__c']}"/>
+                    <apex:inputField value="{!caso.BR_Oportunidade__c}" rendered="{!mapCamposObrigatorios['br_oportunidade__c']}"/>
+                    <apex:inputField value="{!caso.BR_OrganizacaoVenda__c}" rendered="{!mapCamposObrigatorios['br_organizacaovenda__c']}"/>
+                    <apex:inputField value="{!caso.BR_OVNF__c}" rendered="{!mapCamposObrigatorios['br_ovnf__c']}"/>
+                    <apex:inputField value="{!caso.BR_P_blico_da_apresenta_o__c}" rendered="{!mapCamposObrigatorios['br_p_blico_da_apresenta_o__c']}"/>
+                    <apex:inputField value="{!caso.BR_PaginaLinkMaterial__c}" rendered="{!mapCamposObrigatorios['br_paginalinkmaterial__c']}"/>
+                    <apex:inputField value="{!caso.BR_ParcelasPagas__c}" rendered="{!mapCamposObrigatorios['br_parcelaspagas__c']}"/>
+                    <apex:inputField value="{!caso.BR_ParentescoComAluno__c}" rendered="{!mapCamposObrigatorios['br_parentescocomaluno__c']}"/>
+                    <apex:inputField value="{!caso.BR_Part__c}" rendered="{!mapCamposObrigatorios['br_part__c']}"/>
+                    <apex:inputField value="{!caso.BR_PerfilOuTipoDeUsuario__c}" rendered="{!mapCamposObrigatorios['br_perfiloutipodeusuario__c']}"/>
+                    <apex:inputField value="{!caso.BR_Peso__c}" rendered="{!mapCamposObrigatorios['br_peso__c']}"/>
+                    <apex:inputField value="{!caso.BR_Plataforma__c}" rendered="{!mapCamposObrigatorios['br_plataforma__c']}"/>
+                    <apex:inputField value="{!caso.BR_Prazo_inicial__c}" rendered="{!mapCamposObrigatorios['br_prazo_inicial__c']}"/>
+                    <apex:inputField value="{!caso.BR_PresencialHangout__c}" rendered="{!mapCamposObrigatorios['br_presencialhangout__c']}"/>
+                    <apex:inputField value="{!caso.BR_PrevisaoChegada__c}" rendered="{!mapCamposObrigatorios['br_previsaochegada__c']}"/>
+                    <apex:inputField value="{!caso.BR_Primeira_Resposta_Realizada__c}" rendered="{!mapCamposObrigatorios['br_primeira_resposta_realizada__c']}"/>
+                    <apex:inputField value="{!caso.BR_Produto__c}" rendered="{!mapCamposObrigatorios['br_produto__c']}"/>
+                    <apex:inputField value="{!caso.BR_Profissao__c}" rendered="{!mapCamposObrigatorios['br_profissao__c']}"/>
+                    <apex:inputField value="{!caso.BR_Qtde_participantes_treinamento__c}" rendered="{!mapCamposObrigatorios['br_qtde_participantes_treinamento__c']}"/>
+                    <apex:inputField value="{!caso.BR_QualColocacao__c}" rendered="{!mapCamposObrigatorios['br_qualcolocacao__c']}"/>
+                    <apex:inputField value="{!caso.BR_QualLabPlantao__c}" rendered="{!mapCamposObrigatorios['br_quallabplantao__c']}"/>
+                    <apex:inputField value="{!caso.BR_QualSerieTurma__c}" rendered="{!mapCamposObrigatorios['br_qualserieturma__c']}"/>
+                    <apex:inputField value="{!caso.BR_Quantidade__c}" rendered="{!mapCamposObrigatorios['br_quantidade__c']}"/>
+                    <apex:inputField value="{!caso.BR_QuantidadeInscritosProva__c}" rendered="{!mapCamposObrigatorios['br_quantidadeinscritosprova__c']}"/>
+                    <apex:inputField value="{!caso.BR_QuantidadeLicencas__c}" rendered="{!mapCamposObrigatorios['br_quantidadelicencas__c']}"/>
+                    <apex:inputField value="{!caso.BR_QuantidadeMaterial__c}" rendered="{!mapCamposObrigatorios['br_quantidadematerial__c']}"/>
+                    <apex:inputField value="{!caso.BR_QuantidadeVolumesCaixas__c}" rendered="{!mapCamposObrigatorios['br_quantidadevolumescaixas__c']}"/>
+                    <apex:inputField value="{!caso.BR_Questao__c}" rendered="{!mapCamposObrigatorios['br_questao__c']}"/>
+                    <apex:inputField value="{!caso.BR_QuestionarioOuAulaDigital__c}" rendered="{!mapCamposObrigatorios['br_questionarioouauladigital__c']}"/>
+                    <apex:inputField value="{!caso.BR_RG__c}" rendered="{!mapCamposObrigatorios['br_rg__c']}"/>
+                    <apex:inputField value="{!caso.BR_Rua__c}" rendered="{!mapCamposObrigatorios['br_rua__c']}"/>
+                    <apex:inputField value="{!caso.BR_Segmentos_avaliados__c}" rendered="{!mapCamposObrigatorios['br_segmentos_avaliados__c']}"/>
+                    <apex:inputField value="{!caso.BR_Senhas_de_Degusta_o_Disponibilizadas__c}" rendered="{!mapCamposObrigatorios['br_senhas_de_degusta_o_disponibilizadas__c']}"/>
+                    <apex:inputField value="{!caso.BR_SerieAno__c}" rendered="{!mapCamposObrigatorios['br_serieano__c']}"/>
+                    <apex:inputField value="{!caso.BR_Servico__c}" rendered="{!mapCamposObrigatorios['br_servico__c']}"/>
+                    <apex:inputField value="{!caso.BR_Sistema_de_Ensino__c}" rendered="{!mapCamposObrigatorios['br_sistema_de_ensino__c']}"/>
+                    <apex:inputField value="{!caso.BR_SistemaHomologado__c}" rendered="{!mapCamposObrigatorios['br_sistemahomologado__c']}"/>
+                    <apex:inputField value="{!caso.BR_SLA__c}" rendered="{!mapCamposObrigatorios['br_sla__c']}"/>
+                    <apex:inputField value="{!caso.BR_Status_aprovacao__c}" rendered="{!mapCamposObrigatorios['br_status_aprovacao__c']}"/>
+                    <apex:inputField value="{!caso.BR_StatusFinanceiro__c}" rendered="{!mapCamposObrigatorios['br_statusfinanceiro__c']}"/>
+                    <apex:inputField value="{!caso.BR_StatusRetencao__c}" rendered="{!mapCamposObrigatorios['br_statusretencao__c']}"/>
+                    <apex:inputField value="{!caso.BR_Subtipo__c}" rendered="{!mapCamposObrigatorios['br_AtribGrupoSolucionador']}"/>
+                    <apex:inputField value="{!caso.BR_subtipop2__c}" rendered="{!mapCamposObrigatorios['br_subtipop2__c']}"/>
+                    <apex:inputField value="{!caso.BR_Subtipop3__c}" rendered="{!mapCamposObrigatorios['br_subtipop3__c']}"/>
+                    <apex:inputField value="{!caso.BR_Sugest_o_2__c}" rendered="{!mapCamposObrigatorios['br_sugest_o_2__c']}"/>
+                    <apex:inputField value="{!caso.BR_Sugest_o_3__c}" rendered="{!mapCamposObrigatorios['br_sugest_o_3__c']}"/>
+                    <apex:inputField value="{!caso.BR_Tempo_para_a_apresenta_o__c}" rendered="{!mapCamposObrigatorios['br_tempo_para_a_apresenta_o__c']}"/>
+                    <apex:inputField value="{!caso.BR_Tipo_Cliente_EDU__c}" rendered="{!mapCamposObrigatorios['br_tipo_cliente_edu__c']}"/>
+                    <apex:inputField value="{!caso.BR_Tipo_de_cliente__c}" rendered="{!mapCamposObrigatorios['br_tipo_de_cliente__c']}"/>
+                    <apex:inputField value="{!caso.BR_TipoFrete__c}" rendered="{!mapCamposObrigatorios['br_tipofrete__c']}"/>
+                    <apex:inputField value="{!caso.BR_TipoPlantao__c}" rendered="{!mapCamposObrigatorios['br_tipoplantao__c']}"/>
+                    <apex:inputField value="{!caso.BR_TipoRelatorio__c}" rendered="{!mapCamposObrigatorios['br_tiporelatorio__c']}"/>
+                    <apex:inputField value="{!caso.BR_TituloSegmentoLivro__c}" rendered="{!mapCamposObrigatorios['br_titulosegmentolivro__c']}"/>
+                    <apex:inputField value="{!caso.BR_Total_Geral_R_Qtd_Informada__c}" rendered="{!mapCamposObrigatorios['br_total_geral_r_qtd_informada__c']}"/>
+                    <apex:inputField value="{!caso.BR_Total_Geral_R_Qtd_Recebida__c}" rendered="{!mapCamposObrigatorios['br_total_geral_r_qtd_recebida__c']}"/>
+                    <apex:inputField value="{!caso.BR_Total_Geral_R_Qtd_Referencia__c}" rendered="{!mapCamposObrigatorios['br_total_geral_r_qtd_referencia__c']}"/>
+                    <apex:inputField value="{!caso.BR_Transportadora__c}" rendered="{!mapCamposObrigatorios['br_transportadora__c']}"/>
+                    <apex:inputField value="{!caso.BR_UnidadeEmFuncionamento__c}" rendered="{!mapCamposObrigatorios['br_unidadeemfuncionamento__c']}"/>
+                    <apex:inputField value="{!caso.BR_UnidadeEstudou__c}" rendered="{!mapCamposObrigatorios['br_unidadeestudou__c']}"/>
+                    <apex:inputField value="{!caso.BR_Universidade__c}" rendered="{!mapCamposObrigatorios['br_universidade__c']}"/>
+                    <apex:inputField value="{!caso.BR_Valor__c}" rendered="{!mapCamposObrigatorios['br_valor__c']}"/>
+                    <apex:inputField value="{!caso.BR_Vencimento__c}" rendered="{!mapCamposObrigatorios['br_vencimento__c']}"/>
+                    <apex:inputField value="{!caso.BR_VendaDireta__c}" rendered="{!mapCamposObrigatorios['br_vendadireta__c']}"/>
+                    <apex:inputField value="{!caso.BR_VerificadoSLADivulgacaoDoResProva__c}" rendered="{!mapCamposObrigatorios['br_verificadosladivulgacaodoresprova__c']}"/>
+                    <apex:inputField value="{!caso.BR_VersaoSistemaOperacionalVersaoPlayer__c}" rendered="{!mapCamposObrigatorios['br_versaosistemaoperacionalversaoplayer__c']}"/>
+                    <apex:inputField value="{!caso.BR_Voltaria_a_fazer_Negocio__c}" rendered="{!mapCamposObrigatorios['br_voltaria_a_fazer_negocio__c']}"/>
+                    <apex:inputField value="{!caso.BusinessHoursId}" rendered="{!mapCamposObrigatorios['businesshoursid']}"/>
+                    <apex:inputField value="{!caso.CaseNumber}" rendered="{!mapCamposObrigatorios['casenumber']}"/>
+                    <apex:inputField value="{!caso.Caso_aceito__c}" rendered="{!mapCamposObrigatorios['caso_aceito__c']}"/>
+                    <apex:inputField value="{!caso.CasoReaberto__c}" rendered="{!mapCamposObrigatorios['casoreaberto__c']}"/>
+                    <apex:inputField value="{!caso.ClosedDate}" rendered="{!mapCamposObrigatorios['closeddate']}"/>
+                    <apex:inputField value="{!caso.ContactId}" rendered="{!mapCamposObrigatorios['contactid']}"/>
+                    <apex:inputField value="{!caso.ControleMarco__c}" rendered="{!mapCamposObrigatorios['controlemarco__c']}"/>
+                    <apex:inputField value="{!caso.CreatedById}" rendered="{!mapCamposObrigatorios['createdbyid']}"/>
+                    <apex:inputField value="{!caso.CreatedDate}" rendered="{!mapCamposObrigatorios['createddate']}"/>
+                    <apex:inputField value="{!caso.Data_da_NF_do_Material_com_defeito__c}" rendered="{!mapCamposObrigatorios['data_da_nf_do_material_com_defeito__c']}"/>
+                    <apex:inputField value="{!caso.Data_Emiss_o_NF__c}" rendered="{!mapCamposObrigatorios['data_emiss_o_nf__c']}"/>
+                    <apex:inputField value="{!caso.DataHora_previstoSLA__c}" rendered="{!mapCamposObrigatorios['datahora_previstosla__c']}"/>
+                    <apex:inputField value="{!caso.Description}" rendered="{!mapCamposObrigatorios['description']}"/>
+                    <apex:inputField value="{!caso.Detalhamento3_EDU__c}" rendered="{!mapCamposObrigatorios['detalhamento3_edu__c']}"/>
+                    <apex:inputField value="{!caso.Detalhamento_del__c}" rendered="{!mapCamposObrigatorios['detalhamento_del__c']}"/>
+                    <apex:inputField value="{!caso.DR_Sugest_o_1__c}" rendered="{!mapCamposObrigatorios['dr_sugest_o_1__c']}"/>
+                    <apex:inputField value="{!caso.EntitlementId}" rendered="{!mapCamposObrigatorios['entitlementid']}"/>
+                    <apex:inputField value="{!caso.GrupoSolucionadorAnterior__c}" rendered="{!mapCamposObrigatorios['gruposolucionadoranterior__c']}"/>
+                    <apex:inputField value="{!caso.Id}" rendered="{!mapCamposObrigatorios['id']}"/>
+                    <apex:inputField value="{!caso.IsClosed}" rendered="{!mapCamposObrigatorios['isclosed']}"/>
+                    <apex:inputField value="{!caso.IsClosedOnCreate}" rendered="{!mapCamposObrigatorios['isclosedoncreate']}"/>
+                    <apex:inputField value="{!caso.IsDeleted}" rendered="{!mapCamposObrigatorios['isdeleted']}"/>
+                    <apex:inputField value="{!caso.IsEscalated}" rendered="{!mapCamposObrigatorios['isescalated']}"/>
+                    <apex:inputField value="{!caso.IsStopped}" rendered="{!mapCamposObrigatorios['isstopped']}"/>
+                    <apex:inputField value="{!caso.LastModifiedById}" rendered="{!mapCamposObrigatorios['lastmodifiedbyid']}"/>
+                    <apex:inputField value="{!caso.LastModifiedDate}" rendered="{!mapCamposObrigatorios['lastmodifieddate']}"/>
+                    <apex:inputField value="{!caso.Marca_contato_relacionado__c}" rendered="{!mapCamposObrigatorios['marca_contato_relacionado__c']}"/>
+                    <apex:inputField value="{!caso.MilestoneStatus}" rendered="{!mapCamposObrigatorios['milestonestatus']}"/>
+                    <apex:inputField value="{!caso.Motivo__c}" rendered="{!mapCamposObrigatorios['motivo__c']}"/>
+                    <apex:inputField value="{!caso.MotivoReclamacao__c}" rendered="{!mapCamposObrigatorios['motivoreclamacao__c']}"/>
+                    <apex:inputField value="{!caso.N_mero_Remessa__c}" rendered="{!mapCamposObrigatorios['n_mero_remessa__c']}"/>
+                    <apex:inputField value="{!caso.Numero_Pedido_Mannesoft__c}" rendered="{!mapCamposObrigatorios['numero_pedido_mannesoft__c']}"/>
+                    <apex:inputField value="{!caso.Origem_Email__c}" rendered="{!mapCamposObrigatorios['origem_email__c']}"/>
+                    <apex:inputField value="{!caso.Origin}" rendered="{!mapCamposObrigatorios['origin']}"/>
+                    <apex:inputField value="{!caso.OwnerId}" rendered="{!mapCamposObrigatorios['ownerid']}"/>
+                    <apex:inputField value="{!caso.ParentId}" rendered="{!mapCamposObrigatorios['parentid']}"/>
+                    <apex:inputField value="{!caso.Priority}" rendered="{!mapCamposObrigatorios['priority']}"/>
+                    <apex:inputField value="{!caso.ProductId}" rendered="{!mapCamposObrigatorios['productid']}"/>
+                    <apex:inputField value="{!caso.Qual_per_odo__c}" rendered="{!mapCamposObrigatorios['qual_per_odo__c']}"/>
+                    <apex:inputField value="{!caso.ReaberturaExpirada__c}" rendered="{!mapCamposObrigatorios['reaberturaexpirada__c']}"/>
+                    <apex:inputField value="{!caso.Reason}" rendered="{!mapCamposObrigatorios['reason']}"/>
+                    <apex:inputField value="{!caso.RecordTypeId}" rendered="{!mapCamposObrigatorios['recordtypeid']}"/>
+                    <apex:inputField value="{!caso.Resumo__c}" rendered="{!mapCamposObrigatorios['resumo__c']}"/>
+                    <apex:inputField value="{!caso.SLA_Resp1__c}" rendered="{!mapCamposObrigatorios['sla_resp1__c']}"/>
+                    <apex:inputField value="{!caso.SLA_Total__c}" rendered="{!mapCamposObrigatorios['sla_total__c']}"/>
+                    <apex:inputField value="{!caso.SlaExitDate}" rendered="{!mapCamposObrigatorios['slaexitdate']}"/>
+                    <apex:inputField value="{!caso.SlaStartDate}" rendered="{!mapCamposObrigatorios['slastartdate']}"/>
+                    <apex:inputField value="{!caso.SLATotal__c}" rendered="{!mapCamposObrigatorios['slatotal__c']}"/>
+                    <apex:inputField value="{!caso.Status}" rendered="{!mapCamposObrigatorios['status']}"/>
+                    <apex:inputField value="{!caso.Status_de_atuacao__c}" rendered="{!mapCamposObrigatorios['status_de_atuacao__c']}"/>
+                    <apex:inputField value="{!caso.StopStartDate}" rendered="{!mapCamposObrigatorios['stopstartdate']}"/>
+                    <apex:inputField value="{!caso.Subject}" rendered="{!mapCamposObrigatorios['subject']}"/>
+                    <apex:inputField value="{!caso.Subtipo2__c}" rendered="{!mapCamposObrigatorios['subtipo__c']}"/>
+                    <apex:inputField value="{!caso.SuppliedCompany}" rendered="{!mapCamposObrigatorios['suppliedcompany']}"/>
+                    <apex:inputField value="{!caso.SuppliedEmail}" rendered="{!mapCamposObrigatorios['suppliedemail']}"/>
+                    <apex:inputField value="{!caso.SuppliedName}" rendered="{!mapCamposObrigatorios['suppliedname']}"/>
+                    <apex:inputField value="{!caso.SuppliedPhone}" rendered="{!mapCamposObrigatorios['suppliedphone']}"/>
+                    <apex:inputField value="{!caso.SystemModstamp}" rendered="{!mapCamposObrigatorios['systemmodstamp']}"/>
+                    <apex:inputField value="{!caso.Tipo_de_Cliente__c}" rendered="{!mapCamposObrigatorios['tipo_de_cliente__c']}"/>
+                    <apex:inputField value="{!caso.Tipo_de_Usu_rio__c}" rendered="{!mapCamposObrigatorios['tipo_de_usu_rio__c']}"/>
+                    <apex:inputField value="{!caso.TipoDocDevolucao__c}" rendered="{!mapCamposObrigatorios['tipodocdevolucao__c']}"/>
+                    <apex:inputField value="{!caso.Total_Consumido__c}" rendered="{!mapCamposObrigatorios['total_consumido__c']}"/>
+                    <apex:inputField value="{!caso.Transportadora_n_o_cadastrada__c}" rendered="{!mapCamposObrigatorios['transportadora_n_o_cadastrada__c']}"/>
+                    <apex:inputField value="{!caso.Type}" rendered="{!mapCamposObrigatorios['type']}"/>
+                    <apex:inputField value="{!caso.ValorReembolso__c}" rendered="{!mapCamposObrigatorios['valorreembolso__c']}"/>
+
+                    <apex:commandButton id="btnSalvarSecaoDois" value="Salvar e Avançar" disabled="{!enabledBotaoSalvarDois}" reRender="pgForm" onclick="executeMethod();"/>
+                </apex:pageblocksection>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    </div>
+    </body> -->
+</apex:page>

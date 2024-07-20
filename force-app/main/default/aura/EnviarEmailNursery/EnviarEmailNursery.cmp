@@ -1,0 +1,49 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,flexipage:availableForRecordHome,force:hasRecordId"
+    controller="EnviarEmailNurseryController">
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        overflow-y: hidden !important;
+        height:unset !important;
+        max-height:unset !important;
+        overflow: initial !important;
+        }
+    </aura:html>
+
+    <aura:attribute name="loading" type="Boolean" default="false" />
+    <aura:attribute name="modeloEmail" type="String" />
+    <aura:attribute name="modelosEmails" type="List" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">Enviar E-mail</h4>
+    </div>
+    <aura:renderIf isTrue="{!v.loading}">
+        <lightning:card>
+            <div class="slds-p-horizontal--small slds-size--1-of-1">
+                <div class="slds-p-horizontal--small slds-size--1-of-1" style="height: 200px">
+                    <lightning:spinner variant="brand" />
+                </div>
+            </div>
+        </lightning:card>
+        <aura:set attribute="else">
+            <div class="slds-m-top--xx-large slds-m-bottom--xx-large slds-modal__content slds-p-around--small slds-align_absolute-center slds-size_1-of-1 slds-wrap"
+                aura:id="modalbody" id="modalbody">
+                <lightning:combobox style="width:100%" name="comboboxmodeloemail" label="Modelo de e-mail"
+                    value="{!v.modeloEmail}" placeholder="Selecione..." options="{!v.modelosEmails}"/>
+            </div>
+        </aura:set>
+    </aura:renderIf>
+    <div class="modal-footer slds-modal__footer slds-size_1-of-1" > 
+        <div class="forceChangeRecordTypeFooter">
+            <ui:button class="slds-button slds-button_neutral" label="Cancelar" press="{!c.cancelar}" />
+            <ui:button class="slds-button slds-button--brand" label="Enviar" press="{!c.enviar}" />
+        </div>
+    </div>
+</aura:component>
