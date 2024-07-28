@@ -32,30 +32,30 @@ global without sharing class RestHybris {
                 caso.Description = tipoReqText;
                 
                 if(tipoReq == 1) {
-                    caso.Tipo__c = 'Logística';
-                    caso.Subtipo__c = 'Devolução K12 / EDU';
-                    caso.Detalhamento__c = 'Escolas';
+                    caso.Tipo__c = 'Serviço COC';
+                    caso.Subtipo__c = 'Atendimento';
+                    caso.Detalhamento__c = 'Atendimento';
                 }else if(tipoReq == 2) {
-                    caso.Tipo__c = 'Logística';
-                    caso.Subtipo__c = 'Divergência no pedido';
-                    caso.Detalhamento__c = 'Material avariado';
+                    caso.Tipo__c = 'Serviço COC';
+                    caso.Subtipo__c = 'Atendimento';
+                    caso.Detalhamento__c = 'Atendimento';
                 }else if(tipoReq == 3) {
-                    caso.Tipo__c = 'Logística';
-                    caso.Subtipo__c = 'Divergência no pedido';
-                    caso.Detalhamento__c = 'Falta ou sobra de material';
+                    caso.Tipo__c = 'Serviço COC';
+                    caso.Subtipo__c = 'Atendimento';
+                    caso.Detalhamento__c = 'Atendimento';
                 }
             }else{
                 caso.Subject = 'Novo Cadastro & ' + tipoReqText + ' ' + pedido.conta.razaoSocial;
                 caso.Description = 'Novo Cadastro & ' + tipoReqText;
-                caso.Tipo__c = 'Cadastro';
-                caso.Subtipo__c = 'Novo Cadastro';
+                caso.Tipo__c = 'Serviço COC';
+                caso.Subtipo__c = 'Atendimento';
                 
                 if(tipoReq == 1)
-                    caso.Detalhamento__c = 'Devoluções';
+                    caso.Detalhamento__c = 'Atendimento';
                 else if(tipoReq == 2)
-                    caso.Detalhamento__c = 'Material avariado';
+                    caso.Detalhamento__c = 'Atendimento';
                 else if(tipoReq == 3)
-                    caso.Detalhamento__c = 'Falta ou sobra de material';
+                    caso.Detalhamento__c = 'Atendimento';
                 
                 caso.InformacoesContaACriar__c = getInfoConta(pedido);
             }

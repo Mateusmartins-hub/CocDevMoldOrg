@@ -20,9 +20,9 @@ public class ConsultoriaBloqueioDeAcessos implements Schedulable, Database.Batch
 
         for(FR_Procedimento_Franquias__c consultoria: scope){
             Case caso = new Case(
-                Tipo__c = 'Comercial',
-                Subtipo__c	 = 'Retenção',
-                Detalhamento__c = 'K12',
+                Tipo__c = 'Serviço COC',
+                Subtipo__c	 = 'Atendimento',
+                Detalhamento__c = 'Atendimento',
                 Subject = 'Realizar o bloqueio de acesso: ' + consultoria.BR_Conta__r.Name,
                 AccountId = consultoria.BR_Conta__c
             );

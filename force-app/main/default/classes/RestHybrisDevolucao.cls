@@ -21,14 +21,14 @@ global without sharing class RestHybrisDevolucao {
                 caso.AccountId = clientes[0].Id;
                 caso.Subject = 'Devolução de Pedido';
                 caso.Description = 'Devolução de Pedido do Hybris';
-                caso.Tipo__c = 'Pedidos';
-                caso.Subtipo__c = 'Devolução';
+                caso.Tipo__c = 'Serviço COC';
+                caso.Subtipo__c = 'Atendimento';
             }else{
                 caso.Subject = 'Novo Cadastro & Devolução de Pedido';
                 caso.Description = 'Novo Cadastro & Devolução de Pedido do Hybris';
-                caso.Tipo__c = 'Cadastro';
-                caso.Subtipo__c = 'Novo Cadastro';
-                caso.Detalhamento__c = 'Devoluções';
+                caso.Tipo__c = 'Serviço COC';
+                caso.Subtipo__c = 'Atendimento';
+                caso.Detalhamento__c = 'Atendimento';
                 caso.InformacoesContaACriar__c = getInfoConta(pedido);
             }
             insert caso;

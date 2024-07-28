@@ -36,8 +36,8 @@ public without sharing class AprovacaoCotacaoController {
         if(opp.RecordtypeId != OpportunityStagesCheck.RECORD_TYPE_OPORTUNIDADE_FRANQUIA_SKILL_ED) {
             Case cs = new Case();
             cs.Subject = 'Novo contrato';
-            cs.Tipo__c =  'Contrato';
-            cs.Subtipo__c = 'Novo';
+            cs.Tipo__c =  'Serviço COC';
+            cs.Subtipo__c = 'Atendimento';
             cs.BR_Oportunidade__c = opp.Id;
             cs.GrupoSolucionador__c = 'Cadastro / Gestão de Contratos';
             cs.AccountId = opp.AccountId;

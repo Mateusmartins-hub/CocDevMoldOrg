@@ -29,21 +29,18 @@ public class CaseBO {
                 caso.Priority = 'High';
             else if(caso.Status == 'Reaberto' && mapCasosOld.containsKey(caso.Id) && mapCasosOld.get(caso.Id).Status == 'Fechado')
                 caso.Priority = 'High';
-            else if(caso.Subtipo__c == 'Priorização de pedido' ||
-                    caso.Subtipo__c == 'Cancelamento de Pedido' ||
-                    caso.Subtipo__c == 'Lead' ||
-                    caso.Subtipo__c == 'Licitação' ||
-                    caso.Subtipo__c == 'Licitação - GOVERNO' ||
-                    caso.Subtipo__c == 'Sala Virtual' ||
-                    caso.Subtipo__c == 'Virtual Labs' ||
-                    caso.Subtipo__c == 'Virtual Classroom' ||
-                    caso.Subtipo__c == 'Pedido realizado' ||
-                    caso.Subtipo__c == 'Divergência no pedido' ||
-                    caso.Subtipo__c == 'Divergência' ||
-                    caso.Subtipo__c == 'Material Avariado' ||
-                    caso.Subtipo__c == 'Retenção' ||
-                    caso.Subtipo__c == 'Carta de Correção' ||
-                    caso.Subtipo__c == 'Boleto')
+            else if(caso.Subtipo__c == 'Simbólica' ||
+                    caso.Subtipo__c == 'Alteração' ||
+                    caso.Subtipo__c == '2ª Via' ||
+                    caso.Subtipo__c == 'Input manual' ||
+                    caso.Subtipo__c == 'Loja online' ||
+                    caso.Subtipo__c == 'PDF' ||
+                    caso.Subtipo__c == 'Qualidade' ||
+                    caso.Subtipo__c == 'Logística' ||
+                    caso.Subtipo__c == 'Transporte' ||
+                    caso.Subtipo__c == 'COC Avaliações' ||
+                    caso.Subtipo__c == 'Passaporte' ||
+                    caso.Subtipo__c == 'COC Digital')
                 caso.Priority = 'Medium';
             else
                 caso.Priority = 'Low';
@@ -195,7 +192,7 @@ public class CaseBO {
     
     public static void validarRedefinicaoArvoreAssunto(List<Case> casos, Map<Id, Case> mapCasosOld) {
 		Set<Id> queueIds = new Set<Id>();
-        List<Group> grupos = [SELECT Id, Name FROM Group WHERE Name = 'Coordenadores Customer Care'];
+        List<Group> grupos = [SELECT Id, Name FROM Group WHERE Name = 'Casos- Relacionamento com cliente'];
         
         for(Group g : grupos) {
             queueIds.add(g.Id);
@@ -209,9 +206,7 @@ public class CaseBO {
         for(Case caso : casos) {
             Case casoOld = mapCasosOld.get(caso.Id);
             
-            if(casoOld.Tipo__c != 'Atendimento' &&
-               casoOld.Subtipo__c != 'Suporte' &&
-               (casoOld.Tipo__c != caso.Tipo__c || casoOld.Subtipo__c != caso.Subtipo__c || casoOld.Detalhamento__c != caso.Detalhamento__c) &&
+            if((casoOld.Tipo__c != caso.Tipo__c || casoOld.Subtipo__c != caso.Subtipo__c || casoOld.Detalhamento__c != caso.Detalhamento__c) &&
                usuariosDoGrupo.containsKey(grupos[0].Id) && 
                !usuariosDoGrupo.get(grupos[0].Id).contains(UserInfo.getUserId())) {
                 caso.addError('Você não tem permissão para redefinir a árvore de assunto.');
@@ -532,18 +527,18 @@ public class CaseBO {
 				}
 				caso.Novo__c = true;
 				if(!String.isEmpty(caso.Origin) && caso.Origin.contains('Email')) {
-					caso.Tipo__c = 'Atendimento';
-					caso.Subtipo__c = 'Suporte';
-					caso.Detalhamento__c = null;
+					caso.Tipo__c = 'Serviço COC';
+					caso.Subtipo__c = 'Atendimento';
+					caso.Detalhamento__c = 'Atendimento';
 					caso.Detalhamento2__c = null;
 					caso.BR_Grupo_Solucionador__c = null;
 					caso.OwnerEmailToCaseId__c = caso.OwnerId;
 				}
 				else if (!String.isEmpty(caso.Origin) && caso.Origin.contains('LGPD')){
 					// atendimento do chamado INC5771683
-					caso.Tipo__c = 'Cadastro';
-					caso.Subtipo__c = 'LGPD';
-					caso.Detalhamento__c = 'Formulário LGPD';
+					caso.Tipo__c = 'Fale Conosco';
+					caso.Subtipo__c = 'Outros';
+					caso.Detalhamento__c = 'Outros';
 					caso.Detalhamento2__c = null;
 					caso.BR_Grupo_Solucionador__c = null;
 					caso.OwnerEmailToCaseId__c = caso.OwnerId;
@@ -666,10 +661,10 @@ public class CaseBO {
 
 	public static Case criarCaso(String description, String accountId) {
 		Case caso = new Case();
-		caso.Subject = 'Cadastrar Cliente no SAP';
+		caso.Subject = 'Serviço COC';
 		caso.Description = description;
-		caso.Tipo__c = 'Cadastro';
-		caso.Subtipo__c = 'Novo Cadastro';
+		caso.Tipo__c = 'Atendimento';
+		caso.Subtipo__c = 'Atendimento';
         caso.Detalhamento__c = '';
         caso.GrupoSolucionador__c = 'Cadastro / Gestão de Contratos';
 		caso.accountId = accountId;

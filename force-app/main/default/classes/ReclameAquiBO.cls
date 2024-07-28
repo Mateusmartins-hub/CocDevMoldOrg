@@ -200,9 +200,9 @@ public without sharing class ReclameAquiBO {
         novo.StatusRA__c = reclamacao.ra_status.name;
         novo.StatusHugme__c = reclamacao.hugme_status.name;
         novo.ProblemaResolvidoRA__c = reclamacao.resolved_issue; 
-        novo.Tipo__c = 'Ouvidoria';
-        novo.Subtipo__c = 'Reclame Aqui';
-        novo.Detalhamento__c = valores.contains(reclamacao.company.name) ? reclamacao.company.name : 'Outros';
+        novo.Tipo__c = 'Fale Conosco';
+        novo.Subtipo__c = 'Outros';
+        novo.Detalhamento__c = 'Outros';
         novo.respostaPublica__c = null;
         novo = atualizarCaso(reclamacao, novo);
         return novo;

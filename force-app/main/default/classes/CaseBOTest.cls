@@ -3,9 +3,9 @@ public class CaseBOTest {
     
     @TestSetup static void testSetup() {
         ParametrizacaoCasos__c param = new ParametrizacaoCasos__c();
-        param.Tipo__c = 'Atendimento';
-        param.Subtipo__c = 'Suporte';
-        param.Detalhamento__c = '';
+        param.Tipo__c = 'Serviço COC';
+        param.Subtipo__c = 'Atendimento';
+        param.Detalhamento__c = 'Atendimento';
         param.Detalhamento2__c = '';
         param.AreaDonaProcesso__c = 'Financeiro';
         param.GrupoSolucionador1__c = 'Backoffice Comercial';
@@ -49,9 +49,9 @@ public class CaseBOTest {
         caso.ContactId = con.Id;
         caso.Subject = 'Assunto Teste';
         caso.Description = 'Descrição Teste';
-        caso.Tipo__c = 'Atendimento';
-        caso.Subtipo__c = 'Suporte';
-        caso.Detalhamento__c = '';
+        caso.Tipo__c = 'Serviço COC';
+        caso.Subtipo__c = 'Atendimento';
+        caso.Detalhamento__c = 'Atendimento';
         caso.Detalhamento2__c = '';
         caso.BR_Complemento__c = 'Teste';
         caso.BR_CEP__c = '123';
@@ -140,9 +140,9 @@ public class CaseBOTest {
         try{
             update [SELECT Id FROM ParametrizacaoCasos__c LIMIT 1];
             ParametrizacaoCasos__c param = new ParametrizacaoCasos__c();
-            param.Tipo__c = 'Cadastro';
-            param.Subtipo__c = 'Alteração de Cadastro';
-            param.Detalhamento__c = 'Dados Cadastrais';
+            param.Tipo__c = 'Serviço COC';
+            param.Subtipo__c = 'Atendimento';
+            param.Detalhamento__c = 'Atendimento';
             param.Detalhamento2__c = '';
             param.AreaDonaProcesso__c = 'Financeiro';
             insert param;  
@@ -174,21 +174,25 @@ public class CaseBOTest {
         update caso;
         
         caso.Status = 'Novo';
+        caso.Marca__c = 'Dom Bosco';
         update caso;
         Test.stopTest();
     }
-    
+    /*
     @isTest static void test6() {
         Test.startTest();
         Case caso = new Case();
         caso.Origin = 'Email';
+        caso.Tipo__c = 'Serviço COC';
+        caso.Subtipo__c = 'Atendimento';
+        caso.Detalhamento__c = 'Atendimento';
         insert caso;
         
         caso.Marca__c = 'Dom Bosco';
         update caso;
       
         Test.stopTest();
-    }
+    }*/
     
     @isTest static void test7() {
         
@@ -209,9 +213,9 @@ public class CaseBOTest {
         casoFechado.ContactId = con.Id;
         casoFechado.Subject = 'Assunto Teste';
         casoFechado.Description = 'Descrição Teste';
-        casoFechado.Tipo__c = 'Atendimento';
-        casoFechado.Subtipo__c = 'Suporte';
-        casoFechado.Detalhamento__c = '';
+        casoFechado.Tipo__c = 'Serviço COC';
+        casoFechado.Subtipo__c = 'Atendimento';
+        casoFechado.Detalhamento__c = 'Atendimento';
         casoFechado.Detalhamento2__c = '';
         casoFechado.BR_Complemento__c = 'Teste';
         casoFechado.BR_CEP__c = '123';

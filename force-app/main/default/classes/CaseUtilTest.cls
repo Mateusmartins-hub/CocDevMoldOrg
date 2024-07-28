@@ -25,7 +25,7 @@ public class CaseUtilTest {
             Type = 'Atendimento',
             Subtipo__c= 'Suporte',
             TipoSolicitacao__c = 'Solicitação',
-            Tipo_de_Solicita_o__c = 'Instabilidade',
+            Tipo_de_Solicita_o__c = 'Não se aplica',
             ContarReabertura__c = 0
         );
         	insert teste;
