@@ -55,9 +55,9 @@ public class RestHybrisTest {
         caso.OrdemGrupoSolucionador__c = 1;
         caso.Subject = 'Novo Cadastro & Devolução de Pedido';
         caso.Description = 'Novo Cadastro & Devolução de Pedido do Hybris';
-        caso.Tipo__c = 'Cadastro';
-        caso.Subtipo__c = 'Novo Cadastro';
-        caso.Detalhamento__c = 'Devoluções';
+        caso.Tipo__c = 'Serviço COC';
+        caso.Subtipo__c = 'Atendimento';
+        caso.Detalhamento__c = 'Atendimento';
         insert caso;
         
         caso = [SELECT Id, CaseNumber FROM Case WHERE Id =: caso.Id];
@@ -81,9 +81,9 @@ public class RestHybrisTest {
         caso.OrdemGrupoSolucionador__c = 1;
         caso.Subject = 'Novo Cadastro & Devolução de Pedido';
         caso.Description = 'Novo Cadastro & Devolução de Pedido do Hybris';
-        caso.Tipo__c = 'Cadastro';
-        caso.Subtipo__c = 'Novo Cadastro';
-        caso.Detalhamento__c = 'Devoluções';
+        caso.Tipo__c = 'Serviço COC';
+        caso.Subtipo__c = 'Atendimento';
+        caso.Detalhamento__c = 'Atendimento';
         insert caso;
         
         caso = [SELECT Id, CaseNumber FROM Case WHERE Id =: caso.Id];

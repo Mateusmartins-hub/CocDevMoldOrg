@@ -316,9 +316,9 @@ public class TestHelper {
         novo.TituloReclamacaoRA__c = 'Título';
         novo.StatusIntegracao__c = 'Aguardando integração';
         novo.ProblemaResolvidoRA__c = false; 
-        novo.Tipo__c = 'Ouvidoria';
-        novo.Subtipo__c = 'Reclame Aqui';
-        novo.Detalhamento__c = 'Outros';
+        novo.Tipo__c = 'Serviço COC';
+        novo.Subtipo__c = 'Atendimento';
+        novo.Detalhamento__c = 'Atendimento';
         novo.respostaPublica__c = 'Resposta';
         
         insert novo;

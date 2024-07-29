@@ -4,9 +4,9 @@ public class RestHybrisDevolucaoTest {
     @testSetup
     static void testSetup() {
         ParametrizacaoCasos__c p = new ParametrizacaoCasos__c();
-        p.Tipo__c = 'Cadastro';
-        p.Subtipo__c = 'Novo Cadastro';
-        p.Detalhamento__c = 'Devoluções';
+        p.Tipo__c = 'Serviço COC';
+        p.Subtipo__c = 'Atendimento';
+        p.Detalhamento__c = 'Atendimento';
         p.GrupoSolucionador1__c = 'Customer Care';
         insert p;
         
@@ -17,8 +17,8 @@ public class RestHybrisDevolucaoTest {
         insert grupo0;
         
         ParametrizacaoCasos__c p2 = new ParametrizacaoCasos__c();
-        p2.Tipo__c = 'Pedidos';
-        p2.Subtipo__c = 'Devolução';
+        p2.Tipo__c = 'Serviço COC';
+        p2.Subtipo__c = 'Atendimento';
         p2.GrupoSolucionador1__c = 'Customer Care';
         insert p2;
         
@@ -71,9 +71,9 @@ public class RestHybrisDevolucaoTest {
         caso.OrdemGrupoSolucionador__c = 1;
         caso.Subject = 'Novo Cadastro & Devolução de Pedido';
         caso.Description = 'Novo Cadastro & Devolução de Pedido do Hybris';
-        caso.Tipo__c = 'Cadastro';
-        caso.Subtipo__c = 'Novo Cadastro';
-        caso.Detalhamento__c = 'Devoluções';
+        caso.Tipo__c = 'Serviço COC';
+        caso.Subtipo__c = 'Atendimento';
+        caso.Detalhamento__c = 'Atendimento';
         insert caso;
         
         RestRequest req = new RestRequest(); 
@@ -95,9 +95,9 @@ public class RestHybrisDevolucaoTest {
         caso.OrdemGrupoSolucionador__c = 1;
         caso.Subject = 'Novo Cadastro & Devolução de Pedido';
         caso.Description = 'Novo Cadastro & Devolução de Pedido do Hybris';
-        caso.Tipo__c = 'Cadastro';
-        caso.Subtipo__c = 'Novo Cadastro';
-        caso.Detalhamento__c = 'Devoluções';
+        caso.Tipo__c = 'Serviço COC';
+        caso.Subtipo__c = 'Atendimento';
+        caso.Detalhamento__c = 'Atendimento';
         insert caso;
         
         RestRequest req = new RestRequest(); 

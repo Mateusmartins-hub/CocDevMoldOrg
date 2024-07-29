@@ -17,8 +17,8 @@ public class AprovacaoCotacaoControllerTest {
             PageReference pageRef = Page.AprovacaoCotacao;
             Test.setCurrentPage(pageRef);        
             ParametrizacaoCasos__c param1 = TestHelper.createParametrizacaoCaso();
-            param1.Tipo__c = 'Contrato';
-            param1.Subtipo__c = 'Novo';
+            param1.Tipo__c = 'Serviço COC';
+            param1.Subtipo__c = 'Atendimento';
             param1.Detalhamento__c = '';
             param1.Detalhamento2__c = '';
             insert param1;
